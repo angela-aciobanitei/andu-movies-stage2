@@ -8,9 +8,13 @@ import android.widget.ImageView;
 import java.util.List;
 
 import androidx.databinding.BindingAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
+import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.data.vo.Genre;
+import com.ang.acb.popularmovies.data.vo.Review;
+import com.ang.acb.popularmovies.data.vo.Trailer;
 import com.ang.acb.popularmovies.utils.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -69,6 +73,30 @@ public class BindingAdapters {
             chip.setChipBackgroundColorResource(android.R.color.transparent);
             // Finally, add the chip to the chip group.
             view.addView(chip);
+        }
+    }
+
+    @BindingAdapter("castItems")
+    public static void setCastItems(RecyclerView recyclerView, List<Cast> items) {
+        CastAdapter adapter = (CastAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(items);
+        }
+    }
+
+    @BindingAdapter("trailersItems")
+    public static void setTrailersItems(RecyclerView recyclerView, List<Trailer> items) {
+        TrailersAdapter adapter = (TrailersAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(items);
+        }
+    }
+
+    @BindingAdapter("reviewsItems")
+    public static void setReviewsItems(RecyclerView recyclerView, List<Review> items) {
+        ReviewsAdapter adapter = (ReviewsAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(items);
         }
     }
 }

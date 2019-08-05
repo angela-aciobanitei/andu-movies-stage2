@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
 import com.ang.acb.popularmovies.data.vo.Movie;
+import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
 
 import timber.log.Timber;
@@ -20,7 +21,7 @@ import timber.log.Timber;
 public class DetailsViewModel extends ViewModel {
 
     private final MovieRepository repository;
-    private LiveData<Resource<Movie>> result;
+    private LiveData<Resource<MovieDetails>> result;
     private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
 
     public DetailsViewModel(final MovieRepository repository) {
@@ -30,31 +31,27 @@ public class DetailsViewModel extends ViewModel {
     public void init(long movieId) {
         // Load movie details only when the activity is created for the first time.
         if (result != null) return;
-        Timber.d("Initializing viewModel");
+        Timber.d("Initializing details view model");
 
         result = Transformations.switchMap(
                 movieIdLiveData,
-                new Function<Long, LiveData<Resource<Movie>>>() {
+                new Function<Long, LiveData<Resource<MovieDetails>>>() {
                     @Override
-                    public LiveData<Resource<Movie>> apply(Long movieId) {
+                    public LiveData<Resource<MovieDetails>> apply(Long movieId) {
                         return repository.loadMovie(movieId);
                     }
                 });
 
         // Trigger loading movie
-        setMovieIdLiveData(movieId);
-    }
-
-    public LiveData<Resource<Movie>> getResult() {
-        return result;
-    }
-
-    private void setMovieIdLiveData(long movieId) {
         movieIdLiveData.setValue(movieId);
     }
 
+    public LiveData<Resource<MovieDetails>> getResult() {
+        return result;
+    }
+
     public void retry(long movieId) {
-        setMovieIdLiveData(movieId);
+        movieIdLiveData.setValue(movieId);
     }
 
 }

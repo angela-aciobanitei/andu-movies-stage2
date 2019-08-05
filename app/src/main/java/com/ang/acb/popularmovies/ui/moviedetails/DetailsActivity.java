@@ -5,12 +5,16 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Movie;
+import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
@@ -47,12 +51,18 @@ public class DetailsActivity extends AppCompatActivity {
 
         setupToolbar();
 
+        // Setup trailers, cast, reviews adapters
+        setupTrailersAdapter();
+        setupCastAdapter();
+        setupReviewsAdapter();
+
         // Observe result.
-        viewModel.getResult().observe(this, new Observer<Resource<Movie>>() {
+        viewModel.getResult().observe(this, new Observer<Resource<MovieDetails>>() {
             @Override
-            public void onChanged(Resource<Movie> resource) {
+            public void onChanged(Resource<MovieDetails> resource) {
+                // TODO  Handle set favorite
                 binding.setResource(resource);
-                binding.setMovie(resource.data);
+                binding.setMovieDetails(resource.data);
             }
         });
 
@@ -63,6 +73,8 @@ public class DetailsActivity extends AppCompatActivity {
                 viewModel.retry(movieId);
             }
         });
+
+
     }
 
     private void setupToolbar() {
@@ -88,7 +100,7 @@ public class DetailsActivity extends AppCompatActivity {
                 // Verify if the toolbar is completely collapsed
                 // and set the movie name as the title.
                 if (scrollRange + verticalOffset == 0) {
-                    binding.collapsingToolbar.setTitle(viewModel.getResult().getValue().data.getTitle());
+                    binding.collapsingToolbar.setTitle(viewModel.getResult().getValue().data.movie.getTitle());
                     isShow = true;
                 } else if (isShow) {
                     // Display an empty string when toolbar is expanded.
@@ -98,6 +110,32 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupCastAdapter() {
+        RecyclerView rvCast = binding.contentPartialDetails.rvCast;
+        rvCast.setLayoutManager(new LinearLayoutManager(
+                this, RecyclerView.HORIZONTAL, false));
+        rvCast.setAdapter(new CastAdapter());
+        ViewCompat.setNestedScrollingEnabled(rvCast, false);
+    }
+
+    private void setupTrailersAdapter() {
+        RecyclerView rvTrailers = binding.contentPartialDetails.rvTrailers;
+        rvTrailers.setLayoutManager(new LinearLayoutManager(
+                this, RecyclerView.HORIZONTAL, false));
+        rvTrailers.setAdapter(new TrailersAdapter());
+        ViewCompat.setNestedScrollingEnabled(rvTrailers, false);
+    }
+
+    private void setupReviewsAdapter() {
+        RecyclerView listReviews = binding.contentPartialDetails.rvReviews;
+        listReviews.setLayoutManager(new LinearLayoutManager(
+                this, RecyclerView.VERTICAL, false));
+        listReviews.setAdapter(new ReviewsAdapter());
+        ViewCompat.setNestedScrollingEnabled(listReviews, false);
+    }
+
+
 
     private void closeOnError() {
         throw new IllegalArgumentException("Access denied.");
