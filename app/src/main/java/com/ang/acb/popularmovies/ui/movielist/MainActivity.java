@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_now_playing:
                         selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_now_playing);
                         break;
+                    case R.id.action_favorites:
+                        selectedFragment = FavoriteMoviesFragment.newInstance();
+                        break;
                 }
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

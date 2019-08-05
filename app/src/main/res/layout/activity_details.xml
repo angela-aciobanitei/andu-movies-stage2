@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Data binding layout files are slightly different and start
-with a root tag of <layout> followed by a <data> element and a
-view root element. This view element is what your root would
-be in a non-binding layout file. -->
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- The variables within <data> describe the properties that
-    will be used within this layout. Expressions within the layout
-    are written in the attribute properties using the "@{}". -->
     <data>
 
         <variable
@@ -23,7 +16,6 @@ be in a non-binding layout file. -->
 
     </data>
 
-    <!-- UI layout's root element -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/root_coordinator_layout"
         style="@style/Widget.Support.CoordinatorLayout"
@@ -47,8 +39,8 @@ be in a non-binding layout file. -->
             android:layout_width="match_parent"
             android:layout_height="@dimen/tall_toolbar_height"
             android:fitsSystemWindows="true"
-            android:theme="@style/AppBarOverlay"
-            app:toggleVisibility="@{movieDetails != null}">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:toggleVisibility="@{movieDetails.movie != null}">
 
             <!-- A toolbar with a collapsing image -->
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -100,7 +92,7 @@ be in a non-binding layout file. -->
             android:paddingBottom="16dp"
             app:behavior_overlapTop="48dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:toggleVisibility="@{movieDetails != null}">
+            app:toggleVisibility="@{movieDetails.movie != null}">
 
             <include
                 android:id="@+id/content_partial_details"

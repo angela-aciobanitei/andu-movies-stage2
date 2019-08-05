@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/favorite_movies_list"
+            layout="@layout/fragment_tmdb_movies" />
+
+        <!-- Empty state layout -->
+        <TextView
+            android:id="@+id/favorite_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="16dp"
+            android:text="@string/no_favorites" />
+
+    </FrameLayout>
+</layout>

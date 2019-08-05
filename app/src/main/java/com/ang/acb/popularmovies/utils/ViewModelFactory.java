@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
 import com.ang.acb.popularmovies.ui.moviedetails.DetailsViewModel;
+import com.ang.acb.popularmovies.ui.movielist.FavoriteMoviesViewModel;
 import com.ang.acb.popularmovies.ui.movielist.TmdbMoviesViewModel;
 
 /**
@@ -32,6 +33,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         if (modelClass.isAssignableFrom(TmdbMoviesViewModel.class)) {
             // noinspection unchecked
             return (T) new TmdbMoviesViewModel(repository);
+        } else if (modelClass.isAssignableFrom(FavoriteMoviesViewModel.class)) {
+            // noinspection unchecked
+            return (T) new FavoriteMoviesViewModel(repository);
         } else if (modelClass.isAssignableFrom(DetailsViewModel.class)) {
             // noinspection unchecked
             return (T) new DetailsViewModel(repository);
