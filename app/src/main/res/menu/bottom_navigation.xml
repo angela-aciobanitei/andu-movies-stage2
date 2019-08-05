@@ -16,5 +16,9 @@
         android:icon="@drawable/ic_airplay_black_24dp"
         android:title="@string/action_now_playing"/>
 
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        android:title="@string/action_favorites"/>
 
 </menu>

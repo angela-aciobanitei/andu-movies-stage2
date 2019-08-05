@@ -14,8 +14,8 @@ be in a non-binding layout file. -->
     <data>
 
         <variable
-            name="movie"
-            type="com.ang.acb.popularmovies.data.vo.Movie" />
+            name="movieDetails"
+            type="com.ang.acb.popularmovies.data.vo.MovieDetails" />
 
         <variable
             name="resource"
@@ -48,7 +48,7 @@ be in a non-binding layout file. -->
             android:layout_height="@dimen/tall_toolbar_height"
             android:fitsSystemWindows="true"
             android:theme="@style/AppBarOverlay"
-            app:toggleVisibility="@{movie != null}">
+            app:toggleVisibility="@{movieDetails != null}">
 
             <!-- A toolbar with a collapsing image -->
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -69,7 +69,7 @@ be in a non-binding layout file. -->
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
-                    app:imageUrl="@{movie.backdropPath}"
+                    app:imageUrl="@{movieDetails.movie.backdropPath}"
                     app:isPoster="@{false}"
                     tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -100,12 +100,12 @@ be in a non-binding layout file. -->
             android:paddingBottom="16dp"
             app:behavior_overlapTop="48dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:toggleVisibility="@{movie != null}">
+            app:toggleVisibility="@{movieDetails != null}">
 
             <include
                 android:id="@+id/content_partial_details"
                 layout="@layout/content_partial_details"
-                app:movie="@{movie}" />
+                app:movieDetails="@{movieDetails}" />
         </androidx.core.widget.NestedScrollView>
 
         <include

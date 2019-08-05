@@ -7,8 +7,8 @@
 
     <data>
         <variable
-            name="movie"
-            type="com.ang.acb.popularmovies.data.vo.Movie" />
+            name="movieDetails"
+            type="com.ang.acb.popularmovies.data.vo.MovieDetails" />
     </data>
 
     <!-- UI layout's root element -->
@@ -35,11 +35,11 @@
             android:layout_marginStart="16dp"
             android:contentDescription="@string/movie_poster_content_description"
             android:scaleType="centerCrop"
-            app:imageUrl="@{movie.posterPath}"
-            app:isPoster="@{true}"
             app:layout_constraintDimensionRatio="w,2:3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:imageUrl="@{movieDetails.movie.posterPath}"
+            app:isPoster="@{true}"
             tools:background="@tools:sample/backgrounds/scenic" />
 
         <TextView
@@ -49,11 +49,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{movie.title}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/details_movie_poster"
             app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:text="@{movieDetails.movie.title}"
             tools:text="Movie title" />
 
         <com.google.android.material.chip.ChipGroup
@@ -64,11 +64,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:textColor="@android:color/white"
-            app:chipGroupItems="@{movie.genres}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/details_movie_poster"
             app:layout_constraintTop_toBottomOf="@+id/details_movie_title"
-            app:toggleVisibility="@{movie.genres != null}" />
+            app:chipGroupItems="@{movieDetails.movie.genres}"
+            app:toggleVisibility="@{movieDetails.movie.genres != null}" />
 
 
         <androidx.constraintlayout.widget.Barrier
@@ -80,17 +80,10 @@
 
         <TextView
             android:id="@+id/movie_release_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/dateVoteStyle"
             android:drawableStart="@drawable/ic_insert_invitation_white_24dp"
             android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="@{movie.releaseDate}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:text="@{movieDetails.movie.releaseDate}"
             app:layout_constraintBottom_toTopOf="@+id/overview_label"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
@@ -99,16 +92,10 @@
 
         <TextView
             android:id="@+id/movie_vote_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/dateVoteStyle"
             android:drawableStart="@drawable/ic_people_white_24dp"
             android:drawablePadding="8dp"
-            android:text="@{@string/vote_count(movie.voteCount)}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:text="@{@string/vote_count(movieDetails.movie.voteCount)}"
             app:layout_constraintEnd_toStartOf="@+id/movie_vote_avg"
             app:layout_constraintStart_toEndOf="@+id/movie_release_date"
             app:layout_constraintTop_toBottomOf="@+id/barrier1"
@@ -117,17 +104,10 @@
 
         <TextView
             android:id="@+id/movie_vote_avg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            style="@style/dateVoteStyle"
             android:drawableEnd="@drawable/ic_star_white_24dp"
             android:drawablePadding="8dp"
-            android:gravity="center"
-            android:text="@{String.valueOf(movie.voteAverage)}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:text="@{String.valueOf(movieDetails.movie.voteAverage)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_vote_count"
             app:layout_constraintTop_toBottomOf="@+id/barrier1"
@@ -143,12 +123,8 @@
 
         <TextView
             android:id="@+id/overview_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            style="@style/labelStyle"
             android:text="@string/label_overview"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/movie_release_date" />
 
@@ -159,12 +135,63 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="@{movie.overview}"
+            android:text="@{movieDetails.movie.overview}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/overview_label"
-            tools:text="@tools:sample/lorem/random" />
+            tools:text="@tools:sample/lorem" />
+
+        <TextView
+            android:id="@+id/cast_label"
+            style="@style/labelStyle"
+            android:text="@string/cast"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/overview_content"
+            app:toggleVisibility="@{movieDetails.castList.size > 0}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cast"
+            style="@style/listStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cast_label"
+            app:castItems="@{movieDetails.castList}"
+            app:toggleVisibility="@{movieDetails.castList.size > 0}" />
+
+        <TextView
+            android:id="@+id/trailers_label"
+            style="@style/labelStyle"
+            android:text="@string/trailers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_cast"
+            app:toggleVisibility="@{movieDetails.trailers.size > 0}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_trailers"
+            style="@style/listStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailers_label"
+            app:trailersItems="@{movieDetails.trailers}"
+            app:toggleVisibility="@{movieDetails.trailers.size > 0}" />
+
+        <TextView
+            android:id="@+id/reviews_label"
+            style="@style/labelStyle"
+            android:text="@string/reviews"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
+            app:toggleVisibility="@{movieDetails.reviews.size > 0}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            style="@style/listStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reviews_label"
+            app:reviewsItems="@{movieDetails.reviews}"
+            app:toggleVisibility="@{movieDetails.reviews.size > 0}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

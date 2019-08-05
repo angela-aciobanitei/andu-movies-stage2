@@ -10,5 +10,13 @@
     <string name="movie_backdrop_content_description">Movie backdrop</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="vote_count">%s votes</string>
+    <string name="cast_member_profile_image">Cast member profile image</string>
+    <string name="review_author_profile_image">Review author profile image</string>
+    <string name="play_icon">Play icon</string>
+    <string name="trailer_thumbnail">Trailer thumbnail</string>
+    <string name="cast">Cast</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="action_favorites">Favorites</string>
 
 </resources>
