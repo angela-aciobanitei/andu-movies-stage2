@@ -31,6 +31,9 @@ public interface ApiService {
     @GET("movie/now_playing")
     Call<MoviesResponse> getNowPlayingMovies(@Query("page") int page);
 
-    @GET("movie/{id}")
+    // By using the query parameter "append_to_response" we can make
+    // sub requests within the same namespace in a single HTTP request
+    // thus eliminating duplicate requests and saving network bandwidth.
+    @GET("movie/{id}?append_to_response=videos,credits,reviews")
     LiveData<ApiResponse<Movie>> getMovieDetails(@Path("id") long id);
 }

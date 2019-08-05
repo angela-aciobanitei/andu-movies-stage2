@@ -122,7 +122,6 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params,
                           @NonNull final LoadCallback<Integer, Movie> callback) {
-        // Send loading state to the UI.
         networkState.postValue(Resource.loading(null));
 
         // Fetch the next page data from the API.
