@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
+import com.ang.acb.popularmovies.utils.SnackbarMessage;
 
 import timber.log.Timber;
 
@@ -23,6 +25,8 @@ public class DetailsViewModel extends ViewModel {
     private final MovieRepository repository;
     private LiveData<Resource<MovieDetails>> result;
     private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
+    private final SnackbarMessage mSnackbarText = new SnackbarMessage();
+    private boolean isFavorite;
 
     public DetailsViewModel(final MovieRepository repository) {
         this.repository = repository;
@@ -31,7 +35,7 @@ public class DetailsViewModel extends ViewModel {
     public void init(long movieId) {
         // Load movie details only when the activity is created for the first time.
         if (result != null) return;
-        Timber.d("Initializing details view model");
+        Timber.d("Initializing viewModel");
 
         result = Transformations.switchMap(
                 movieIdLiveData,
@@ -43,15 +47,47 @@ public class DetailsViewModel extends ViewModel {
                 });
 
         // Trigger loading movie
-        movieIdLiveData.setValue(movieId);
+        setMovieIdLiveData(movieId);
     }
 
     public LiveData<Resource<MovieDetails>> getResult() {
         return result;
     }
 
-    public void retry(long movieId) {
+    public SnackbarMessage getSnackbarMessage() {
+        return mSnackbarText;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    private void setMovieIdLiveData(long movieId) {
         movieIdLiveData.setValue(movieId);
     }
 
+    public void retry(long movieId) {
+        setMovieIdLiveData(movieId);
+    }
+
+    public void onFavoriteClicked() {
+        MovieDetails movieDetails = result.getValue().data;
+        if (!isFavorite) {
+            repository.markAsFavorite(movieDetails.movie);
+            isFavorite = true;
+            showSnackbarMessage(R.string.movie_added_to_favorites);
+        } else {
+            repository.markAsNotFavorite(movieDetails.movie);
+            isFavorite = false;
+            showSnackbarMessage(R.string.movie_removed_from_favorites);
+        }
+    }
+
+    private void showSnackbarMessage(Integer message) {
+        mSnackbarText.setValue(message);
+    }
 }
