@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+
+    <string name="action_popular">Popular</string>
+    <string name="action_top_rated">Top rated</string>
+    <string name="action_now_playing">Now playing</string>
+    <string name="action_retry">Retry</string>
+    <string name="movie_poster_content_description">Movie poster</string>
+    <string name="label_overview">Overview</string>
+    <string name="movie_backdrop_content_description">Movie backdrop</string>
+    <string name="unknown_error">Unknown Error</string>
+    <string name="vote_count">%s votes</string>
+
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_popular"
+        android:icon="@drawable/ic_whatshot_black_24dp"
+        android:title="@string/action_popular" />
+
+    <item
+        android:id="@+id/action_top_rated"
+        android:icon="@drawable/ic_thumb_up_black_24dp"
+        android:title="@string/action_top_rated"/>
+
+    <item
+        android:id="@+id/action_now_playing"
+        android:icon="@drawable/ic_airplay_black_24dp"
+        android:title="@string/action_now_playing"/>
+
+
+</menu>
