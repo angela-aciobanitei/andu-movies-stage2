@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
-import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.utils.SnackbarMessage;
@@ -25,7 +24,8 @@ public class DetailsViewModel extends ViewModel {
     private final MovieRepository repository;
     private LiveData<Resource<MovieDetails>> result;
     private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
-    private final SnackbarMessage mSnackbarText = new SnackbarMessage();
+
+    private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private boolean isFavorite;
 
     public DetailsViewModel(final MovieRepository repository) {
@@ -35,7 +35,7 @@ public class DetailsViewModel extends ViewModel {
     public void init(long movieId) {
         // Load movie details only when the activity is created for the first time.
         if (result != null) return;
-        Timber.d("Initializing viewModel");
+        Timber.d("Initializing details view model");
 
         result = Transformations.switchMap(
                 movieIdLiveData,
@@ -47,7 +47,7 @@ public class DetailsViewModel extends ViewModel {
                 });
 
         // Trigger loading movie
-        setMovieIdLiveData(movieId);
+        movieIdLiveData.setValue(movieId);
     }
 
     public LiveData<Resource<MovieDetails>> getResult() {
@@ -55,7 +55,7 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public SnackbarMessage getSnackbarMessage() {
-        return mSnackbarText;
+        return snackbarMessage;
     }
 
     public boolean isFavorite() {
@@ -66,12 +66,8 @@ public class DetailsViewModel extends ViewModel {
         isFavorite = favorite;
     }
 
-    private void setMovieIdLiveData(long movieId) {
-        movieIdLiveData.setValue(movieId);
-    }
-
     public void retry(long movieId) {
-        setMovieIdLiveData(movieId);
+        movieIdLiveData.setValue(movieId);
     }
 
     public void onFavoriteClicked() {
@@ -88,6 +84,6 @@ public class DetailsViewModel extends ViewModel {
     }
 
     private void showSnackbarMessage(Integer message) {
-        mSnackbarText.setValue(message);
+        snackbarMessage.setValue(message);
     }
 }

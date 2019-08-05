@@ -84,10 +84,10 @@
             android:drawableStart="@drawable/ic_insert_invitation_white_24dp"
             android:drawablePadding="8dp"
             android:text="@{movieDetails.movie.releaseDate}"
-            app:layout_constraintBottom_toTopOf="@+id/overview_label"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/barrier1"
+            app:layout_constraintBottom_toTopOf="@+id/barrier2"
             tools:text="@tools:sample/date/ddmmyy" />
 
         <TextView
@@ -96,10 +96,10 @@
             android:drawableStart="@drawable/ic_people_white_24dp"
             android:drawablePadding="8dp"
             android:text="@{@string/vote_count(movieDetails.movie.voteCount)}"
-            app:layout_constraintEnd_toStartOf="@+id/movie_vote_avg"
             app:layout_constraintStart_toEndOf="@+id/movie_release_date"
+            app:layout_constraintEnd_toStartOf="@+id/movie_vote_avg"
             app:layout_constraintTop_toBottomOf="@+id/barrier1"
-            app:layout_constraintBottom_toTopOf="@+id/overview_label"
+            app:layout_constraintBottom_toTopOf="@+id/barrier2"
             tools:text="233 votes" />
 
         <TextView
@@ -111,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/movie_vote_count"
             app:layout_constraintTop_toBottomOf="@+id/barrier1"
-            app:layout_constraintBottom_toTopOf="@+id/overview_label"
+            app:layout_constraintBottom_toTopOf="@+id/barrier2"
             tools:text="8/10" />
 
         <androidx.constraintlayout.widget.Barrier
