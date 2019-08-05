@@ -7,7 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.data.vo.Movie;
+import com.ang.acb.popularmovies.data.vo.Review;
+import com.ang.acb.popularmovies.data.vo.Trailer;
 
 
 /**
@@ -17,7 +20,7 @@ import com.ang.acb.popularmovies.data.vo.Movie;
  * See: https://medium.com/androiddevelopers/7-pro-tips-for-room-fbadea4bfbd1
  */
 @Database(
-        entities = {Movie.class},
+        entities = {Movie.class, Trailer.class, Cast.class, Review.class},
         version = 1,
         exportSchema = false)
 @TypeConverters(GenreConverter.class)
@@ -28,6 +31,9 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase sInstance;
 
     public abstract MovieDao movieDao();
+    public abstract TrailerDao trailerDao();
+    public abstract CastDao castDao();
+    public abstract ReviewDao reviewDao();
 
     private static AppDatabase buildDatabase(final Context context) {
         return Room.databaseBuilder(

@@ -8,6 +8,9 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import com.ang.acb.popularmovies.data.vo.Movie;
+import com.ang.acb.popularmovies.data.vo.MovieDetails;
+
+import java.util.List;
 
 
 /**
@@ -24,5 +27,14 @@ public interface MovieDao {
 
     @Transaction
     @Query("SELECT * FROM movie WHERE movie.id= :movieId")
-    LiveData<Movie> getMovieDetails(long movieId);
+    LiveData<MovieDetails> getMovieDetails(long movieId);
+
+    @Query("SELECT * FROM movie WHERE is_favorite = 1")
+    LiveData<List<Movie>> getAllFavoriteMovies();
+
+    @Query("UPDATE movie SET is_favorite = 1 WHERE id = :movieId")
+    int markAsFavorite(long movieId);
+
+    @Query("UPDATE movie SET is_favorite = 0 WHERE id = :movieId")
+    int markAsNotFavorite(long movieId);
 }

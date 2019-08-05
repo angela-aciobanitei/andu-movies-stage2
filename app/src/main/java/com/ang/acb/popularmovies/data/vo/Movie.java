@@ -9,6 +9,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -55,9 +56,49 @@ public class Movie {
     @SerializedName("release_date")
     private String releaseDate;
 
+    @ColumnInfo(name = "is_favorite")
+    private boolean isFavorite;
+
     @ColumnInfo(name = "genres")
     @SerializedName("genres")
     private List<Genre> genres;
+
+    @Ignore
+    @SerializedName("videos")
+    private TrailersResponse trailersResponse;
+
+    @Ignore
+    @SerializedName("credits")
+    private CastResponse creditsResponse;
+
+    @Ignore
+    @SerializedName("reviews")
+    private ReviewsResponse reviewsResponse;
+
+
+    public TrailersResponse getTrailersResponse() {
+        return trailersResponse;
+    }
+
+    public void setTrailersResponse(TrailersResponse trailersResponse) {
+        this.trailersResponse = trailersResponse;
+    }
+
+    public CastResponse getCreditsResponse() {
+        return creditsResponse;
+    }
+
+    public void setCreditsResponse(CastResponse creditsResponse) {
+        this.creditsResponse = creditsResponse;
+    }
+
+    public ReviewsResponse getReviewsResponse() {
+        return reviewsResponse;
+    }
+
+    public void setReviewsResponse(ReviewsResponse reviewsResponse) {
+        this.reviewsResponse = reviewsResponse;
+    }
 
     public List<Genre> getGenres() {
         return genres;
@@ -65,6 +106,14 @@ public class Movie {
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public long getId() {
@@ -165,6 +214,4 @@ public class Movie {
     public int hashCode() {
         return Objects.hash(id, title, posterPath, overview, popularity, voteAverage, releaseDate);
     }
-
 }
-
