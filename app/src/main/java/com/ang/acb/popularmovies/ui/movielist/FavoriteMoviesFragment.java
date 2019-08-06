@@ -50,7 +50,7 @@ public class FavoriteMoviesFragment extends Fragment {
         final MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setTitle(getString(R.string.favorites));
+            activity.getSupportActionBar().setTitle(getString(R.string.action_show_favorites));
         }
         // Setup view model.
         ViewModelFactory factory = InjectorUtils.provideViewModelFactory(activity);

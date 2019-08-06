@@ -39,8 +39,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ReviewDao reviewDao();
 
     private static AppDatabase buildDatabase(final Context context) {
-        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
-                .build();
+        return Room.databaseBuilder(
+                context.getApplicationContext(),
+                AppDatabase.class,
+                DATABASE_NAME)
+                    .build();
     }
 
     // Returns the single instance of this class, creating it if necessary.

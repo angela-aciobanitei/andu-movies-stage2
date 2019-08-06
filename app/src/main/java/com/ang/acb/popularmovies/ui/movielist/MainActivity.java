@@ -33,34 +33,31 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        // Setup bottom navigation bar
+        // Setup bottom navigation bar.
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_show_popular:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
-                        break;
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_show_popular:
+                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
+                    break;
 
-                    case R.id.action_show_top_rated:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_top_rated);
-                        break;
+                case R.id.action_show_top_rated:
+                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_top_rated);
+                    break;
 
-                    case R.id.action_show_now_playing:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_now_playing);
-                        break;
-                    case R.id.action_show_favorites:
-                        selectedFragment = FavoriteMoviesFragment.newInstance();
-                        break;
-                }
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.main_fragment_container, selectedFragment);
-                transaction.commit();
-
-                return true;
+                case R.id.action_show_now_playing:
+                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_now_playing);
+                    break;
+                case R.id.action_show_favorites:
+                    selectedFragment = FavoriteMoviesFragment.newInstance();
+                    break;
             }
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.main_fragment_container, selectedFragment);
+            transaction.commit();
+
+            return true;
         });
     }
 }

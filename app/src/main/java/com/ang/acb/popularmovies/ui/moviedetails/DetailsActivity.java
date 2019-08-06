@@ -69,6 +69,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Observe result.
         viewModel.getMovieDetailsLiveData().observe(this, resource -> {
             if (resource.data != null && resource.data.movie != null) {
+                // Handle adding/removing movie from favorites.
                 viewModel.setFavorite(resource.data.movie.isFavorite());
                 invalidateOptionsMenu();
             }
@@ -79,7 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
         // Handle retry event in case of network failure.
         binding.networkState.retryButton.setOnClickListener(view -> viewModel.retry(movieId));
 
-        // Observe Snackbar messages.
+        // Observe the Snackbar messages showed when adding/removing movie from favorites.
         viewModel.getSnackbarMessage().observe(this, (Observer<Integer>) message ->
                 Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show());
     }
@@ -90,12 +91,12 @@ public class DetailsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             // Handle Up navigation
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            handleCollapsedToolbarTitle();
+            setToolbarTitleIfCollapsed();
         }
     }
 
     // Sets the title on the toolbar only when the toolbar is collapsed.
-    private void handleCollapsedToolbarTitle() {
+    private void setToolbarTitleIfCollapsed() {
         // Add an OnOffsetChangedListener to AppBarLayout to determine
         // when CollapsingToolbarLayout is collapsed or expanded.
         // See: https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed

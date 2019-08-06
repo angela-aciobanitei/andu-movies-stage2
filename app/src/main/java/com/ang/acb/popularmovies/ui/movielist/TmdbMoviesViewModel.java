@@ -31,32 +31,9 @@ public class TmdbMoviesViewModel extends ViewModel {
         sortBy.setValue(MoviesFilter.POPULAR);
         currentTitle.setValue(R.string.action_show_popular);
 
-        pagedMoviesResult = Transformations.map(
-                sortBy,
-                new Function<MoviesFilter, PagedMoviesResult>() {
-                    @Override
-                    public PagedMoviesResult apply(MoviesFilter sort) {
-                        return movieRepository.loadMoviesFilteredBy(sort);
-                    }
-                });
-
-        pagedListData = Transformations.switchMap(
-                pagedMoviesResult,
-                new Function<PagedMoviesResult, LiveData<PagedList<Movie>>>() {
-                    @Override
-                    public LiveData<PagedList<Movie>> apply(PagedMoviesResult result) {
-                        return result.getData();
-                    }
-                });
-
-        networkState = Transformations.switchMap(
-                pagedMoviesResult,
-                new Function<PagedMoviesResult, LiveData<Resource>>() {
-                    @Override
-                    public LiveData<Resource> apply(PagedMoviesResult result) {
-                        return result.getResource();
-                    }
-                });
+        pagedMoviesResult = Transformations.map(sortBy, movieRepository::loadMoviesFilteredBy);
+        pagedListData = Transformations.switchMap(pagedMoviesResult,PagedMoviesResult::getData);
+        networkState = Transformations.switchMap(pagedMoviesResult, PagedMoviesResult::getResource);
     }
 
     public LiveData<PagedList<Movie>> getPagedListData() {
