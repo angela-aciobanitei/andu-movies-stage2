@@ -8,15 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
-import com.ang.acb.popularmovies.data.vo.Movie;
-import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.utils.GridSpacingItemDecoration;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
@@ -26,12 +22,12 @@ import com.ang.acb.popularmovies.utils.ViewModelFactory;
  */
 public class TmdbMoviesFragment extends Fragment {
 
-    private static final String ACTION_ID_ARG = "ACTION_ID_ARG" ;
+    private static final String EXTRA_ACTION_ID = "EXTRA_ACTION_ID" ;
 
     public static TmdbMoviesFragment newInstance(int actionId) {
         TmdbMoviesFragment fragment = new TmdbMoviesFragment();
         Bundle args = new Bundle();
-        args.putInt(ACTION_ID_ARG, actionId);
+        args.putInt(EXTRA_ACTION_ID, actionId);
         fragment.setArguments(args);
 
         return fragment;
@@ -53,14 +49,18 @@ public class TmdbMoviesFragment extends Fragment {
         final MainActivity activity = (MainActivity) getActivity();
         assert activity != null;
         ViewModelFactory factory = InjectorUtils.provideViewModelFactory(activity);
-        TmdbMoviesViewModel viewModel = ViewModelProviders.of(activity, factory).get(TmdbMoviesViewModel.class);
+        TmdbMoviesViewModel viewModel = ViewModelProviders
+                .of(activity, factory)
+                .get(TmdbMoviesViewModel.class);
 
-        // Get sort by action sent from the hosting activity (MainActivity).
+        // Update current movies filter.
         Bundle bundle = getArguments();
-        if (bundle != null) viewModel.setSortMoviesBy(bundle.getInt(ACTION_ID_ARG));
+        if (bundle != null) {
+            viewModel.updateCurrentFilter(bundle.getInt(EXTRA_ACTION_ID));
+        }
 
         // Setup the grid layout manager.
-        final TmdbMoviesAdapter tmdbMoviesAdapter =  new TmdbMoviesAdapter(viewModel);
+        final TmdbMoviesAdapter adapter =  new TmdbMoviesAdapter(viewModel);
         final GridLayoutManager layoutManager = new GridLayoutManager(
                 activity, getResources().getInteger(R.integer.span_count));
 
@@ -71,7 +71,7 @@ public class TmdbMoviesFragment extends Fragment {
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                switch (tmdbMoviesAdapter.getItemViewType(position)) {
+                switch (adapter.getItemViewType(position)) {
                     case R.layout.item_network_state:
                         return layoutManager.getSpanCount();
                     default:
@@ -82,15 +82,15 @@ public class TmdbMoviesFragment extends Fragment {
 
         // Setup recycler view.
         RecyclerView recyclerView = activity.findViewById(R.id.rv_movie_list);
-        recyclerView.setAdapter(tmdbMoviesAdapter);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(activity, R.dimen.item_offset));
 
         // Observe paged list data.
-        viewModel.getPagedListData().observe(getViewLifecycleOwner(), tmdbMoviesAdapter::submitList);
+        viewModel.getPagedData().observe(getViewLifecycleOwner(), adapter::submitList);
 
         // Observe network state.
-        viewModel.getNetworkState().observe(getViewLifecycleOwner(), tmdbMoviesAdapter::setNetworkState);
+        viewModel.getNetworkState().observe(getViewLifecycleOwner(), adapter::setNetworkState);
 
         // Observe current toolbar title.
         viewModel.getCurrentTitle().observe(getViewLifecycleOwner(), activity.getSupportActionBar()::setTitle);

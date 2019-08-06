@@ -27,27 +27,27 @@ import com.ang.acb.popularmovies.data.vo.Resource;
  */
 public class PagedMoviesResult {
 
-    private MutableLiveData<PagedMovieDataSource> sourceLiveData;
-    private LiveData<PagedList<Movie>> data;
-    private LiveData<Resource> resource;
+    private MutableLiveData<PagedMovieDataSource> pagedDataSource;
+    private LiveData<PagedList<Movie>> pagedData;
+    private LiveData<Resource> networkState;
 
-    public PagedMoviesResult(MutableLiveData<PagedMovieDataSource> sourceLiveData,
-                             LiveData<PagedList<Movie>> data,
-                             LiveData<Resource> resource) {
-        this.sourceLiveData = sourceLiveData;
-        this.data = data;
-        this.resource = resource;
+    public PagedMoviesResult(MutableLiveData<PagedMovieDataSource> pagedDataSource,
+                             LiveData<PagedList<Movie>> pagedData,
+                             LiveData<Resource> networkState) {
+        this.pagedDataSource = pagedDataSource;
+        this.pagedData = pagedData;
+        this.networkState = networkState;
     }
 
-    public MutableLiveData<PagedMovieDataSource> getSourceLiveData() {
-        return sourceLiveData;
+    public MutableLiveData<PagedMovieDataSource> getPagedDataSource() {
+        return pagedDataSource;
     }
 
-    public LiveData<PagedList<Movie>> getData() {
-        return data;
+    public LiveData<PagedList<Movie>> getPagedData() {
+        return pagedData;
     }
 
-    public LiveData<Resource> getResource() {
-        return resource;
+    public LiveData<Resource> getNetworkState() {
+        return networkState;
     }
 }

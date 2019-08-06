@@ -25,19 +25,19 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
     private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR =
-            new DiffUtil.ItemCallback<Movie>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-                    // The ID property identifies when items are the same.
-                    return oldItem.getId() == newItem.getId();
-                }
+        new DiffUtil.ItemCallback<Movie>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+                // The ID property identifies when items are the same.
+                return oldItem.getId() == newItem.getId();
+            }
 
-                @Override
-                public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-                    // Note: Don't use the "==" operator here. Either implement and
-                    // use .equals(), or write custom data comparison logic here.
-                    return oldItem.equals(newItem);
-                }
+            @Override
+            public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+                // Note: Don't use the "==" operator here. Either implement and
+                // use .equals(), or write custom data comparison logic here.
+                return oldItem.equals(newItem);
+            }
     };
 
     private TmdbMoviesViewModel viewModel;

@@ -38,8 +38,8 @@ public class NetworkStateItemViewHolder extends RecyclerView.ViewHolder {
         return new NetworkStateItemViewHolder(binding, viewModel);
     }
 
-    public void bindTo(Resource resource) {
-        binding.setResource(resource);
+    public void bindTo(Resource networkState) {
+        binding.setResource(networkState);
 
         // Note: when a variable or observable object changes, the binding is scheduled
         // to change before the next frame. There are times, however, when binding must

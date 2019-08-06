@@ -113,23 +113,17 @@ public class MovieRepository implements MovieDataSource {
 
     @Override
     public void markAsFavorite(final Movie movie) {
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Timber.d("Adding movie to favorites");
-                localDataSource.markAsFavorite(movie);
-            }
+        appExecutors.diskIO().execute(() -> {
+            Timber.d("Adding movie to favorites");
+            localDataSource.markAsFavorite(movie);
         });
     }
 
     @Override
     public void markAsNotFavorite(final Movie movie) {
-        appExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                Timber.d("Removing movie from favorites");
-                localDataSource.markAsNotFavorite(movie);
-            }
+        appExecutors.diskIO().execute(() -> {
+            Timber.d("Removing movie from favorites");
+            localDataSource.markAsNotFavorite(movie);
         });
     }
 

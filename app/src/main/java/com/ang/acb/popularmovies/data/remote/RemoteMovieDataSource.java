@@ -47,7 +47,7 @@ public class RemoteMovieDataSource {
 
 
     public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
-        // Create the data source factory.
+        // Create the paged data source factory.
         PagedMovieDataSourceFactory sourceFactory =  new PagedMovieDataSourceFactory(
                 apiService,
                 sortBy,
@@ -59,8 +59,8 @@ public class RemoteMovieDataSource {
                 .setPageSize(PAGE_SIZE)
                 .build();
 
-        // Get the paged result.
-        LiveData<PagedList<Movie>> moviesPagedList = new LivePagedListBuilder<>(sourceFactory, config)
+        // Get the paged data.
+        LiveData<PagedList<Movie>> pagedData = new LivePagedListBuilder<>(sourceFactory, config)
                 // Provide custom executor for network requests, otherwise it will default
                 // to Arch Components' IO pool which is also used for disk access.
                 .setFetchExecutor(appExecutors.networkIO())
@@ -68,18 +68,13 @@ public class RemoteMovieDataSource {
 
         // Get the network state.
         LiveData<Resource> networkState = Transformations.switchMap(
-                sourceFactory.getSourceLiveData(),
-                new Function<PagedMovieDataSource, LiveData<Resource>>() {
-                    @Override
-                    public LiveData<Resource> apply(PagedMovieDataSource dataSource) {
-                        return dataSource.getNetworkState();
-                    }
-                });
+                sourceFactory.getPagedDataSource(),
+                PagedMovieDataSource::getNetworkState);
 
-        // Expose the paged list result and network status to the view model.
+        // Expose the paged data and network status to the view model.
         return new PagedMoviesResult(
-                sourceFactory.getSourceLiveData(),
-                moviesPagedList,
+                sourceFactory.getPagedDataSource(),
+                pagedData,
                 networkState);
     }
 }

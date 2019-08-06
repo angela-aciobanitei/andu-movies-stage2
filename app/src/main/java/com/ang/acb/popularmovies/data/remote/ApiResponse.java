@@ -27,10 +27,10 @@ public class ApiResponse<T> {
     public final Throwable error;
 
 
-    public ApiResponse(@Nullable Throwable error) {
+    public ApiResponse(@Nullable Throwable throwable) {
         code = 500;
         body = null;
-        this.error = error;
+        error = throwable;
     }
 
     public ApiResponse(Response<T> response) {

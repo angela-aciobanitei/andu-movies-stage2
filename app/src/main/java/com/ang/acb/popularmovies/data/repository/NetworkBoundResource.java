@@ -33,27 +33,21 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     @MainThread
     public NetworkBoundResource(AppExecutors appExecutors) {
         this.appExecutors = appExecutors;
+
         // Send loading state to the UI.
-        result.setValue(Resource.<ResultType>loading(null));
+        result.setValue(Resource.loading(null));
+
         // Get the cached data from the database.
         final LiveData<ResultType> dbSource = loadFromDb();
+
         // Start observing the database for the resource.
-        result.addSource(dbSource, new Observer<ResultType>() {
-            @Override
-            public void onChanged(ResultType data) {
-                result.removeSource(dbSource);
-                // Decide whether to fetch potentially updated data from the network.
-                // Note: only fetch fresh data if it doesn't exist in database.
-                if (shouldFetch(data)) {
-                    fetchFromNetwork(dbSource);
-                } else {
-                    result.addSource(dbSource, new Observer<ResultType>() {
-                        @Override
-                        public void onChanged(ResultType newData) {
-                            setValue(Resource.success(newData));
-                        }
-                    });
-                }
+        result.addSource(dbSource, data -> {
+            result.removeSource(dbSource);
+            if (shouldFetch(data)) {
+                fetchFromNetwork(dbSource);
+            } else {
+                result.addSource(dbSource, newData ->
+                        setValue(Resource.success(newData)));
             }
         });
     }
@@ -70,70 +64,40 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
      */
     private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
         // Create the API call to load data from themoviedb.org.
-        // Note the use of the ApiResponse class - a simple wrapper around the
-        // Retrofit2.Call class that converts responses to instances of LiveData.
         final LiveData<ApiResponse<RequestType>> apiResponse = createCall();
 
         // Re-attach dbSource as a new source, it will dispatch its latest value quickly.
-        result.addSource(dbSource, new Observer<ResultType>() {
-            @Override
-            public void onChanged(ResultType newData) {
-                setValue(Resource.loading(newData));
-            }
-        });
+        result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));
 
         // Start observing the API response.
-        result.addSource(apiResponse, new Observer<ApiResponse<RequestType>>() {
-            @Override
-            public void onChanged(final ApiResponse<RequestType> response) {
-                result.removeSource(apiResponse);
-                result.removeSource(dbSource);
-                // If the network call completes successfully, save the response
-                // into the database and re-initialize the stream.
-                if (response.isSuccessful() && response.body != null) {
-                    appExecutors.diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            saveCallResult(response.body);
-                            appExecutors.mainThread().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // We specially request new live data, otherwise we will
-                                    // get the immediately last cached value, which may not
-                                    // be updated with latest results received from network.
-                                    result.addSource(loadFromDb(), new Observer<ResultType>() {
-                                        @Override
-                                        public void onChanged(ResultType newData) {
-                                            setValue(Resource.success(newData));
-                                        }
-                                    });
-                                }
-                            });
-                        }
+        result.addSource(apiResponse, response -> {
+            result.removeSource(apiResponse);
+            result.removeSource(dbSource);
+            // If the network call completes successfully, save the response
+            // into the database and re-initialize the stream.
+            if (response.isSuccessful() && response.body != null) {
+                appExecutors.diskIO().execute(() -> {
+                    saveCallResult(response.body);
+                    appExecutors.mainThread().execute(() -> {
+                        // We specially request new live data, otherwise we will
+                        // get the immediately last cached value, which may not
+                        // be updated with latest results received from network.
+                        result.addSource(loadFromDb(), newData ->
+                                setValue(Resource.success(newData)));
                     });
-                // If the response is empty, reload from disk whatever we had.
-                } else if(response.isSuccessful() && response.body == null) {
-                    appExecutors.mainThread().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            result.addSource(loadFromDb(), new Observer<ResultType>() {
-                                @Override
-                                public void onChanged(ResultType newData) {
-                                    setValue(Resource.success(newData));
-                                }
-                            });
-                        }
-                    });
-                // If network request fails, dispatch a failure directly.
-                } else {
-                    onFetchFailed();
-                    result.addSource(dbSource, new Observer<ResultType>() {
-                        @Override
-                        public void onChanged(ResultType newData) {
-                            setValue(Resource.error(response.getError().getMessage(), newData));
-                        }
-                    });
-                }
+                });
+            }
+            // If the response is empty, reload from disk whatever we had.
+            else if(response.isSuccessful() && response.body == null) {
+                appExecutors.mainThread().execute(() ->
+                        result.addSource(loadFromDb(),
+                        newData -> setValue(Resource.success(newData))));
+            }
+            // If network request fails, dispatch a failure directly.
+            else {
+                onFetchFailed();
+                result.addSource(dbSource, newData ->
+                        setValue(Resource.error(response.getError().getMessage(), newData)));
             }
         });
     }

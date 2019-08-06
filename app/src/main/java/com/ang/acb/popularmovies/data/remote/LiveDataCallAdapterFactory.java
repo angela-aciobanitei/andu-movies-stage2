@@ -10,8 +10,8 @@ import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
 
 /**
- * A factory class for creating a Retrofit call adapter
- * that converts the Call into a LiveData of ApiResponse.
+ * A factory class for creating a Retrofit call adapter that
+ * converts the Retrofit2.Call into a LiveData of ApiResponse.
  *
  * See: https://github.com/googlesamples/android-architecture-components/blob/master/GithubBrowserSample
  */
@@ -25,10 +25,10 @@ public class LiveDataCallAdapterFactory extends CallAdapter.Factory {
         Type observableType = getParameterUpperBound(0, (ParameterizedType) returnType);
         Class<?> rawObservableType = getRawType(observableType);
         if (rawObservableType != ApiResponse.class) {
-            throw new IllegalArgumentException("type must be a resource");
+            throw new IllegalArgumentException("Type must be a resource");
         }
         if (! (observableType instanceof ParameterizedType)) {
-            throw new IllegalArgumentException("resource must be parameterized");
+            throw new IllegalArgumentException("Resource must be parameterized");
         }
         Type bodyType = getParameterUpperBound(0, (ParameterizedType) observableType);
         return new LiveDataCallAdapter<>(bodyType);

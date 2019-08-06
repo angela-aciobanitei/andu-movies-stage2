@@ -166,15 +166,14 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_details, menu);
-        tintMenuIcon(this, menu.findItem(R.id.action_share), android.R.color.white);
 
         MenuItem favoriteItem = menu.findItem(R.id.action_add_remove_favorite);
         if (viewModel.isFavorite()) {
             favoriteItem.setIcon(R.drawable.ic_favorite_black_24dp)
-                    .setTitle(R.string.action_remove_from_favorites);
+                        .setTitle(R.string.action_remove_from_favorites);
         } else {
             favoriteItem.setIcon(R.drawable.ic_favorite_border_black_24dp)
-                    .setTitle(R.string.action_add_to_favorites);
+                        .setTitle(R.string.action_add_to_favorites);
         }
         tintMenuIcon(this, favoriteItem, android.R.color.white);
 
@@ -183,38 +182,12 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_share: {
-                shareTrailer();
-                return true;
-            }
-            case R.id.action_add_remove_favorite: {
-                viewModel.onFavoriteClicked();
-                invalidateOptionsMenu();
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add_remove_favorite) {
+            viewModel.onFavoriteClicked();
+            invalidateOptionsMenu();
+            return true;
         }
-    }
-
-    private void shareTrailer() {
-        MovieDetails movieDetails = Objects.requireNonNull(
-                viewModel.getMovieDetailsLiveData().getValue()).getData();
-        Intent shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setType("text/plain")
-                .setSubject(movieDetails.movie.getTitle() + " movie trailer")
-                .setText("Check out " + movieDetails.movie.getTitle() + " movie trailer at " +
-                        Uri.parse(Constants.YOUTUBE_WEB_BASE_URL + movieDetails.trailers.get(0).getKey()))
-                .createChooserIntent();
-
-        int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_MULTIPLE_TASK;
-        if (Build.VERSION.SDK_INT >= 21) flags |= Intent.FLAG_ACTIVITY_NEW_DOCUMENT;
-
-        shareIntent.addFlags(flags);
-        if (shareIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(shareIntent);
-        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void closeOnError() {

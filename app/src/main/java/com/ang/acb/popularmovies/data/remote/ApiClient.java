@@ -46,6 +46,10 @@ public class ApiClient {
                 // Gson is a Java serialization/deserialization library to convert
                 // Java Objects into JSON and back.
                 .addConverterFactory(GsonConverterFactory.create())
+                // Add a call adapter factory for supporting service method
+                // return types other than Retrofit2.Call. We will use a custom
+                // Retrofit adapter that converts the Retrofit2.Call into a
+                // LiveData of ApiResponse.
                 .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .client(client)
                 .build();

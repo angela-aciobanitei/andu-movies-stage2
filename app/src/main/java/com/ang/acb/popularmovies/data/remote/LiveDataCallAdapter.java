@@ -11,7 +11,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * A Retrofit adapter that converts the Call into a LiveData of ApiResponse.
+ * A Retrofit adapter that converts the Retrofit2.Call into a LiveData of ApiResponse.
  *
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
  */

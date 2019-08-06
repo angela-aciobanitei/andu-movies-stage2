@@ -26,16 +26,16 @@ import retrofit2.Response;
  */
 public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
-    public interface RetryCallback {
-        void invoke();
-    }
-
-    private RetryCallback retryCallback = null;
-    private MutableLiveData<Resource> networkState = new MutableLiveData<>();
-
     private final ApiService movieService;
     private final MoviesFilter sortBy;
     private final Executor networkExecutor;
+
+    private MutableLiveData<Resource> networkState = new MutableLiveData<>();
+    private RetryCallback retryCallback = null;
+
+    public interface RetryCallback {
+        void invoke();
+    }
 
     private static final int FIRST_PAGE_KEY = 1;
 
@@ -84,9 +84,8 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             // Triggered by a refresh, we better execute sync.
             // Note: execute() invokes the request immediately and
             // blocks until the response can be processed or is in error.
-            Response<MoviesResponse> response = request.execute();
-            MoviesResponse data = response.body();
-            List<Movie> movieList = data != null ? data.getResults() : Collections.<Movie>emptyList();
+            MoviesResponse response = request.execute().body();
+            List<Movie> movieList = response != null ? response.getResults() : Collections.emptyList();
             // No need to retry data loading.
             retryCallback = null;
             // Send loading state to the UI.
@@ -95,18 +94,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             callback.onResult(movieList, null, FIRST_PAGE_KEY + 1);
         } catch (IOException e) {
             // Retry data loading.
-            retryCallback = new RetryCallback() {
-                @Override
-                public void invoke() {
-                    networkExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadInitial(params, callback);
-                        }
-                    });
-
-                }
-            };
+            retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));
             // Publish error.
             networkState.postValue(Resource.error(e.getMessage(), null));
         }
@@ -149,7 +137,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
                     MoviesResponse data = response.body();
-                    List<Movie> movieList = data != null ? data.getResults() : Collections.<Movie>emptyList();
+                    List<Movie> movieList = data != null ? data.getResults() : Collections.emptyList();
                     // No need to retry data loading.
                     retryCallback = null;
                     // Pass the loading state to the UI.
@@ -158,12 +146,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                     callback.onResult(movieList, params.key + 1);
                 } else {
                     // Retry data loading.
-                    retryCallback = new RetryCallback() {
-                        @Override
-                        public void invoke() {
-                            loadAfter(params, callback);
-                        }
-                    };
+                    retryCallback = () -> loadAfter(params, callback);
                     // Publish error.
                     networkState.postValue(Resource.error(
                             "error code: " + response.code(), null));
@@ -173,17 +156,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable throwable) {
                 // Retry data loading.
-                retryCallback = new RetryCallback() {
-                    @Override
-                    public void invoke() {
-                        networkExecutor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadAfter(params, callback);
-                            }
-                        });
-                    }
-                };
+                retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 // Publish error.
                 networkState.postValue(Resource.error(
                         throwable != null ? throwable.getMessage() : "Unknown error", null));

@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.ui.movielist;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -20,73 +19,73 @@ import com.ang.acb.popularmovies.data.vo.Resource;
  */
 public class TmdbMoviesViewModel extends ViewModel {
 
-    private LiveData<PagedMoviesResult> pagedMoviesResult;
-    private LiveData<PagedList<Movie>> pagedListData;
+    private LiveData<PagedMoviesResult> pagedResult;
+    private LiveData<PagedList<Movie>> pagedData;
     private LiveData<Resource> networkState;
     private MutableLiveData<Integer> currentTitle = new MutableLiveData<>();
-    private MutableLiveData<MoviesFilter> sortBy = new MutableLiveData<>();
+    private MutableLiveData<MoviesFilter> currentFilter = new MutableLiveData<>();
 
     public TmdbMoviesViewModel(final MovieRepository movieRepository) {
         // By default show popular movies.
-        sortBy.setValue(MoviesFilter.POPULAR);
+        currentFilter.setValue(MoviesFilter.POPULAR);
         currentTitle.setValue(R.string.action_show_popular);
 
-        pagedMoviesResult = Transformations.map(sortBy, movieRepository::loadMoviesFilteredBy);
-        pagedListData = Transformations.switchMap(pagedMoviesResult,PagedMoviesResult::getData);
-        networkState = Transformations.switchMap(pagedMoviesResult, PagedMoviesResult::getResource);
+        pagedResult = Transformations.map(currentFilter, movieRepository::loadMoviesFilteredBy);
+        pagedData = Transformations.switchMap(pagedResult,PagedMoviesResult::getPagedData);
+        networkState = Transformations.switchMap(pagedResult, PagedMoviesResult::getNetworkState);
     }
 
-    public LiveData<PagedList<Movie>> getPagedListData() {
-        return pagedListData;
+    public LiveData<PagedList<Movie>> getPagedData() {
+        return pagedData;
     }
 
     public LiveData<Resource> getNetworkState() {
         return networkState;
     }
 
-    public MoviesFilter getCurrentSorting() {
-        return sortBy.getValue();
-    }
-
     public LiveData<Integer> getCurrentTitle() {
         return currentTitle;
     }
 
-    public void setSortMoviesBy(int id) {
+    public MoviesFilter getCurrentFilter() {
+        return currentFilter.getValue();
+    }
+
+    public void updateCurrentFilter(int actionId) {
         MoviesFilter filterType;
         int title;
-        switch (id) {
+        switch (actionId) {
             case R.id.action_show_popular: {
                 // If already selected no need to request the API.
-                if (sortBy.getValue() == MoviesFilter.POPULAR) return;
+                if (currentFilter.getValue() == MoviesFilter.POPULAR) return;
                 filterType = MoviesFilter.POPULAR;
                 title = R.string.action_show_popular;
                 break;
             }
             case R.id.action_show_top_rated: {
-                if (sortBy.getValue() == MoviesFilter.TOP_RATED) return;
+                if (currentFilter.getValue() == MoviesFilter.TOP_RATED) return;
                 filterType = MoviesFilter.TOP_RATED;
                 title = R.string.action_show_top_rated;
                 break;
             }
             case R.id.action_show_now_playing: {
-                if (sortBy.getValue() == MoviesFilter.NOW_PLAYING) return;
+                if (currentFilter.getValue() == MoviesFilter.NOW_PLAYING) return;
                 filterType = MoviesFilter.NOW_PLAYING;
                 title = R.string.action_show_now_playing;
                 break;
             }
 
             default:
-                throw new IllegalArgumentException("unknown sorting id");
+                throw new IllegalArgumentException("Unknown action id");
         }
-        sortBy.setValue(filterType);
+        currentFilter.setValue(filterType);
         currentTitle.setValue(title);
     }
 
     // Retry any failed requests.
     public void retry() {
-        pagedMoviesResult.getValue()
-                .getSourceLiveData().getValue()
+        pagedResult.getValue()
+                .getPagedDataSource().getValue()
                 .getRetryCallback().invoke();
     }
 }

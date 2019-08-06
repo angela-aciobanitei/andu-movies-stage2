@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
  */
 public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 
-    private MutableLiveData<PagedMovieDataSource> sourceLiveData = new MutableLiveData<>();
+    private MutableLiveData<PagedMovieDataSource> pagedDataSource = new MutableLiveData<>();
 
     private final ApiService movieService;
     private final MoviesFilter sortBy;
@@ -40,11 +40,11 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
                 movieService,
                 sortBy,
                 networkExecutor);
-        sourceLiveData.postValue(movieDataSource);
+        pagedDataSource.postValue(movieDataSource);
         return movieDataSource;
     }
 
-    public MutableLiveData<PagedMovieDataSource> getSourceLiveData() {
-        return sourceLiveData;
+    public MutableLiveData<PagedMovieDataSource> getPagedDataSource() {
+        return pagedDataSource;
     }
 }
