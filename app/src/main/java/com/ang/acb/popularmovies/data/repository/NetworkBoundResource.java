@@ -42,9 +42,8 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             @Override
             public void onChanged(ResultType data) {
                 result.removeSource(dbSource);
-                // When the entry is loaded from the database for the first time,
-                // check whether the result is good enough to be dispatched or
-                // that it should be re-fetched from the network.
+                // Decide whether to fetch potentially updated data from the network.
+                // Note: only fetch fresh data if it doesn't exist in database.
                 if (shouldFetch(data)) {
                     fetchFromNetwork(dbSource);
                 } else {
@@ -89,9 +88,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
             public void onChanged(final ApiResponse<RequestType> response) {
                 result.removeSource(apiResponse);
                 result.removeSource(dbSource);
-                // If the network call completes successfully, save the response into
-                // the database and re-initialize the stream.
-                if (response.isSuccessful()) {
+                // If the network call completes successfully, save the response
+                // into the database and re-initialize the stream.
+                if (response.isSuccessful() && response.body != null) {
                     appExecutors.diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
@@ -99,9 +98,9 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                             appExecutors.mainThread().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    // We specially request a new live data, otherwise we will
-                                    // get immediately last cached value, which may not be
-                                    // updated with latest results received from network.
+                                    // We specially request new live data, otherwise we will
+                                    // get the immediately last cached value, which may not
+                                    // be updated with latest results received from network.
                                     result.addSource(loadFromDb(), new Observer<ResultType>() {
                                         @Override
                                         public void onChanged(ResultType newData) {
@@ -112,7 +111,20 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
                             });
                         }
                     });
-                    // If network request fails, dispatch a failure directly.
+                // If the response is empty, reload from disk whatever we had.
+                } else if(response.isSuccessful() && response.body == null) {
+                    appExecutors.mainThread().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            result.addSource(loadFromDb(), new Observer<ResultType>() {
+                                @Override
+                                public void onChanged(ResultType newData) {
+                                    setValue(Resource.success(newData));
+                                }
+                            });
+                        }
+                    });
+                // If network request fails, dispatch a failure directly.
                 } else {
                     onFetchFailed();
                     result.addSource(dbSource, new Observer<ResultType>() {
@@ -135,8 +147,8 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     @WorkerThread
     protected abstract void saveCallResult(@NonNull RequestType item);
 
-    // Called when the fetch fails. The child class may want to reset components
-    // like rate limiter.
+    // Called when the fetch fails. The child class may want to reset
+    // components like rate limiter.
     @NonNull
     @MainThread
     protected abstract void onFetchFailed();

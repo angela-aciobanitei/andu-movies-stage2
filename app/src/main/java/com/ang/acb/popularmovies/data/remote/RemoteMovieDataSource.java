@@ -22,27 +22,27 @@ public class RemoteMovieDataSource {
     private static final int PAGE_SIZE = 20;
 
     // Prevent direct instantiation.
-    private RemoteMovieDataSource(ApiService movieService,
-                                  AppExecutors executors) {
-        apiService = movieService;
-        appExecutors = executors;
+    private RemoteMovieDataSource(ApiService apiService,
+                                  AppExecutors appExecutors) {
+        this.apiService = apiService;
+        this.appExecutors = appExecutors;
     }
 
     // Returns the single instance of this class, creating it if necessary.
-    public static RemoteMovieDataSource getInstance(ApiService movieService,
-                                                    AppExecutors executors) {
+    public static RemoteMovieDataSource getInstance(ApiService apiService,
+                                                    AppExecutors appExecutors) {
         if (sInstance == null) {
             synchronized (AppExecutors.class) {
                 if (sInstance == null) {
-                    sInstance = new RemoteMovieDataSource(movieService, executors);
+                    sInstance = new RemoteMovieDataSource(apiService, appExecutors);
                 }
             }
         }
         return sInstance;
     }
 
-    public LiveData<ApiResponse<Movie>> loadMovie(final long movieId) {
-        return apiService.getMovieDetails(movieId);
+    public LiveData<ApiResponse<Movie>> loadAllMovieDetails(final long movieId) {
+        return apiService.getAllMovieDetails(movieId);
     }
 
 
@@ -50,8 +50,8 @@ public class RemoteMovieDataSource {
         // Create the data source factory.
         PagedMovieDataSourceFactory sourceFactory =  new PagedMovieDataSourceFactory(
                 apiService,
-                appExecutors.networkIO(),
-                sortBy);
+                sortBy,
+                appExecutors.networkIO());
 
         // Create the Paging configuration.
         PagedList.Config config = new PagedList.Config.Builder()
@@ -68,19 +68,18 @@ public class RemoteMovieDataSource {
 
         // Get the network state.
         LiveData<Resource> networkState = Transformations.switchMap(
-                sourceFactory.sourceLiveData,
+                sourceFactory.getSourceLiveData(),
                 new Function<PagedMovieDataSource, LiveData<Resource>>() {
                     @Override
-                    public LiveData<Resource> apply(PagedMovieDataSource input) {
-                        return input.networkState;
+                    public LiveData<Resource> apply(PagedMovieDataSource dataSource) {
+                        return dataSource.getNetworkState();
                     }
                 });
 
         // Expose the paged list result and network status to the view model.
         return new PagedMoviesResult(
+                sourceFactory.getSourceLiveData(),
                 moviesPagedList,
-                networkState,
-                sourceFactory.sourceLiveData
-        );
+                networkState);
     }
 }

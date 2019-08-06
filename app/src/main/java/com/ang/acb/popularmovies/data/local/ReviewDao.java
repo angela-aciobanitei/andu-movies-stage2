@@ -19,5 +19,4 @@ public interface ReviewDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertReviews(List<Review> reviews);
-
 }

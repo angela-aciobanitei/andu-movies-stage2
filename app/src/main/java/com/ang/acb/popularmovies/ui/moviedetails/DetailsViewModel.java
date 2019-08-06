@@ -35,14 +35,14 @@ public class DetailsViewModel extends ViewModel {
     public void init(long movieId) {
         // Load movie details only when the activity is created for the first time.
         if (result != null) return;
-        Timber.d("Initializing details view model");
+        Timber.d("Initializing the movie details view model");
 
         result = Transformations.switchMap(
                 movieIdLiveData,
                 new Function<Long, LiveData<Resource<MovieDetails>>>() {
                     @Override
                     public LiveData<Resource<MovieDetails>> apply(Long movieId) {
-                        return repository.loadMovie(movieId);
+                        return repository.loadAllMovieDetails(movieId);
                     }
                 });
 

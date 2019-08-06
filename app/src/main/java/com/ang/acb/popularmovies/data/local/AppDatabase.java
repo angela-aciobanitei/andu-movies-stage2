@@ -12,7 +12,6 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.data.vo.Trailer;
 
-
 /**
  * The Room database for this app.
  *
@@ -21,12 +20,12 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
  */
 @Database(
         entities = {Movie.class, Trailer.class, Cast.class, Review.class},
-        version = 2,
+        version = 3,
         exportSchema = false)
 @TypeConverters(GenreConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String DATABASE_NAME = "movies.db";
+    private static final String DATABASE_NAME = "Movies.db";
     private static final Object sLock = new Object();
     private static AppDatabase sInstance;
 
@@ -51,6 +50,5 @@ public abstract class AppDatabase extends RoomDatabase {
             return sInstance;
         }
     }
-
 }
 

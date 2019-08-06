@@ -12,7 +12,6 @@ import com.ang.acb.popularmovies.data.vo.MovieDetails;
 
 import java.util.List;
 
-
 /**
  * Interface for database access on Movie related operations.
  *
@@ -27,14 +26,14 @@ public interface MovieDao {
 
     @Transaction
     @Query("SELECT * FROM movie WHERE movie.id= :movieId")
-    LiveData<MovieDetails> getMovieDetails(long movieId);
+    LiveData<MovieDetails> getAllMovieDetails(long movieId);
 
     @Query("SELECT * FROM movie WHERE is_favorite = 1")
     LiveData<List<Movie>> getAllFavoriteMovies();
 
     @Query("UPDATE movie SET is_favorite = 1 WHERE id = :movieId")
-    int markAsFavorite(long movieId);
+    void markAsFavorite(long movieId);
 
     @Query("UPDATE movie SET is_favorite = 0 WHERE id = :movieId")
-    int markAsNotFavorite(long movieId);
+    void markAsNotFavorite(long movieId);
 }

@@ -21,7 +21,7 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 public class TmdbMoviesViewModel extends ViewModel {
 
     private LiveData<PagedMoviesResult> pagedMoviesResult;
-    private LiveData<PagedList<Movie>> pagedList;
+    private LiveData<PagedList<Movie>> pagedListData;
     private LiveData<Resource> networkState;
     private MutableLiveData<Integer> currentTitle = new MutableLiveData<>();
     private MutableLiveData<MoviesFilter> sortBy = new MutableLiveData<>();
@@ -40,12 +40,12 @@ public class TmdbMoviesViewModel extends ViewModel {
                     }
                 });
 
-        pagedList = Transformations.switchMap(
+        pagedListData = Transformations.switchMap(
                 pagedMoviesResult,
                 new Function<PagedMoviesResult, LiveData<PagedList<Movie>>>() {
                     @Override
-                    public LiveData<PagedList<Movie>> apply(PagedMoviesResult input) {
-                        return input.data;
+                    public LiveData<PagedList<Movie>> apply(PagedMoviesResult result) {
+                        return result.getData();
                     }
                 });
 
@@ -53,14 +53,14 @@ public class TmdbMoviesViewModel extends ViewModel {
                 pagedMoviesResult,
                 new Function<PagedMoviesResult, LiveData<Resource>>() {
                     @Override
-                    public LiveData<Resource> apply(PagedMoviesResult input) {
-                        return input.resource;
+                    public LiveData<Resource> apply(PagedMoviesResult result) {
+                        return result.getResource();
                     }
                 });
     }
 
-    public LiveData<PagedList<Movie>> getPagedList() {
-        return pagedList;
+    public LiveData<PagedList<Movie>> getPagedListData() {
+        return pagedListData;
     }
 
     public LiveData<Resource> getNetworkState() {
@@ -108,6 +108,8 @@ public class TmdbMoviesViewModel extends ViewModel {
 
     // Retry any failed requests.
     public void retry() {
-        pagedMoviesResult.getValue().sourceLiveData.getValue().retryCallback.invoke();
+        pagedMoviesResult.getValue()
+                .getSourceLiveData().getValue()
+                .getRetryCallback().invoke();
     }
 }

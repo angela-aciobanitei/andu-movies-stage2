@@ -20,22 +20,34 @@ import com.ang.acb.popularmovies.data.vo.Resource;
  *
  *  To show the loading indicator while the data source is retrieving data
  *  we need to expose the „latest loading status” of „the latest data source”
- *  that was created by the factory. The data source can expose status via
- *  LiveData. The factory can expose data source via LiveData.
+ *  that was created by the factory. The factory can expose data source via
+ *  LiveData. The data source can expose status via  LiveData.
  *
  *  See: https://www.slideshare.net/GaborVaradi3/paging-like-a-pro
  */
 public class PagedMoviesResult {
 
-    public LiveData<PagedList<Movie>> data;
-    public LiveData<Resource> resource;
-    public MutableLiveData<PagedMovieDataSource> sourceLiveData;
+    private MutableLiveData<PagedMovieDataSource> sourceLiveData;
+    private LiveData<PagedList<Movie>> data;
+    private LiveData<Resource> resource;
 
-    public PagedMoviesResult(LiveData<PagedList<Movie>> data,
-                             LiveData<Resource> resource,
-                             MutableLiveData<PagedMovieDataSource> sourceLiveData) {
+    public PagedMoviesResult(MutableLiveData<PagedMovieDataSource> sourceLiveData,
+                             LiveData<PagedList<Movie>> data,
+                             LiveData<Resource> resource) {
+        this.sourceLiveData = sourceLiveData;
         this.data = data;
         this.resource = resource;
-        this.sourceLiveData = sourceLiveData;
+    }
+
+    public MutableLiveData<PagedMovieDataSource> getSourceLiveData() {
+        return sourceLiveData;
+    }
+
+    public LiveData<PagedList<Movie>> getData() {
+        return data;
+    }
+
+    public LiveData<Resource> getResource() {
+        return resource;
     }
 }

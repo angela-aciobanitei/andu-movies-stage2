@@ -22,6 +22,9 @@ import com.ang.acb.popularmovies.utils.ViewModelFactory;
 
 import java.util.List;
 
+/**
+ * The UI Controller for displaying the list of favorite movies.
+ */
 public class FavoriteMoviesFragment extends Fragment {
 
     private FragmentFavoriteMoviesBinding binding;

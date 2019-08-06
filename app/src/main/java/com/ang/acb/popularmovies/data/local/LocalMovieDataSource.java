@@ -52,8 +52,8 @@ public class LocalMovieDataSource {
         for (Cast cast : castList) {
             cast.setMovieId(movieId);
         }
-        database.castDao().insertCast(castList);
-        Timber.d("%s cast inserted into the database.", castList.size());
+        database.castDao().insertCastList(castList);
+        Timber.d("%s cast members inserted into the database.", castList.size());
     }
 
     private void saveTrailers(List<Trailer> trailers, long movieId) {
@@ -72,9 +72,9 @@ public class LocalMovieDataSource {
         Timber.d("%s reviews inserted into the database.", reviews.size());
     }
 
-    public LiveData<MovieDetails> getMovieDetails(long movieId) {
+    public LiveData<MovieDetails> getAllMovieDetails(long movieId) {
         Timber.d("Loading movie details.");
-        return database.movieDao().getMovieDetails(movieId);
+        return database.movieDao().getAllMovieDetails(movieId);
     }
 
     public LiveData<List<Movie>> getAllFavoriteMovies() {

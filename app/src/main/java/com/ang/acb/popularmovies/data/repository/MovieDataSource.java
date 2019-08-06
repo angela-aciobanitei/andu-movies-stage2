@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface MovieDataSource {
 
-    LiveData<Resource<MovieDetails>> loadMovie(long movieId);
+    LiveData<Resource<MovieDetails>> loadAllMovieDetails(long movieId);
 
     PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy);
 

@@ -60,6 +60,4 @@ public class ApiClient {
             return sInstance;
         }
     }
-
-
 }

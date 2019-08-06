@@ -30,7 +30,6 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
 
     TmdbMoviesAdapter(TmdbMoviesViewModel viewModel) {
         super(MOVIE_COMPARATOR);
-
         this.viewModel = viewModel;
     }
 

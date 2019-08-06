@@ -19,5 +19,4 @@ public interface TrailerDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertTrailers(List<Trailer> trailers);
-
 }

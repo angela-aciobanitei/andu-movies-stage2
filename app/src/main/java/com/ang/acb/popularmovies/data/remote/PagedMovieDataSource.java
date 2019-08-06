@@ -30,28 +30,35 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         void invoke();
     }
 
-    public RetryCallback retryCallback = null;
-    public MutableLiveData<Resource> networkState = new MutableLiveData<>();
+    private RetryCallback retryCallback = null;
+    private MutableLiveData<Resource> networkState = new MutableLiveData<>();
 
     private final ApiService movieService;
-    private final Executor networkExecutor;
     private final MoviesFilter sortBy;
+    private final Executor networkExecutor;
 
     private static final int FIRST_PAGE_KEY = 1;
 
-
     public PagedMovieDataSource(ApiService movieService,
-                                Executor networkExecutor,
-                                MoviesFilter sortBy) {
+                                MoviesFilter sortBy,
+                                Executor networkExecutor) {
         this.movieService = movieService;
-        this.networkExecutor = networkExecutor;
         this.sortBy = sortBy;
+        this.networkExecutor = networkExecutor;
+    }
+
+    public RetryCallback getRetryCallback() {
+        return retryCallback;
+    }
+
+    public MutableLiveData<Resource> getNetworkState() {
+        return networkState;
     }
 
     /**
-     * This method is responsible to load the data initially when app screen is
-     * launched for the first time. We are fetching the first page data from the
-     * API and passing it via the callback method to the UI.
+     * This method is responsible for loading the data initially when app is
+     * launched for the first time. We are fetching the first page data from
+     * the API and passing it via the callback method to the UI.
      *
      * @param params Parameters for initial load, including requested load size.
      * @param callback Callback that receives initial load data
@@ -122,6 +129,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     @Override
     public void loadAfter(@NonNull final LoadParams<Integer> params,
                           @NonNull final LoadCallback<Integer, Movie> callback) {
+        // Send loading state to the UI.
         networkState.postValue(Resource.loading(null));
 
         // Fetch the next page data from the API.
@@ -134,6 +142,8 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             request = movieService.getNowPlayingMovies(params.key);
         }
 
+        // Note: unlike execute(), enqueue() schedules the request
+        // to be executed at some point in the future.
         request.enqueue(new Callback<MoviesResponse>() {
             @Override
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
@@ -162,7 +172,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable throwable) {
-                // Retry data loading
+                // Retry data loading.
                 retryCallback = new RetryCallback() {
                     @Override
                     public void invoke() {
@@ -174,7 +184,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
                         });
                     }
                 };
-                // Publish failure
+                // Publish error.
                 networkState.postValue(Resource.error(
                         throwable != null ? throwable.getMessage() : "Unknown error", null));
             }

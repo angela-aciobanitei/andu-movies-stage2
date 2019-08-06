@@ -21,6 +21,9 @@ import com.ang.acb.popularmovies.utils.GridSpacingItemDecoration;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
 
+/**
+ * The UI Controller for displaying a list of movies loaded from tmdb.org.
+ */
 public class TmdbMoviesFragment extends Fragment {
 
     private static final String ACTION_ID_ARG = "ACTION_ID_ARG" ;
@@ -48,6 +51,7 @@ public class TmdbMoviesFragment extends Fragment {
 
         // Setup view model.
         final MainActivity activity = (MainActivity) getActivity();
+        assert activity != null;
         ViewModelFactory factory = InjectorUtils.provideViewModelFactory(activity);
         TmdbMoviesViewModel viewModel = ViewModelProviders.of(activity, factory).get(TmdbMoviesViewModel.class);
 
@@ -82,26 +86,15 @@ public class TmdbMoviesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(activity, R.dimen.item_offset));
 
-        // Observe paged list.
-        viewModel.getPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<Movie>>() {
-            @Override
-            public void onChanged(PagedList<Movie> movies) {
-                tmdbMoviesAdapter.submitList(movies);
-            }
-        });
+        // Observe paged list data.
+        viewModel.getPagedListData().observe(getViewLifecycleOwner(), tmdbMoviesAdapter::submitList);
 
         // Observe network state.
-        viewModel.getNetworkState().observe(getViewLifecycleOwner(), new Observer<Resource>() {
-            @Override
-            public void onChanged(Resource resource) {
-                tmdbMoviesAdapter.setNetworkState(resource);
-            }
-        });
+        viewModel.getNetworkState().observe(getViewLifecycleOwner(), tmdbMoviesAdapter::setNetworkState);
 
         // Observe current toolbar title.
-        viewModel.getCurrentTitle().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer title) {
+        viewModel.getCurrentTitle().observe(this, title -> {
+            if (activity.getSupportActionBar() != null) {
                 activity.getSupportActionBar().setTitle(title);
             }
         });

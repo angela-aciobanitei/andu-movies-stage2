@@ -57,7 +57,7 @@ public class MovieRepository implements MovieDataSource {
     }
 
     @Override
-    public LiveData<Resource<MovieDetails>> loadMovie(final long movieId) {
+    public LiveData<Resource<MovieDetails>> loadAllMovieDetails(final long movieId) {
         // Here we are using the NetworkBoundResource that we've created earlier which
         // can provide a resource backed by both the SQLite database and the network.
         return new NetworkBoundResource<MovieDetails, Movie>(appExecutors) {
@@ -67,7 +67,7 @@ public class MovieRepository implements MovieDataSource {
             protected LiveData<ApiResponse<Movie>> createCall() {
                 // Create the API call to load the movie details.
                 Timber.d("Downloading movie from network");
-                return remoteDataSource.loadMovie(movieId);
+                return remoteDataSource.loadAllMovieDetails(movieId);
             }
 
             @Override
@@ -96,7 +96,7 @@ public class MovieRepository implements MovieDataSource {
             protected LiveData<MovieDetails> loadFromDb() {
                 // Get the cached data from the database.
                 Timber.d("Loading movie from database");
-                return localDataSource.getMovieDetails(movieId);
+                return localDataSource.getAllMovieDetails(movieId);
             }
         }.getAsLiveData();
     }
