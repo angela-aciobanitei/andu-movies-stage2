@@ -1,4 +1,4 @@
-# Udacity's Android Developer Nanodegree Project 2
+# Udacity's Android Developer Nanodegree Project 3
 
 ## Android Features
 
