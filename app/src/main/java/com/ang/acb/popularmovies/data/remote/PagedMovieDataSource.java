@@ -86,7 +86,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             // blocks until the response can be processed or is in error.
             Response<MoviesResponse> response = request.execute();
             MoviesResponse data = response.body();
-            List<Movie> movieList = data != null ? data.getMovies() : Collections.<Movie>emptyList();
+            List<Movie> movieList = data != null ? data.getResults() : Collections.<Movie>emptyList();
             // No need to retry data loading.
             retryCallback = null;
             // Send loading state to the UI.
@@ -149,7 +149,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
                     MoviesResponse data = response.body();
-                    List<Movie> movieList = data != null ? data.getMovies() : Collections.<Movie>emptyList();
+                    List<Movie> movieList = data != null ? data.getResults() : Collections.<Movie>emptyList();
                     // No need to retry data loading.
                     retryCallback = null;
                     // Pass the loading state to the UI.

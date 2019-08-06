@@ -6,11 +6,15 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.data.vo.Trailer;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The Room database for this app.
@@ -20,12 +24,12 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
  */
 @Database(
         entities = {Movie.class, Trailer.class, Cast.class, Review.class},
-        version = 3,
+        version = 1,
         exportSchema = false)
 @TypeConverters(GenreConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
-    private static final String DATABASE_NAME = "Movies.db";
+    private static final String DATABASE_NAME = "movies.db";
     private static final Object sLock = new Object();
     private static AppDatabase sInstance;
 
@@ -35,10 +39,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ReviewDao reviewDao();
 
     private static AppDatabase buildDatabase(final Context context) {
-        return Room.databaseBuilder(
-                context.getApplicationContext(),
-                AppDatabase.class,
-                DATABASE_NAME).build();
+        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, DATABASE_NAME)
+                .build();
     }
 
     // Returns the single instance of this class, creating it if necessary.

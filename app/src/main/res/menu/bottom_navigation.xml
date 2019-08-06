@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_popular"
+        android:id="@+id/action_show_popular"
         android:icon="@drawable/ic_whatshot_black_24dp"
-        android:title="@string/action_popular" />
+        android:title="@string/action_show_popular" />
 
     <item
-        android:id="@+id/action_top_rated"
+        android:id="@+id/action_show_top_rated"
         android:icon="@drawable/ic_thumb_up_black_24dp"
-        android:title="@string/action_top_rated"/>
+        android:title="@string/action_show_top_rated"/>
 
     <item
-        android:id="@+id/action_now_playing"
+        android:id="@+id/action_show_now_playing"
         android:icon="@drawable/ic_airplay_black_24dp"
-        android:title="@string/action_now_playing"/>
+        android:title="@string/action_show_now_playing"/>
 
     <item
-        android:id="@+id/action_favorites"
+        android:id="@+id/action_show_favorites"
         android:icon="@drawable/ic_favorite_black_24dp"
-        android:title="@string/action_favorites"/>
+        android:title="@string/action_show_favorites"/>
 
 </menu>

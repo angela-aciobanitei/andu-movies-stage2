@@ -18,7 +18,6 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
 
     public MovieItemViewHolder(@NonNull ItemMovieBinding binding) {
         super(binding.getRoot());
-
         this.binding = binding;
     }
 
@@ -34,13 +33,10 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
     public void bindTo(final Movie movie) {
         binding.setMovie(movie);
         // Handle movie click events.
-        binding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), DetailsActivity.class);
-                intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID, movie.getId());
-                view.getContext().startActivity(intent);
-            }
+        binding.getRoot().setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), DetailsActivity.class);
+            intent.putExtra(DetailsActivity.EXTRA_MOVIE_ID, movie.getId());
+            view.getContext().startActivity(intent);
         });
 
         // Note: when a variable or observable object changes, the binding is scheduled

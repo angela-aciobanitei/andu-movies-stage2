@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.ui.moviedetails;
 
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.databinding.ItemReviewBinding;
 
+/**
+ * A ViewHolder that works with a DataBinding.
+ */
 public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
 
     private ItemReviewBinding binding;

@@ -20,6 +20,9 @@ import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_TRAILER_THUMBNAI
 import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_TRAILER_THUMBNAIL_HQ;
 import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_WEB_BASE_URL;
 
+/**
+ * A ViewHolder that works with a DataBinding.
+ */
 public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
 
     private ItemTrailerBinding binding;

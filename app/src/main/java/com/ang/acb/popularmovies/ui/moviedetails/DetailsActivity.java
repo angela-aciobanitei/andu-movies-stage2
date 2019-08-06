@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,15 +22,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
-import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
-import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
 import com.ang.acb.popularmovies.utils.Constants;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -68,65 +67,60 @@ public class DetailsActivity extends AppCompatActivity {
         setupReviewsAdapter();
 
         // Observe result.
-        viewModel.getResult().observe(this, new Observer<Resource<MovieDetails>>() {
-            @Override
-            public void onChanged(Resource<MovieDetails> resource) {
-                if (resource.data != null && resource.data.movie != null) {
-                    viewModel.setFavorite(resource.data.movie.isFavorite());
-                    invalidateOptionsMenu();
-                }
-                binding.setResource(resource);
-                binding.setMovieDetails(resource.data);
+        viewModel.getMovieDetailsLiveData().observe(this, resource -> {
+            if (resource.data != null && resource.data.movie != null) {
+                viewModel.setFavorite(resource.data.movie.isFavorite());
+                invalidateOptionsMenu();
             }
+            binding.setResource(resource);
+            binding.setMovieDetails(resource.data);
         });
 
         // Handle retry event in case of network failure.
-        binding.networkState.retryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.retry(movieId);
-            }
-        });
+        binding.networkState.retryButton.setOnClickListener(view -> viewModel.retry(movieId));
 
         // Observe Snackbar messages.
-        viewModel.getSnackbarMessage().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer message) {
-                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
-            }
-        });
+        viewModel.getSnackbarMessage().observe(this, (Observer<Integer>) message ->
+                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show());
     }
 
     private void setupToolbar() {
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
+            // Handle Up navigation
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             handleCollapsedToolbarTitle();
         }
     }
 
+    // Sets the title on the toolbar only when the toolbar is collapsed.
     private void handleCollapsedToolbarTitle() {
-        // Sets the title on the toolbar only if the toolbar is collapsed.
+        // Add an OnOffsetChangedListener to AppBarLayout to determine
+        // when CollapsingToolbarLayout is collapsed or expanded.
+        // See: https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed
+        // See: https://medium.com/@nullthemall/the-power-of-appbarlayout-offset-ecbf8eaa6b5f
         binding.appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = true;
-            int scrollRange = -1;
+            boolean isShown = true;
+            int totalScrollRange = -1;
 
+            // This listener is triggered when vertical offset is changed,
+            // i.e bottom and top are offset. Parameter "verticalOffset" is
+            // always between 0 and appBarLayout.getTotalScrollRange(),
+            // which is the total height of all children that can scroll.
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                // Verify if the toolbar is completely collapsed
-                // and set the movie name as the title.
-                if (scrollRange + verticalOffset == 0) {
-                    binding.collapsingToolbar.setTitle(
-                            viewModel.getResult().getValue().data.movie.getTitle());
-                    isShow = true;
-                } else if (isShow) {
-                    // Display an empty string when toolbar is expanded.
+                if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
+                // If toolbar is completely collapsed, set the movie name as the title.
+                if (totalScrollRange + verticalOffset == 0) {
+                    MovieDetails movieDetails = Objects.requireNonNull(
+                            viewModel.getMovieDetailsLiveData().getValue()).getData();
+                    binding.collapsingToolbar.setTitle(movieDetails.movie.getTitle());
+                    isShown = true;
+                } else if (isShown) {
+                    // When toolbar is expanded, display an empty string.
                     binding.collapsingToolbar.setTitle(" ");
-                    isShow = false;
+                    isShown = false;
                 }
             }
         });
@@ -137,6 +131,7 @@ public class DetailsActivity extends AppCompatActivity {
         rvCast.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.HORIZONTAL, false));
         rvCast.setAdapter(new CastAdapter());
+        // Note: remember to enable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(rvCast, false);
     }
 
@@ -146,6 +141,7 @@ public class DetailsActivity extends AppCompatActivity {
                 this, RecyclerView.HORIZONTAL, false));
         rvTrailers.setHasFixedSize(true);
         rvTrailers.setAdapter(new TrailersAdapter());
+        // Note: remember to enable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(rvTrailers, false);
     }
 
@@ -154,6 +150,7 @@ public class DetailsActivity extends AppCompatActivity {
         listReviews.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
         listReviews.setAdapter(new ReviewsAdapter());
+        // Note: remember to enable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(listReviews, false);
     }
 
@@ -170,7 +167,7 @@ public class DetailsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.movie_details, menu);
         tintMenuIcon(this, menu.findItem(R.id.action_share), android.R.color.white);
 
-        MenuItem favoriteItem = menu.findItem(R.id.action_favorite);
+        MenuItem favoriteItem = menu.findItem(R.id.action_add_remove_favorite);
         if (viewModel.isFavorite()) {
             favoriteItem.setIcon(R.drawable.ic_favorite_black_24dp)
                     .setTitle(R.string.action_remove_from_favorites);
@@ -190,7 +187,7 @@ public class DetailsActivity extends AppCompatActivity {
                 shareTrailer();
                 return true;
             }
-            case R.id.action_favorite: {
+            case R.id.action_add_remove_favorite: {
                 viewModel.onFavoriteClicked();
                 invalidateOptionsMenu();
                 return true;
@@ -201,7 +198,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void shareTrailer() {
-        MovieDetails movieDetails = viewModel.getResult().getValue().data;
+        MovieDetails movieDetails = Objects.requireNonNull(
+                viewModel.getMovieDetailsLiveData().getValue()).getData();
         Intent shareIntent = ShareCompat.IntentBuilder.from(this)
                 .setType("text/plain")
                 .setSubject(movieDetails.movie.getTitle() + " movie trailer")

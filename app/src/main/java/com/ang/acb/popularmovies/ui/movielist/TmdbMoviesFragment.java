@@ -93,10 +93,6 @@ public class TmdbMoviesFragment extends Fragment {
         viewModel.getNetworkState().observe(getViewLifecycleOwner(), tmdbMoviesAdapter::setNetworkState);
 
         // Observe current toolbar title.
-        viewModel.getCurrentTitle().observe(this, title -> {
-            if (activity.getSupportActionBar() != null) {
-                activity.getSupportActionBar().setTitle(title);
-            }
-        });
+        viewModel.getCurrentTitle().observe(getViewLifecycleOwner(), activity.getSupportActionBar()::setTitle);
     }
 }

@@ -68,21 +68,17 @@ public class FavoriteMoviesFragment extends Fragment {
                 activity, R.dimen.item_offset));
 
         // Observe favorite movies list.
-        viewModel.getFavoriteListLiveData().observe(getViewLifecycleOwner(),
-                new Observer<List<Movie>>() {
-                    @Override
-                    public void onChanged(List<Movie> movieList) {
-                        if (movieList.isEmpty()) {
-                            // No favorites, show empty state.
-                            binding.favoriteMoviesList.rvMovieList.setVisibility(View.GONE);
-                            binding.favoriteEmptyState.setVisibility(View.VISIBLE);
-                        } else {
-                            binding.favoriteMoviesList.rvMovieList.setVisibility(View.VISIBLE);
-                            binding.favoriteEmptyState.setVisibility(View.GONE);
-                            adapter.submitList(movieList);
-                        }
-                    }
-                });
+        viewModel.getFavoriteListLiveData().observe(getViewLifecycleOwner(), movieList -> {
+                if (movieList.isEmpty()) {
+                    // No favorites, show empty state.
+                    binding.favoriteMoviesList.rvMovieList.setVisibility(View.GONE);
+                    binding.favoriteEmptyState.setVisibility(View.VISIBLE);
+                } else {
+                    binding.favoriteMoviesList.rvMovieList.setVisibility(View.VISIBLE);
+                    binding.favoriteEmptyState.setVisibility(View.GONE);
+                    adapter.submitList(movieList);
+                }
+            });
     }
 
 }

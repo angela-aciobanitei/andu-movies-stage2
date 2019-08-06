@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.ui.moviedetails;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -12,6 +11,8 @@ import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.utils.SnackbarMessage;
 
+import java.util.Objects;
+
 import timber.log.Timber;
 
 /**
@@ -21,37 +22,35 @@ import timber.log.Timber;
  */
 public class DetailsViewModel extends ViewModel {
 
-    private final MovieRepository repository;
-    private LiveData<Resource<MovieDetails>> result;
+    private final MovieRepository movieRepository;
+    private LiveData<Resource<MovieDetails>> movieDetailsLiveData;
     private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
 
     private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private boolean isFavorite;
 
-    public DetailsViewModel(final MovieRepository repository) {
-        this.repository = repository;
+    public DetailsViewModel(final MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
     public void init(long movieId) {
         // Load movie details only when the activity is created for the first time.
-        if (result != null) return;
+        if (movieDetailsLiveData != null) return;
+
         Timber.d("Initializing the movie details view model");
+        movieDetailsLiveData = Transformations.switchMap(
+                movieIdLiveData, movieRepository::loadAllMovieDetails);
 
-        result = Transformations.switchMap(
-                movieIdLiveData,
-                new Function<Long, LiveData<Resource<MovieDetails>>>() {
-                    @Override
-                    public LiveData<Resource<MovieDetails>> apply(Long movieId) {
-                        return repository.loadAllMovieDetails(movieId);
-                    }
-                });
-
-        // Trigger loading movie
+        // Trigger movie loading.
         movieIdLiveData.setValue(movieId);
     }
 
-    public LiveData<Resource<MovieDetails>> getResult() {
-        return result;
+    public void retry(long movieId) {
+        movieIdLiveData.setValue(movieId);
+    }
+
+    public LiveData<Resource<MovieDetails>> getMovieDetailsLiveData() {
+        return movieDetailsLiveData;
     }
 
     public SnackbarMessage getSnackbarMessage() {
@@ -66,24 +65,17 @@ public class DetailsViewModel extends ViewModel {
         isFavorite = favorite;
     }
 
-    public void retry(long movieId) {
-        movieIdLiveData.setValue(movieId);
-    }
-
     public void onFavoriteClicked() {
-        MovieDetails movieDetails = result.getValue().data;
+        MovieDetails movieDetails = Objects.requireNonNull(movieDetailsLiveData.getValue()).data;
+        assert movieDetails != null;
         if (!isFavorite) {
-            repository.markAsFavorite(movieDetails.movie);
+            movieRepository.markAsFavorite(movieDetails.movie);
+            snackbarMessage.setValue(R.string.movie_added_to_favorites);
             isFavorite = true;
-            showSnackbarMessage(R.string.movie_added_to_favorites);
         } else {
-            repository.markAsNotFavorite(movieDetails.movie);
+            movieRepository.markAsNotFavorite(movieDetails.movie);
+            snackbarMessage.setValue(R.string.movie_removed_from_favorites);
             isFavorite = false;
-            showSnackbarMessage(R.string.movie_removed_from_favorites);
         }
-    }
-
-    private void showSnackbarMessage(Integer message) {
-        snackbarMessage.setValue(message);
     }
 }

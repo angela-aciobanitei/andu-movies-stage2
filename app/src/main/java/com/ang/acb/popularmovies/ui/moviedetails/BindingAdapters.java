@@ -43,8 +43,8 @@ public class BindingAdapters {
     }
 
     @BindingAdapter("toggleVisibility")
-    public static void toggleVisibility(View view, Boolean show) {
-        if (show) view.setVisibility(View.VISIBLE);
+    public static void toggleVisibility(View view, Boolean isVisible) {
+        if (isVisible) view.setVisibility(View.VISIBLE);
         else view.setVisibility(View.GONE);
     }
 

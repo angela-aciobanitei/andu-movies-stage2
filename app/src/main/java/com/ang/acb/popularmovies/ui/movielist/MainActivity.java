@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         // Show popular movies fragment by default.
         if (savedInstanceState == null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_popular);
+            selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
             transaction.replace(R.id.main_fragment_container, selectedFragment);
             transaction.commit();
         }
@@ -39,18 +39,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.action_popular:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_popular);
+                    case R.id.action_show_popular:
+                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
                         break;
 
-                    case R.id.action_top_rated:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_top_rated);
+                    case R.id.action_show_top_rated:
+                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_top_rated);
                         break;
 
-                    case R.id.action_now_playing:
-                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_now_playing);
+                    case R.id.action_show_now_playing:
+                        selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_now_playing);
                         break;
-                    case R.id.action_favorites:
+                    case R.id.action_show_favorites:
                         selectedFragment = FavoriteMoviesFragment.newInstance();
                         break;
                 }

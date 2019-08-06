@@ -29,7 +29,7 @@ public class TmdbMoviesViewModel extends ViewModel {
     public TmdbMoviesViewModel(final MovieRepository movieRepository) {
         // By default show popular movies.
         sortBy.setValue(MoviesFilter.POPULAR);
-        currentTitle.setValue(R.string.action_popular);
+        currentTitle.setValue(R.string.action_show_popular);
 
         pagedMoviesResult = Transformations.map(
                 sortBy,
@@ -76,26 +76,26 @@ public class TmdbMoviesViewModel extends ViewModel {
     }
 
     public void setSortMoviesBy(int id) {
-        MoviesFilter filterType = null;
-        Integer title = null;
+        MoviesFilter filterType;
+        int title;
         switch (id) {
-            case R.id.action_popular: {
+            case R.id.action_show_popular: {
                 // If already selected no need to request the API.
                 if (sortBy.getValue() == MoviesFilter.POPULAR) return;
                 filterType = MoviesFilter.POPULAR;
-                title = R.string.action_popular;
+                title = R.string.action_show_popular;
                 break;
             }
-            case R.id.action_top_rated: {
+            case R.id.action_show_top_rated: {
                 if (sortBy.getValue() == MoviesFilter.TOP_RATED) return;
                 filterType = MoviesFilter.TOP_RATED;
-                title = R.string.action_top_rated;
+                title = R.string.action_show_top_rated;
                 break;
             }
-            case R.id.action_now_playing: {
+            case R.id.action_show_now_playing: {
                 if (sortBy.getValue() == MoviesFilter.NOW_PLAYING) return;
                 filterType = MoviesFilter.NOW_PLAYING;
-                title = R.string.action_now_playing;
+                title = R.string.action_show_now_playing;
                 break;
             }
 

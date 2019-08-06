@@ -43,6 +43,21 @@ public class Resource<T> {
         return new Resource<>(Status.LOADING, data, null);
     }
 
+    @NonNull
+    public Status getStatus() {
+        return status;
+    }
+
+    @Nullable
+    public T getData() {
+        return data;
+    }
+
+    @Nullable
+    public String getMessage() {
+        return message;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

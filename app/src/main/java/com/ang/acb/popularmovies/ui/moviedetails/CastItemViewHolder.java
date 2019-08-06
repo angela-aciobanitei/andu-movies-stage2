@@ -14,6 +14,9 @@ import com.ang.acb.popularmovies.utils.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+/**
+ * A ViewHolder that works with a DataBinding.
+ */
 public class CastItemViewHolder extends RecyclerView.ViewHolder {
 
     private ItemCastBinding binding;
