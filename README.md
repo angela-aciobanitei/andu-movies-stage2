@@ -1,4 +1,4 @@
-# Udacity's Android Developer Nanodegree Project 3 (PopularMovies Stage II)
+# ANDU Popular Movies Stage II
 
 Expand on the movies app built in the previous project (Popular Movies Stage I) to create a fully-featured app that will allow users to view and play trailers, read reviews, and mark their favorite movies.
 
