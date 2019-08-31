@@ -12,7 +12,7 @@ import com.ang.acb.popularmovies.data.repository.MovieRepository;
 /**
  * Enables injection of data sources.
  *
- * See: https://github.com/googlesamples/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/utilities
+ * See: https://github.com/googlesamples/android-sunflower
  */
 public class InjectorUtils {
 

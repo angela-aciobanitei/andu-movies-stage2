@@ -1,4 +1,4 @@
-package com.ang.acb.popularmovies.ui.moviedetails;
+package com.ang.acb.popularmovies.ui.common;
 
 import android.content.Context;
 import android.util.TypedValue;
@@ -15,6 +15,9 @@ import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.data.vo.Genre;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.data.vo.Trailer;
+import com.ang.acb.popularmovies.ui.moviedetails.CastAdapter;
+import com.ang.acb.popularmovies.ui.moviedetails.ReviewsAdapter;
+import com.ang.acb.popularmovies.ui.moviedetails.TrailersAdapter;
 import com.ang.acb.popularmovies.utils.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;

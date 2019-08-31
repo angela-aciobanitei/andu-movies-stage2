@@ -2,6 +2,8 @@ package com.ang.acb.popularmovies.data.remote;
 
 import com.ang.acb.popularmovies.BuildConfig;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 import okhttp3.HttpUrl;
@@ -17,6 +19,7 @@ import okhttp3.Response;
  */
 public class ApiRequestInterceptor implements Interceptor {
 
+    @NotNull
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();

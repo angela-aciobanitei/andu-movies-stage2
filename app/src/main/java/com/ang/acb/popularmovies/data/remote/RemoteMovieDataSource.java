@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.data.remote;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.paging.LivePagedListBuilder;
@@ -8,7 +7,7 @@ import androidx.paging.PagedList;
 
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Resource;
-import com.ang.acb.popularmovies.ui.movielist.MoviesFilter;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.utils.AppExecutors;
 
 public class RemoteMovieDataSource {

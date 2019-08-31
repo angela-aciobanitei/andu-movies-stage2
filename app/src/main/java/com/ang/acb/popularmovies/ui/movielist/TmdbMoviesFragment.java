@@ -24,6 +24,9 @@ public class TmdbMoviesFragment extends Fragment {
 
     private static final String EXTRA_ACTION_ID = "EXTRA_ACTION_ID" ;
 
+    // Required empty public constructor
+    public TmdbMoviesFragment() {}
+
     public static TmdbMoviesFragment newInstance(int actionId) {
         TmdbMoviesFragment fragment = new TmdbMoviesFragment();
         Bundle args = new Bundle();

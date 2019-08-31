@@ -1,10 +1,7 @@
 package com.ang.acb.popularmovies.ui.moviedetails;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +9,6 @@ import android.view.MenuItem;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ShareCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
@@ -24,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
-import com.ang.acb.popularmovies.utils.Constants;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
 import com.google.android.material.appbar.AppBarLayout;
@@ -65,24 +60,8 @@ public class DetailsActivity extends AppCompatActivity {
         setupTrailersAdapter();
         setupCastAdapter();
         setupReviewsAdapter();
+        observeResult(movieId);
 
-        // Observe result.
-        viewModel.getMovieDetailsLiveData().observe(this, resource -> {
-            if (resource.data != null && resource.data.movie != null) {
-                // Handle adding/removing movie from favorites.
-                viewModel.setFavorite(resource.data.movie.isFavorite());
-                invalidateOptionsMenu();
-            }
-            binding.setResource(resource);
-            binding.setMovieDetails(resource.data);
-        });
-
-        // Handle retry event in case of network failure.
-        binding.networkState.retryButton.setOnClickListener(view -> viewModel.retry(movieId));
-
-        // Observe the Snackbar messages showed when adding/removing movie from favorites.
-        viewModel.getSnackbarMessage().observe(this, (Observer<Integer>) message ->
-                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show());
     }
 
     private void setupToolbar() {
@@ -116,7 +95,8 @@ public class DetailsActivity extends AppCompatActivity {
                 if (totalScrollRange + verticalOffset == 0) {
                     MovieDetails movieDetails = Objects.requireNonNull(
                             viewModel.getMovieDetailsLiveData().getValue()).getData();
-                    binding.collapsingToolbar.setTitle(movieDetails.movie.getTitle());
+                    binding.collapsingToolbar.setTitle(
+                            Objects.requireNonNull(movieDetails).movie.getTitle());
                     isShown = true;
                 } else if (isShown) {
                     // When toolbar is expanded, display an empty string.
@@ -132,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity {
         rvCast.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.HORIZONTAL, false));
         rvCast.setAdapter(new CastAdapter());
-        // Note: remember to enable nested scrolling for this view.
+        // Disable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(rvCast, false);
     }
 
@@ -142,7 +122,7 @@ public class DetailsActivity extends AppCompatActivity {
                 this, RecyclerView.HORIZONTAL, false));
         rvTrailers.setHasFixedSize(true);
         rvTrailers.setAdapter(new TrailersAdapter());
-        // Note: remember to enable nested scrolling for this view.
+        // Disable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(rvTrailers, false);
     }
 
@@ -151,17 +131,29 @@ public class DetailsActivity extends AppCompatActivity {
         listReviews.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
         listReviews.setAdapter(new ReviewsAdapter());
-        // Note: remember to enable nested scrolling for this view.
+        // Disable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(listReviews, false);
     }
 
-    // Tints menu item icons
-    // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
-    public void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
-        Drawable iconWrapper = DrawableCompat.wrap(item.getIcon());
-        DrawableCompat.setTint(iconWrapper, context.getResources().getColor(color));
-        item.setIcon(iconWrapper);
+    private void observeResult(long movieId) {
+        viewModel.getMovieDetailsLiveData().observe(this, resource -> {
+            if (resource.data != null && resource.data.movie != null) {
+                // Handle adding/removing movie from favorites.
+                viewModel.setFavorite(resource.data.movie.isFavorite());
+                invalidateOptionsMenu();
+            }
+            binding.setResource(resource);
+            binding.setMovieDetails(resource.data);
+        });
+
+        // Handle retry event in case of network failure.
+        binding.networkState.retryButton.setOnClickListener(view -> viewModel.retry(movieId));
+
+        // Observe the Snackbar messages showed when adding/removing movie from favorites.
+        viewModel.getSnackbarMessage().observe(this, (Observer<Integer>) message ->
+                Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show());
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -178,6 +170,14 @@ public class DetailsActivity extends AppCompatActivity {
         tintMenuIcon(this, favoriteItem, android.R.color.white);
 
         return true;
+    }
+
+    // Tints menu item icons
+    // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
+    public void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
+        Drawable iconWrapper = DrawableCompat.wrap(item.getIcon());
+        DrawableCompat.setTint(iconWrapper, context.getResources().getColor(color));
+        item.setIcon(iconWrapper);
     }
 
     @Override

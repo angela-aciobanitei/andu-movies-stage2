@@ -66,14 +66,14 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public void onFavoriteClicked() {
-        MovieDetails movieDetails = Objects.requireNonNull(movieDetailsLiveData.getValue()).data;
-        assert movieDetails != null;
+        MovieDetails movieDetails = Objects.requireNonNull(
+                movieDetailsLiveData.getValue()).data;
         if (!isFavorite) {
-            movieRepository.markAsFavorite(movieDetails.movie);
+            movieRepository.markAsFavorite(Objects.requireNonNull(movieDetails).movie);
             snackbarMessage.setValue(R.string.movie_added_to_favorites);
             isFavorite = true;
         } else {
-            movieRepository.markAsNotFavorite(movieDetails.movie);
+            movieRepository.markAsNotFavorite(Objects.requireNonNull(movieDetails).movie);
             snackbarMessage.setValue(R.string.movie_removed_from_favorites);
             isFavorite = false;
         }

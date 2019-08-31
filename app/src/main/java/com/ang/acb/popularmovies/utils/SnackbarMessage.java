@@ -1,9 +1,7 @@
 package com.ang.acb.popularmovies.utils;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 
 /**
  * A SingleLiveEvent used for Snackbar messages. Like a {@link SingleLiveEvent} but also prevents

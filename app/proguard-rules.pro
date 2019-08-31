@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# To fix this error: java.lang.ClassNotFoundException: Didn't find class "androidx.core.app.CoreComponentFactory"
+# See: https://stackoverflow.com/questions/51006967/androidx-build-fails-in-release-mode-regarding-appcomponentfactory
+-keep class androidx.core.app.CoreComponentFactory { *; }

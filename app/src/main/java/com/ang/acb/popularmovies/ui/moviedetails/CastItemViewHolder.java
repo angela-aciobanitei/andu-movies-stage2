@@ -52,7 +52,5 @@ public class CastItemViewHolder extends RecyclerView.ViewHolder {
         // https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding
         binding.executePendingBindings();
     }
-
-
 }
 

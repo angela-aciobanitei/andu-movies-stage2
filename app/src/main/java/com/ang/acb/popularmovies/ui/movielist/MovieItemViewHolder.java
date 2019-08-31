@@ -2,7 +2,6 @@ package com.ang.acb.popularmovies.ui.movielist;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -39,10 +38,7 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
             view.getContext().startActivity(intent);
         });
 
-        // Note: when a variable or observable object changes, the binding is scheduled
-        // to change before the next frame. There are times, however, when binding must
-        // be executed immediately. To force execution, use executePendingBindings().
-        // https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding
+        // Binding must be executed immediately.
         binding.executePendingBindings();
     }
 

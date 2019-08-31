@@ -46,7 +46,8 @@ public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
 
     public void bindTo(final Trailer trailer) {
         // See: https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
-        String thumbnail = YOUTUBE_TRAILER_THUMBNAIL_BASE_URL + trailer.getKey() + YOUTUBE_TRAILER_THUMBNAIL_HQ;
+        String thumbnail = YOUTUBE_TRAILER_THUMBNAIL_BASE_URL +
+                trailer.getKey() + YOUTUBE_TRAILER_THUMBNAIL_HQ;
         GlideApp.with(context)
                 .load(thumbnail)
                 .placeholder(R.color.colorImagePlaceholder)

@@ -7,7 +7,9 @@ import androidx.paging.PageKeyedDataSource;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MoviesResponse;
 import com.ang.acb.popularmovies.data.vo.Resource;
-import com.ang.acb.popularmovies.ui.movielist.MoviesFilter;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -34,7 +36,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     private RetryCallback retryCallback = null;
 
     public interface RetryCallback {
-        void invoke();
+        void retry();
     }
 
     private static final int FIRST_PAGE_KEY = 1;
@@ -134,7 +136,8 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         // to be executed at some point in the future.
         request.enqueue(new Callback<MoviesResponse>() {
             @Override
-            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+            public void onResponse(@NotNull Call<MoviesResponse> call,
+                                   @NotNull Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
                     MoviesResponse data = response.body();
                     List<Movie> movieList = data != null ? data.getResults() : Collections.emptyList();
@@ -154,12 +157,12 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             }
 
             @Override
-            public void onFailure(Call<MoviesResponse> call, Throwable throwable) {
+            public void onFailure(@NotNull Call<MoviesResponse> call,
+                                  @NotNull Throwable throwable) {
                 // Retry data loading.
                 retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 // Publish error.
-                networkState.postValue(Resource.error(
-                        throwable != null ? throwable.getMessage() : "Unknown error", null));
+                networkState.postValue(Resource.error(throwable.getMessage(), null));
             }
         });
     }

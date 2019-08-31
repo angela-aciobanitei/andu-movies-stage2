@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 
 import com.ang.acb.popularmovies.data.vo.Movie;
-import com.ang.acb.popularmovies.ui.movielist.MoviesFilter;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 
 import org.jetbrains.annotations.NotNull;
 

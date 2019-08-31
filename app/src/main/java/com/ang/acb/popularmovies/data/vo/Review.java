@@ -9,6 +9,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
@@ -36,7 +38,6 @@ public class Review {
     @SerializedName("id")
     private String id;
 
-    @NonNull
     @ColumnInfo(name = "movie_id")
     private long movieId;
 
@@ -49,20 +50,20 @@ public class Review {
     @SerializedName("url")
     private String url;
 
+    @NotNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NotNull String id) {
         this.id = id;
     }
 
-    @NonNull
     public long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(@NonNull long movieId) {
+    public void setMovieId(long movieId) {
         this.movieId = movieId;
     }
 

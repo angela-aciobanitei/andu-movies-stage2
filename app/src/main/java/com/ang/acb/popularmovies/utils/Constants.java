@@ -21,5 +21,4 @@ public class Constants {
 
     public static final String IMAGE_URL = IMAGE_BASE_URL + IMAGE_SIZE_W185;
     public static final String BACKDROP_URL = IMAGE_BASE_URL + BACKDROP_SIZE_W780;
-
 }

@@ -37,6 +37,7 @@ public interface ApiService {
     // By using the query parameter "append_to_response" we can make
     // sub requests within the same namespace in a single HTTP request
     // thus eliminating duplicate requests and saving network bandwidth.
+    // See: https://developers.themoviedb.org/3/getting-started/append-to-response
     @GET("movie/{id}?append_to_response=videos,credits,reviews")
     LiveData<ApiResponse<Movie>> getAllMovieDetails(@Path("id") long id);
 }

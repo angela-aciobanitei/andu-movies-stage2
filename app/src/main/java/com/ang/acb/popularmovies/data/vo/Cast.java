@@ -36,7 +36,6 @@ public class Cast {
     @SerializedName("credit_id")
     private String id;
 
-    @NonNull
     @ColumnInfo(name = "movie_id")
     private long movieId;
 
@@ -55,12 +54,11 @@ public class Cast {
     @SerializedName("profile_path")
     private String profileImagePath;
 
-    @NonNull
     public long getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(@NonNull long movieId) {
+    public void setMovieId(long movieId) {
         this.movieId = movieId;
     }
 

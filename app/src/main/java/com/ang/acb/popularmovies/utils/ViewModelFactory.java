@@ -12,7 +12,7 @@ import com.ang.acb.popularmovies.ui.movielist.TmdbMoviesViewModel;
 /**
  * A factory class for creating ViewModels with a constructor that takes a [MovieRepository].
  *
- * See: https://github.com/googlesamples/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/viewmodels
+ * See: https://github.com/googlesamples/android-sunflower
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
 

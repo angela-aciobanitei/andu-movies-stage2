@@ -21,7 +21,7 @@ import com.ang.acb.popularmovies.data.vo.Resource;
  *  To show the loading indicator while the data source is retrieving data
  *  we need to expose the „latest loading status” of „the latest data source”
  *  that was created by the factory. The factory can expose data source via
- *  LiveData. The data source can expose status via  LiveData.
+ *  LiveData. The data source can expose status via LiveData.
  *
  *  See: https://www.slideshare.net/GaborVaradi3/paging-like-a-pro
  */

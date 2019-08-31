@@ -1,4 +1,4 @@
-package com.ang.acb.popularmovies.ui.movielist;
+package com.ang.acb.popularmovies.data.vo;
 
 public enum MoviesFilter {
     POPULAR,

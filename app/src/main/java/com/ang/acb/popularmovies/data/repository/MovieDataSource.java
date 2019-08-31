@@ -6,7 +6,7 @@ import com.ang.acb.popularmovies.data.remote.PagedMoviesResult;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
-import com.ang.acb.popularmovies.ui.movielist.MoviesFilter;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 
 import java.util.List;
 

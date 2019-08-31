@@ -11,7 +11,7 @@ import com.ang.acb.popularmovies.data.remote.RemoteMovieDataSource;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Resource;
-import com.ang.acb.popularmovies.ui.movielist.MoviesFilter;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.utils.AppExecutors;
 
 import java.util.List;

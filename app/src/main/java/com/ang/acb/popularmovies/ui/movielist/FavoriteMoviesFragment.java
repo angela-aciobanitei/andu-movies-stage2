@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
-import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.databinding.FragmentFavoriteMoviesBinding;
 import com.ang.acb.popularmovies.utils.GridSpacingItemDecoration;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
@@ -28,6 +26,9 @@ import java.util.List;
 public class FavoriteMoviesFragment extends Fragment {
 
     private FragmentFavoriteMoviesBinding binding;
+
+    // Required empty public constructor
+    public FavoriteMoviesFragment() {}
 
     public static FavoriteMoviesFragment newInstance() {
         return new FavoriteMoviesFragment();

@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.utils;
 
-
 import android.os.Handler;
 import android.os.Looper;
 

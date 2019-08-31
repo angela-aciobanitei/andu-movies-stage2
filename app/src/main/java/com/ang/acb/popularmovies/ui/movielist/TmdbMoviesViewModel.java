@@ -10,12 +10,13 @@ import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.remote.PagedMoviesResult;
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
 import com.ang.acb.popularmovies.data.vo.Movie;
+import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.data.vo.Resource;
 
 /**
  * The ViewModel used in [TmdbMoviesFragment].
  *
- * See: https://github.com/googlesamples/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/viewmodels
+ * See: https://github.com/googlesamples/android-sunflower
  */
 public class TmdbMoviesViewModel extends ViewModel {
 
@@ -86,6 +87,6 @@ public class TmdbMoviesViewModel extends ViewModel {
     public void retry() {
         pagedResult.getValue()
                 .getPagedDataSource().getValue()
-                .getRetryCallback().invoke();
+                .getRetryCallback().retry();
     }
 }
