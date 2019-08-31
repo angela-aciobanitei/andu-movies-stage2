@@ -9,8 +9,6 @@ import com.ang.acb.popularmovies.data.vo.MoviesResponse;
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -136,8 +134,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         // to be executed at some point in the future.
         request.enqueue(new Callback<MoviesResponse>() {
             @Override
-            public void onResponse(@NotNull Call<MoviesResponse> call,
-                                   @NotNull Response<MoviesResponse> response) {
+            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
                     MoviesResponse data = response.body();
                     List<Movie> movieList = data != null ? data.getResults() : Collections.emptyList();
@@ -157,12 +154,12 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             }
 
             @Override
-            public void onFailure(@NotNull Call<MoviesResponse> call,
-                                  @NotNull Throwable throwable) {
+            public void onFailure(Call<MoviesResponse> call, Throwable throwable) {
                 // Retry data loading.
                 retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 // Publish error.
-                networkState.postValue(Resource.error(throwable.getMessage(), null));
+                networkState.postValue(Resource.error(
+                        throwable != null ? throwable.getMessage() : "Unknown error", null));
             }
         });
     }
