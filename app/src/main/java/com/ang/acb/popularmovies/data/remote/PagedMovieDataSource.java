@@ -91,7 +91,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             // Send loading state to the UI.
             networkState.postValue(Resource.success(null));
             // Pass loaded data from the data source.
-            callback.onResult(movieList, null, FIRST_PAGE_KEY + 1);
+            callback.onResult(movieList, FIRST_PAGE_KEY, FIRST_PAGE_KEY + 1);
         } catch (IOException e) {
             // Retry data loading.
             retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));

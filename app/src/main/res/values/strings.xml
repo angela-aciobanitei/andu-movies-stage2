@@ -25,5 +25,6 @@
     <string name="action_remove_from_favorites">Remove from favorites</string>
     <string name="no_favorites">No favorites yet.</string>
     <string name="favorites">Favorites</string>
+    <string name="detail_error_message">Movie data not available</string>
 
 </resources>

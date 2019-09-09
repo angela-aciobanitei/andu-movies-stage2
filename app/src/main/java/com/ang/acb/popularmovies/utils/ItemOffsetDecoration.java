@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
  *
  * See: https://stackoverflow.com/questions/28531996/android-recyclerview-gridlayoutmanager-column-spacing
  */
-public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+public class ItemOffsetDecoration extends RecyclerView.ItemDecoration {
 
     private int itemOffset;
 
-    private GridSpacingItemDecoration(int itemOffset) {
+    private ItemOffsetDecoration(int itemOffset) {
         this.itemOffset = itemOffset;
     }
 
-    public GridSpacingItemDecoration(@NonNull Context context, @DimenRes int itemOffsetId) {
+    public ItemOffsetDecoration(@NonNull Context context, @DimenRes int itemOffsetId) {
         this(context.getResources().getDimensionPixelSize(itemOffsetId));
     }
 

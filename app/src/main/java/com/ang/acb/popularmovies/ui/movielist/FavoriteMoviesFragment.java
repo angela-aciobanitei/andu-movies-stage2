@@ -14,11 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.databinding.FragmentFavoriteMoviesBinding;
-import com.ang.acb.popularmovies.utils.GridSpacingItemDecoration;
+import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
-
-import java.util.List;
 
 /**
  * The UI Controller for displaying the list of favorite movies.
@@ -26,6 +24,8 @@ import java.util.List;
 public class FavoriteMoviesFragment extends Fragment {
 
     private FragmentFavoriteMoviesBinding binding;
+    private FavoriteMoviesViewModel viewModel;
+    private FavoriteMoviesAdapter adapter;
 
     // Required empty public constructor
     public FavoriteMoviesFragment() {}
@@ -47,39 +47,52 @@ public class FavoriteMoviesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Setup action bar title.
-        final MainActivity activity = (MainActivity) getActivity();
-        assert activity != null;
-        if (activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setTitle(getString(R.string.action_show_favorites));
-        }
-        // Setup view model.
-        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(activity);
-        FavoriteMoviesViewModel viewModel = ViewModelProviders
-                .of(activity, factory)
-                .get(FavoriteMoviesViewModel.class);
+        setupToolbarTitle();
+        setupViewModel();
+        setupRecyclerView();
+        populateUi();
+    }
 
-        // Setup recycler view.
-        final FavoriteMoviesAdapter adapter = new FavoriteMoviesAdapter();
+    private void setupToolbarTitle() {
+        if (getHostActivity().getSupportActionBar() != null) {
+            getHostActivity().getSupportActionBar()
+                    .setTitle(getString(R.string.action_show_favorites));
+        }
+    }
+
+    private void setupViewModel() {
+        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(getContext());
+        viewModel = ViewModelProviders
+                .of(getHostActivity(), factory)
+                .get(FavoriteMoviesViewModel.class);
+    }
+
+    private void setupRecyclerView() {
+        adapter = new FavoriteMoviesAdapter();
         RecyclerView recyclerView = binding.favoriteMoviesList.rvMovieList;
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(
-                activity, getResources().getInteger(R.integer.span_count)));
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(
-                activity, R.dimen.item_offset));
-
-        // Observe favorite movies list.
-        viewModel.getFavoriteListLiveData().observe(getViewLifecycleOwner(), movieList -> {
-                if (movieList.isEmpty()) {
-                    // No favorites, show empty state.
-                    binding.favoriteMoviesList.rvMovieList.setVisibility(View.GONE);
-                    binding.favoriteEmptyState.setVisibility(View.VISIBLE);
-                } else {
-                    binding.favoriteMoviesList.rvMovieList.setVisibility(View.VISIBLE);
-                    binding.favoriteEmptyState.setVisibility(View.GONE);
-                    adapter.submitList(movieList);
-                }
-            });
+                getHostActivity(), getResources().getInteger(R.integer.span_count)));
+        recyclerView.addItemDecoration(new ItemOffsetDecoration(
+                getHostActivity(), R.dimen.item_offset));
     }
 
+    private void populateUi() {
+        // Observe favorite movies list.
+        viewModel.getFavoriteListLiveData().observe(getViewLifecycleOwner(), movieList -> {
+            if (movieList.isEmpty()) {
+                // No favorites, show empty state.
+                binding.favoriteMoviesList.rvMovieList.setVisibility(View.GONE);
+                binding.favoriteEmptyState.setVisibility(View.VISIBLE);
+            } else {
+                binding.favoriteMoviesList.rvMovieList.setVisibility(View.VISIBLE);
+                binding.favoriteEmptyState.setVisibility(View.GONE);
+                adapter.submitList(movieList);
+            }
+        });
+    }
+
+    private MainActivity getHostActivity() {
+        return (MainActivity)getActivity();
+    }
 }

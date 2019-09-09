@@ -29,7 +29,7 @@ public class ApiClient {
         // Set the desired log level. Warning: using the HEADERS or BODY levels
         // have the potential to leak sensitive information such as "Authorization"
         // or "Cookie" headers and the contents of request and response bodies.
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        logging.level(HttpLoggingInterceptor.Level.BASIC);
 
         // Add the logging and the request interceptors to our OkHttp client.
         client = new OkHttpClient.Builder()

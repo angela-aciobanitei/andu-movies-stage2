@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,34 +35,34 @@ public class DetailsActivity extends AppCompatActivity {
 
     private ActivityDetailsBinding binding;
     private DetailsViewModel viewModel;
+    private long movieId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final long movieId = getIntent().getLongExtra(EXTRA_MOVIE_ID, INVALID_MOVIE_ID);
-        if (movieId == INVALID_MOVIE_ID) {
-            closeOnError();
-            return;
-        }
+        initBinding();
+        setupToolbar();
+        getMovieId();
+        setupViewModel();
+        setupTrailersAdapter();
+        setupCastAdapter();
+        setupReviewsAdapter();
+        observeResult();
+    }
 
+    private void initBinding(){
         // Inflate view and obtain an instance of the binding class.
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
         // Specify the current activity as the lifecycle owner.
         binding.setLifecycleOwner(this);
+    }
 
-        // Setup view model.
-        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(this);
-        viewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel.class);
-        viewModel.init(movieId);
-
-        setupToolbar();
-
-        setupTrailersAdapter();
-        setupCastAdapter();
-        setupReviewsAdapter();
-        observeResult(movieId);
-
+    private void getMovieId(){
+        movieId = getIntent().getLongExtra(EXTRA_MOVIE_ID, INVALID_MOVIE_ID);
+        if (movieId == INVALID_MOVIE_ID) {
+            closeOnError();
+        }
     }
 
     private void setupToolbar() {
@@ -74,9 +75,9 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    // Sets the title on the toolbar only when the toolbar is collapsed.
     private void setToolbarTitleIfCollapsed() {
-        // Add an OnOffsetChangedListener to AppBarLayout to determine
+        // To set the title on the toolbar only when the toolbar is collapsed,
+        // we need to add an OnOffsetChangedListener to AppBarLayout to determine
         // when CollapsingToolbarLayout is collapsed or expanded.
         // See: https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed
         // See: https://medium.com/@nullthemall/the-power-of-appbarlayout-offset-ecbf8eaa6b5f
@@ -91,12 +92,12 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
-                // If toolbar is completely collapsed, set the movie name as the title.
+                // If toolbar is completely collapsed, set the collapsing bar title.
                 if (totalScrollRange + verticalOffset == 0) {
                     MovieDetails movieDetails = Objects.requireNonNull(
                             viewModel.getMovieDetailsLiveData().getValue()).getData();
-                    binding.collapsingToolbar.setTitle(
-                            Objects.requireNonNull(movieDetails).movie.getTitle());
+                    binding.collapsingToolbar.setTitle(Objects.requireNonNull(movieDetails)
+                            .movie.getTitle());
                     isShown = true;
                 } else if (isShown) {
                     // When toolbar is expanded, display an empty string.
@@ -105,6 +106,12 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setupViewModel(){
+        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(this);
+        viewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel.class);
+        viewModel.init(movieId);
     }
 
     private void setupCastAdapter() {
@@ -135,7 +142,7 @@ public class DetailsActivity extends AppCompatActivity {
         ViewCompat.setNestedScrollingEnabled(listReviews, false);
     }
 
-    private void observeResult(long movieId) {
+    private void observeResult() {
         viewModel.getMovieDetailsLiveData().observe(this, resource -> {
             if (resource.data != null && resource.data.movie != null) {
                 // Handle adding/removing movie from favorites.
@@ -191,7 +198,8 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void closeOnError() {
-        throw new IllegalArgumentException("Access denied.");
+        finish();
+        Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
 }

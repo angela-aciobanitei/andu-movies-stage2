@@ -12,8 +12,6 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.data.vo.Trailer;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * The Room database for this app.
  *
