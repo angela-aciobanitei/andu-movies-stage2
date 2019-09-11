@@ -3,59 +3,64 @@ package com.ang.acb.popularmovies.ui.movielist;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import com.ang.acb.popularmovies.databinding.ActivityMainBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.ang.acb.popularmovies.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    private Fragment selectedFragment;
+    private ActivityMainBinding binding;
+    private BottomNavigationController navigationController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        // Inflate view and obtain an instance of the binding class.
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        // Specify the current activity as the lifecycle owner.
+        binding.setLifecycleOwner(this);
+
+        // Init nav controller
+        navigationController = new BottomNavigationController(this);
 
         // Show popular movies fragment by default.
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
-            transaction.replace(R.id.main_fragment_container, selectedFragment);
-            transaction.commit();
+            navigationController.navigateToPopularMovies();
         }
 
-        // Setup toolbar.
-        Toolbar toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
+        // Setup toolbar
+        setSupportActionBar(binding.mainToolbar);
 
-        // Setup bottom navigation bar.
-        BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+        setupBottomNavigationView();
+    }
+
+    private void setupBottomNavigationView() {
+        binding.mainBottomNavigation.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_show_popular:
-                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_popular);
-                    break;
+                    navigationController.navigateToPopularMovies();
+                    return true;
 
                 case R.id.action_show_top_rated:
-                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_top_rated);
-                    break;
+                    navigationController.navigateToTopRatedMovies();
+                    return true;
 
                 case R.id.action_show_now_playing:
-                    selectedFragment = TmdbMoviesFragment.newInstance(R.id.action_show_now_playing);
-                    break;
+                    navigationController.navigateToNowPlayingMovies();
+                    return true;
+
                 case R.id.action_show_favorites:
-                    selectedFragment = FavoriteMoviesFragment.newInstance();
-                    break;
+                    navigationController.navigateToFavorites();
+                    return true;
             }
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_fragment_container, selectedFragment)
-                    .commit();
-
-            return true;
+            return false;
         });
     }
 }
