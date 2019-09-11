@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
+
 /**
  * A simple data source factory which also provides a way to observe the last created
  * data source. This allows us to channel its network request status etc back to the UI.
@@ -25,6 +27,7 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
     private final MoviesFilter sortBy;
     private final Executor networkExecutor;
 
+    @Inject
     public PagedMovieDataSourceFactory(ApiService movieService,
                                        MoviesFilter sortBy,
                                        Executor networkExecutor) {

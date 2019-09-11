@@ -11,34 +11,23 @@ import com.ang.acb.popularmovies.utils.AppExecutors;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import timber.log.Timber;
 
 /**
  * Concrete implementation of a data source as a database.
- *
- * See: https://github.com/googlesamples/android-architecture/tree/todo-mvp/todoapp
  */
+@Singleton
 public class LocalMovieDataSource {
 
-    // For Singleton instantiation.
-    private static volatile LocalMovieDataSource sInstance;
+
     private final AppDatabase database;
 
-    // Prevent direct instantiation.
-    private LocalMovieDataSource(AppDatabase database) {
+    @Inject
+    public LocalMovieDataSource(AppDatabase database) {
         this.database = database;
-    }
-
-    // Returns the single instance of this class, creating it if necessary.
-    public static LocalMovieDataSource getInstance(AppDatabase database) {
-        if (sInstance == null) {
-            synchronized (AppExecutors.class) {
-                if (sInstance == null) {
-                    sInstance = new LocalMovieDataSource(database);
-                }
-            }
-        }
-        return sInstance;
     }
 
     public void saveAllMovieDetails(Movie movie) {

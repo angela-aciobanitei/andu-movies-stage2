@@ -8,6 +8,8 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * The ViewModel used in [FavoriteMoviesFragment].
  * Stores and manages UI-related data in a lifecycle conscious way.
@@ -20,6 +22,7 @@ public class FavoriteMoviesViewModel extends ViewModel {
     private MovieRepository repository;
     private LiveData<List<Movie>> favoriteListLiveData;
 
+    @Inject
     public FavoriteMoviesViewModel(MovieRepository repository) {
         this.repository = repository;
     }

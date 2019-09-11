@@ -4,6 +4,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.ang.acb.popularmovies.R;
 
+import javax.inject.Inject;
+
 /**
  * A utility class that handles navigation in {@link MainActivity}.
  */
@@ -12,6 +14,7 @@ public class BottomNavigationController {
     private final FragmentManager fragmentManager;
     private final int containerId;
 
+    @Inject
     public BottomNavigationController(MainActivity mainActivity) {
         this.fragmentManager = mainActivity.getSupportFragmentManager();
         this.containerId = R.id.main_fragment_container;

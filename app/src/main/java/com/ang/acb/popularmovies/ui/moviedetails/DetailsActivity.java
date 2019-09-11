@@ -14,6 +14,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE_ID = "extra_movie_id";
@@ -37,8 +42,14 @@ public class DetailsActivity extends AppCompatActivity {
     private DetailsViewModel viewModel;
     private long movieId;
 
+    @Inject
+    public ViewModelProvider.Factory viewModelFactory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Note: when using Dagger for injecting Activity
+        // objects, inject as early as possible.
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         initBinding();
@@ -54,6 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
     private void initBinding(){
         // Inflate view and obtain an instance of the binding class.
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details);
+
         // Specify the current activity as the lifecycle owner.
         binding.setLifecycleOwner(this);
     }
@@ -109,8 +121,9 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void setupViewModel(){
-        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(this);
-        viewModel = ViewModelProviders.of(this, factory).get(DetailsViewModel.class);
+        viewModel = ViewModelProviders
+                .of(this, viewModelFactory)
+                .get(DetailsViewModel.class);
         viewModel.init(movieId);
     }
 

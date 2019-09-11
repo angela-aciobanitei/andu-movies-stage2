@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executor;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +41,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE_KEY = 1;
 
+    @Inject
     public PagedMovieDataSource(ApiService movieService,
                                 MoviesFilter sortBy,
                                 Executor networkExecutor) {

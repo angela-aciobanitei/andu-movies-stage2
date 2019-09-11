@@ -1,5 +1,6 @@
 package com.ang.acb.popularmovies.ui.movielist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,12 @@ import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
 import com.ang.acb.popularmovies.utils.InjectorUtils;
 import com.ang.acb.popularmovies.utils.ViewModelFactory;
+
+import org.jetbrains.annotations.NotNull;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * The UI Controller for displaying a list of movies loaded from tmdb.org.
@@ -27,6 +35,9 @@ public class TmdbMoviesFragment extends Fragment {
     private TmdbMoviesViewModel viewModel;
     private TmdbMoviesAdapter adapter;
 
+    @Inject
+    public ViewModelProvider.Factory viewModelFactory;
+
     // Required empty public constructor
     public TmdbMoviesFragment() {}
 
@@ -37,6 +48,15 @@ public class TmdbMoviesFragment extends Fragment {
         fragment.setArguments(args);
 
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NotNull Context context) {
+        // Note: when using Dagger for injecting Fragment objects, inject as early as possible.
+        // For this reason, call AndroidInjection.inject() in onAttach(). This also prevents
+        // inconsistencies if the Fragment is reattached.
+        AndroidSupportInjection.inject(this);
+        super.onAttach(context);
     }
 
     @Nullable
@@ -58,8 +78,8 @@ public class TmdbMoviesFragment extends Fragment {
     }
 
     private void initViewModel() {
-        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(getHostActivity());
-        viewModel = ViewModelProviders.of(this, factory)
+        viewModel = ViewModelProviders
+                .of(getHostActivity(), viewModelFactory)
                 .get(TmdbMoviesViewModel.class);
     }
 

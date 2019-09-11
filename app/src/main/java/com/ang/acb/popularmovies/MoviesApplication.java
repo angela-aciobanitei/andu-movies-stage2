@@ -1,25 +1,40 @@
 package com.ang.acb.popularmovies;
 
+import android.app.Activity;
 import android.app.Application;
 
+import com.ang.acb.popularmovies.di.DaggerAppComponent;
+
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
+import dagger.android.HasAndroidInjector;
 import timber.log.Timber;
 
 /**
- * Timber is a logger that provides utility on top of Android's normal Log class.
- * The behavior is added through Tree instances. You can install an instance by
- * calling Timber.plant(). Installation of Trees should be done as early as possible.
- * The onCreate() of your application is the most logical choice.
- *
- * See: https://github.com/JakeWharton/timber
+ * When using Dagger for injecting Activity objects, you need to make your Application
+ * implement HasAndroidInjector and @Inject a DispatchingAndroidInjector<Object> to
+ * return from the androidInjector() method. See: https://dagger.dev/android.html.
  */
-public class MoviesApplication extends Application {
+public class MoviesApplication extends Application implements HasActivityInjector {
+
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+
+    @Override
+    public DispatchingAndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        DaggerAppComponent.builder().application(this).build().inject(this);
+
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
+
     }
 }

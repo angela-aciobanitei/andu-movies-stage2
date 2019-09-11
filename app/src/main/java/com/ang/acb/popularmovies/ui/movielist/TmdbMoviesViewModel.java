@@ -13,6 +13,8 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.data.vo.Resource;
 
+import javax.inject.Inject;
+
 /**
  * The ViewModel used in [TmdbMoviesFragment].
  * Stores and manages UI-related data in a lifecycle conscious way.
@@ -29,6 +31,7 @@ public class TmdbMoviesViewModel extends ViewModel {
     private MutableLiveData<MoviesFilter> currentFilter = new MutableLiveData<>();
     private MutableLiveData<Integer> currentTitle = new MutableLiveData<>();
 
+    @Inject
     public TmdbMoviesViewModel(final MovieRepository movieRepository) {
         // By default show popular movies.
         currentFilter.setValue(MoviesFilter.POPULAR);

@@ -16,6 +16,9 @@ import com.ang.acb.popularmovies.utils.AppExecutors;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import timber.log.Timber;
 
 /**
@@ -24,17 +27,15 @@ import timber.log.Timber;
  * See: https://developer.android.com/jetpack/docs/guide#truth
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
  */
-public class MovieRepository implements MovieDataSource {
-
-    // For Singleton instantiation.
-    private static volatile MovieRepository sInstance;
+@Singleton
+public class MovieRepository {
 
     private final LocalMovieDataSource localDataSource;
     private final RemoteMovieDataSource remoteDataSource;
     private final AppExecutors appExecutors;
 
-    // Prevent direct instantiation.
-    private MovieRepository(LocalMovieDataSource localDataSource,
+    @Inject
+    public MovieRepository(LocalMovieDataSource localDataSource,
                             RemoteMovieDataSource remoteDataSource,
                             AppExecutors appExecutors) {
         this.localDataSource = localDataSource;
@@ -42,21 +43,6 @@ public class MovieRepository implements MovieDataSource {
         this.appExecutors = appExecutors;
     }
 
-    // Returns the single instance of this class, creating it if necessary.
-    public static MovieRepository getInstance(LocalMovieDataSource localDataSource,
-                                              RemoteMovieDataSource remoteDataSource,
-                                              AppExecutors executors) {
-        if (sInstance == null) {
-            synchronized (MovieRepository.class) {
-                if (sInstance == null) {
-                    sInstance = new MovieRepository(localDataSource, remoteDataSource, executors);
-                }
-            }
-        }
-        return sInstance;
-    }
-
-    @Override
     public LiveData<Resource<MovieDetails>> loadAllMovieDetails(final long movieId) {
         // Here we are using the NetworkBoundResource that we've created earlier which
         // can provide a resource backed by both the SQLite database and the network.
@@ -101,17 +87,14 @@ public class MovieRepository implements MovieDataSource {
         }.getAsLiveData();
     }
 
-    @Override
     public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
         return remoteDataSource.loadMoviesFilteredBy(sortBy);
     }
 
-    @Override
     public LiveData<List<Movie>> getAllFavoriteMovies() {
         return localDataSource.getAllFavoriteMovies();
     }
 
-    @Override
     public void markAsFavorite(final Movie movie) {
         appExecutors.diskIO().execute(() -> {
             Timber.d("Adding movie to favorites");
@@ -119,7 +102,6 @@ public class MovieRepository implements MovieDataSource {
         });
     }
 
-    @Override
     public void markAsNotFavorite(final Movie movie) {
         appExecutors.diskIO().execute(() -> {
             Timber.d("Removing movie from favorites");

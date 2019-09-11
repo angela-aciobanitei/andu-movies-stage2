@@ -5,19 +5,42 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import com.ang.acb.popularmovies.databinding.ActivityMainBinding;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.ang.acb.popularmovies.R;
 
+import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
+
+
+public class MainActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     private ActivityMainBinding binding;
-    private BottomNavigationController navigationController;
+
+    @Inject
+    BottomNavigationController navigationController;
+
+    @Inject
+    DispatchingAndroidInjector<Fragment> dispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        // Note: a DispatchingAndroidInjector<T> performs members-injection
+        // on instances of core Android types (e.g. Activity, Fragment) that
+        // are constructed by the Android framework and not by Dagger.
+        return dispatchingAndroidInjector;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Note: when using Dagger for injecting Activity
+        // objects, inject as early as possible.
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
         // Inflate view and obtain an instance of the binding class.

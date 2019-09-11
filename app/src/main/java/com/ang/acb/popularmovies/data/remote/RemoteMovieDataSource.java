@@ -10,40 +10,27 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.utils.AppExecutors;
 
-public class RemoteMovieDataSource {
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-    // For Singleton instantiation.
-    private static volatile RemoteMovieDataSource sInstance;
+@Singleton
+public class RemoteMovieDataSource {
 
     private final AppExecutors appExecutors;
     private final ApiService apiService;
 
     private static final int PAGE_SIZE = 20;
 
-    // Prevent direct instantiation.
-    private RemoteMovieDataSource(ApiService apiService,
+    @Inject
+    public RemoteMovieDataSource(ApiService apiService,
                                   AppExecutors appExecutors) {
         this.apiService = apiService;
         this.appExecutors = appExecutors;
     }
 
-    // Returns the single instance of this class, creating it if necessary.
-    public static RemoteMovieDataSource getInstance(ApiService apiService,
-                                                    AppExecutors appExecutors) {
-        if (sInstance == null) {
-            synchronized (AppExecutors.class) {
-                if (sInstance == null) {
-                    sInstance = new RemoteMovieDataSource(apiService, appExecutors);
-                }
-            }
-        }
-        return sInstance;
-    }
-
     public LiveData<ApiResponse<Movie>> loadAllMovieDetails(final long movieId) {
         return apiService.getAllMovieDetails(movieId);
     }
-
 
     public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
         // Create the paged data source factory.

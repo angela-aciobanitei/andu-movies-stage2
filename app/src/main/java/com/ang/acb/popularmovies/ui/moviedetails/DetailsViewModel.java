@@ -13,6 +13,8 @@ import com.ang.acb.popularmovies.utils.SnackbarMessage;
 
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import timber.log.Timber;
 
 /**
@@ -28,10 +30,10 @@ public class DetailsViewModel extends ViewModel {
     private final MovieRepository movieRepository;
     private LiveData<Resource<MovieDetails>> movieDetailsLiveData;
     private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
-
     private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private boolean isFavorite;
 
+    @Inject
     public DetailsViewModel(final MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
@@ -44,7 +46,6 @@ public class DetailsViewModel extends ViewModel {
         movieDetailsLiveData = Transformations.switchMap(
                 movieIdLiveData, movieRepository::loadAllMovieDetails);
 
-        // Trigger movie loading.
         movieIdLiveData.setValue(movieId);
     }
 

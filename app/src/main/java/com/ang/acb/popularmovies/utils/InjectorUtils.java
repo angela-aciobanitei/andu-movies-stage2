@@ -16,29 +16,29 @@ import com.ang.acb.popularmovies.data.repository.MovieRepository;
  */
 public class InjectorUtils {
 
-    private static RemoteMovieDataSource provideMoviesRemoteDataSource() {
-        ApiService apiService = ApiClient.getInstance();
-        AppExecutors executors = AppExecutors.getInstance();
-        return RemoteMovieDataSource.getInstance(apiService, executors);
-    }
-
-    private static LocalMovieDataSource provideMoviesLocalDataSource(Context context) {
-        AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
-        return LocalMovieDataSource.getInstance(database);
-    }
-
-    private static MovieRepository provideMovieRepository(Context context) {
-        RemoteMovieDataSource remoteDataSource = provideMoviesRemoteDataSource();
-        LocalMovieDataSource localDataSource = provideMoviesLocalDataSource(context);
-        AppExecutors executors = AppExecutors.getInstance();
-        return MovieRepository.getInstance(
-                localDataSource,
-                remoteDataSource,
-                executors);
-    }
-
-    public static ViewModelFactory provideViewModelFactory(Context context) {
-        MovieRepository repository = provideMovieRepository(context);
-        return ViewModelFactory.getInstance(repository);
-    }
+//    private static RemoteMovieDataSource provideMoviesRemoteDataSource() {
+//        ApiService apiService = ApiClient.getInstance();
+//        AppExecutors executors = AppExecutors.getInstance();
+//        return RemoteMovieDataSource.getInstance(apiService, executors);
+//    }
+//
+//    private static LocalMovieDataSource provideMoviesLocalDataSource(Context context) {
+//        AppDatabase database = AppDatabase.getInstance(context.getApplicationContext());
+//        return LocalMovieDataSource.getInstance(database);
+//    }
+//
+//    private static MovieRepository provideMovieRepository(Context context) {
+//        RemoteMovieDataSource remoteDataSource = provideMoviesRemoteDataSource();
+//        LocalMovieDataSource localDataSource = provideMoviesLocalDataSource(context);
+//        AppExecutors executors = AppExecutors.getInstance();
+//        return MovieRepository.getInstance(
+//                localDataSource,
+//                remoteDataSource,
+//                executors);
+//    }
+//
+//    public static ViewModelFactory provideViewModelFactory(Context context) {
+//        MovieRepository repository = provideMovieRepository(context);
+//        return ViewModelFactory.getInstance(repository);
+//    }
 }
