@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.databinding.FragmentFavoriteMoviesBinding;
 import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
-import com.ang.acb.popularmovies.utils.InjectorUtils;
-import com.ang.acb.popularmovies.utils.ViewModelFactory;
 
 import org.jetbrains.annotations.NotNull;
 

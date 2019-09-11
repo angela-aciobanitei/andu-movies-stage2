@@ -22,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
-import com.ang.acb.popularmovies.utils.InjectorUtils;
-import com.ang.acb.popularmovies.utils.ViewModelFactory;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -142,7 +140,6 @@ public class DetailsActivity extends AppCompatActivity {
                 this, RecyclerView.HORIZONTAL, false));
         rvTrailers.setHasFixedSize(true);
         rvTrailers.setAdapter(new TrailersAdapter());
-        // Disable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(rvTrailers, false);
     }
 
@@ -151,7 +148,6 @@ public class DetailsActivity extends AppCompatActivity {
         listReviews.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
         listReviews.setAdapter(new ReviewsAdapter());
-        // Disable nested scrolling for this view.
         ViewCompat.setNestedScrollingEnabled(listReviews, false);
     }
 
@@ -192,9 +188,9 @@ public class DetailsActivity extends AppCompatActivity {
         return true;
     }
 
-    // Tints menu item icons
-    // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
     public void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
+        // Tints menu item icons
+        // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
         Drawable iconWrapper = DrawableCompat.wrap(item.getIcon());
         DrawableCompat.setTint(iconWrapper, context.getResources().getColor(color));
         item.setIcon(iconWrapper);

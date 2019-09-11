@@ -13,9 +13,9 @@ import com.ang.acb.popularmovies.utils.AppExecutors;
 
 
 /**
- * A generic class that can provide a resource backed by both the SQLite database and
- * the network. It defines two type parameters, ResultType and RequestType, because the
- * data type returned from the API might not match the data type used locally.
+ * A generic class that can provide a resource backed by both the SQLite database and the network.
+ * It defines two type parameters, ResultType and RequestType, because the data type returned from
+ * the API might not match the data type used locally.
  *
  * See: https://developer.android.com/jetpack/docs/guide#addendum.
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample

@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 /**
  * A utility class that handles navigation in {@link MainActivity}.
+ *
+ * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
  */
 public class BottomNavigationController {
 

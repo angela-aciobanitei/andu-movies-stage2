@@ -1,12 +1,9 @@
 package com.ang.acb.popularmovies.data.vo;
 
-
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import javax.inject.Inject;
 
 /**
  * A generic class that contains data and status about loading this data.

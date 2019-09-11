@@ -28,6 +28,8 @@ import retrofit2.Response;
  */
 public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
+    private static final int FIRST_PAGE_KEY = 1;
+
     private final ApiService movieService;
     private final MoviesFilter sortBy;
     private final Executor networkExecutor;
@@ -38,8 +40,6 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     public interface RetryCallback {
         void retry();
     }
-
-    private static final int FIRST_PAGE_KEY = 1;
 
     @Inject
     public PagedMovieDataSource(ApiService movieService,
@@ -59,12 +59,12 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     }
 
     /**
-     * This method is responsible for loading the data initially when app is
+     * This method is responsible for initially loading the data when app is
      * launched for the first time. We are fetching the first page data from
      * the API and passing it via the callback method to the UI.
      *
      * @param params Parameters for initial load, including requested load size.
-     * @param callback Callback that receives initial load data
+     * @param callback Callback that receives initial load data.
      */
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params,

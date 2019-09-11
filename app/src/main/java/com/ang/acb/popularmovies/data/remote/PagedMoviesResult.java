@@ -9,7 +9,6 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 
 import javax.inject.Inject;
 
-
 public class PagedMoviesResult {
 
     private MutableLiveData<PagedMovieDataSource> pagedDataSource;

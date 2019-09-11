@@ -7,7 +7,6 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.data.vo.Trailer;
-import com.ang.acb.popularmovies.utils.AppExecutors;
 
 import java.util.List;
 

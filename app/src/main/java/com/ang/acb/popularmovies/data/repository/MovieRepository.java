@@ -73,7 +73,6 @@ public class MovieRepository {
             @NonNull
             @Override
             protected void onFetchFailed() {
-                // Ignored
                 Timber.d("Fetch failed!!");
             }
 

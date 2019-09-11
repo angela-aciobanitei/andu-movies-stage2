@@ -21,7 +21,7 @@ import javax.inject.Inject;
  *
  * See: https://medium.com/androiddevelopers/viewmodels-and-livedata-patterns-antipatterns-21efaef74a54
  * See: https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
- * * See: https://github.com/googlesamples/android-architecture-components/tree/GithubBrowserSample/app/src/main/java/com/android/example/github/ui
+ * See: https://github.com/googlesamples/android-architecture-components/tree/GithubBrowserSample/app/src/main/java/com/android/example/github/ui
  */
 public class TmdbMoviesViewModel extends ViewModel {
 
@@ -37,6 +37,10 @@ public class TmdbMoviesViewModel extends ViewModel {
         currentFilter.setValue(MoviesFilter.POPULAR);
         currentTitle.setValue(R.string.action_show_popular);
 
+        // Note: In order to pass data between components we need a way to map and combine.
+        // We can use MediatorLiveData and the helpers in the Transformations class:
+        // Transformations.map (One-to-one static transformation)
+        // Transformations.switchMap (One-to-one dynamic transformation)
         pagedResult = Transformations.map(currentFilter, movieRepository::loadMoviesFilteredBy);
         pagedData = Transformations.switchMap(pagedResult,PagedMoviesResult::getPagedData);
         networkState = Transformations.switchMap(pagedResult, PagedMoviesResult::getNetworkState);

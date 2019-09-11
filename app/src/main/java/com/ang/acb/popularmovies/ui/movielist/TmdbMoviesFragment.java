@@ -16,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
-import com.ang.acb.popularmovies.utils.InjectorUtils;
-import com.ang.acb.popularmovies.utils.ViewModelFactory;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +24,7 @@ import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
- * The UI Controller for displaying a list of movies loaded from tmdb.org.
+ * The UI Controller for displaying a list of movies loaded from The Movie DB.
  */
 public class TmdbMoviesFragment extends Fragment {
 

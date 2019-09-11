@@ -49,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
         // Specify the current activity as the lifecycle owner.
         binding.setLifecycleOwner(this);
 
-        // Init nav controller
-        navigationController = new BottomNavigationController(this);
-
         // Show popular movies fragment by default.
         if (savedInstanceState == null) {
             navigationController.navigateToPopularMovies();

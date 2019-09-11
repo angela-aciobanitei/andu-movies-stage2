@@ -39,13 +39,6 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public void init(long movieId) {
-        // Load movie details only when the activity is created for the first time.
-        if (movieDetailsLiveData != null) return;
-
-        Timber.d("Initializing the movie details view model");
-        movieDetailsLiveData = Transformations.switchMap(
-                movieIdLiveData, movieRepository::loadAllMovieDetails);
-
         movieIdLiveData.setValue(movieId);
     }
 
@@ -54,6 +47,10 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public LiveData<Resource<MovieDetails>> getMovieDetailsLiveData() {
+        if (movieDetailsLiveData == null) {
+            movieDetailsLiveData = Transformations.switchMap(
+                    movieIdLiveData, movieRepository::loadAllMovieDetails);
+        }
         return movieDetailsLiveData;
     }
 
@@ -65,13 +62,12 @@ public class DetailsViewModel extends ViewModel {
         return isFavorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
     public void onFavoriteClicked() {
-        MovieDetails movieDetails = Objects.requireNonNull(
-                movieDetailsLiveData.getValue()).data;
+        MovieDetails movieDetails = Objects.requireNonNull(movieDetailsLiveData.getValue()).data;
         if (!isFavorite) {
             movieRepository.markAsFavorite(Objects.requireNonNull(movieDetails).movie);
             snackbarMessage.setValue(R.string.movie_added_to_favorites);
