@@ -1,9 +1,11 @@
-package com.ang.acb.popularmovies.data.remote;
+package com.ang.acb.popularmovies.utils;
 
 import java.lang.reflect.Type;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.lifecycle.LiveData;
+
+import com.ang.acb.popularmovies.data.remote.ApiResponse;
 
 import retrofit2.Call;
 import retrofit2.CallAdapter;

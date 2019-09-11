@@ -17,8 +17,11 @@ import timber.log.Timber;
 
 /**
  * The ViewModel used in [DetailsActivity].
+ * Stores and manages UI-related data in a lifecycle conscious way.
  *
- * See: https://github.com/googlesamples/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/viewmodels
+ * See: https://medium.com/androiddevelopers/viewmodels-and-livedata-patterns-antipatterns-21efaef74a54
+ * See: https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
+ * See: https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
  */
 public class DetailsViewModel extends ViewModel {
 

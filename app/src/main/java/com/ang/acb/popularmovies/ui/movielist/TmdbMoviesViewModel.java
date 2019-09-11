@@ -15,16 +15,19 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 
 /**
  * The ViewModel used in [TmdbMoviesFragment].
+ * Stores and manages UI-related data in a lifecycle conscious way.
  *
- * See: https://github.com/googlesamples/android-sunflower
+ * See: https://medium.com/androiddevelopers/viewmodels-and-livedata-patterns-antipatterns-21efaef74a54
+ * See: https://medium.com/androiddevelopers/livedata-beyond-the-viewmodel-reactive-patterns-using-transformations-and-mediatorlivedata-fda520ba00b7
+ * * See: https://github.com/googlesamples/android-architecture-components/tree/GithubBrowserSample/app/src/main/java/com/android/example/github/ui
  */
 public class TmdbMoviesViewModel extends ViewModel {
 
     private LiveData<PagedMoviesResult> pagedResult;
     private LiveData<PagedList<Movie>> pagedData;
     private LiveData<Resource> networkState;
-    private MutableLiveData<Integer> currentTitle = new MutableLiveData<>();
     private MutableLiveData<MoviesFilter> currentFilter = new MutableLiveData<>();
+    private MutableLiveData<Integer> currentTitle = new MutableLiveData<>();
 
     public TmdbMoviesViewModel(final MovieRepository movieRepository) {
         // By default show popular movies.

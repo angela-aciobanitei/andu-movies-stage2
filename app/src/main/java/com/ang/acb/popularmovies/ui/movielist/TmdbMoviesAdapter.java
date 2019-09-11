@@ -12,12 +12,11 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Resource;
 
 /**
- * A custom PagedListAdapter for the movie list items. A PagedListAdapter is an
- * implementation of RecyclerView.Adapter that presents data from a PagedList.
- * PagedListAdapter listens to PagedList loading callbacks as pages are loaded,
- * and uses DiffUtil on a background thread to compute fine grained updates as
- * new PagedLists are received. Handles both the internal paging of the list as
- * more data is loaded, and updates in the form of new PagedLists.
+ * A custom PagedListAdapter for the movie list items. A PagedListAdapter is an implementation
+ * of RecyclerView.Adapter that presents data from a PagedList. PagedListAdapter listens to
+ * PagedList loading callbacks as pages are loaded, and uses DiffUtil on a background thread
+ * to compute fine grained updates as new PagedLists are received. Handles both the internal
+ * paging of the list as more data is loaded, and updates in the form of new PagedLists.
  *
  * See: https://developer.android.com/topic/libraries/architecture/paging/ui#implement-diffing-callback
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample

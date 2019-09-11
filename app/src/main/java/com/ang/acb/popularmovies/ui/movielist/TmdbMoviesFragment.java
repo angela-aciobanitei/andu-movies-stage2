@@ -58,7 +58,7 @@ public class TmdbMoviesFragment extends Fragment {
     }
 
     private void initViewModel() {
-        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(getContext());
+        ViewModelFactory factory = InjectorUtils.provideViewModelFactory(getHostActivity());
         viewModel = ViewModelProviders.of(this, factory)
                 .get(TmdbMoviesViewModel.class);
     }
