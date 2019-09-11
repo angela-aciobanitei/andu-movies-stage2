@@ -21,7 +21,6 @@ import timber.log.Timber;
 @Singleton
 public class LocalMovieDataSource {
 
-
     private final AppDatabase database;
 
     @Inject

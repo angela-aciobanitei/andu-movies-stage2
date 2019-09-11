@@ -12,8 +12,7 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 /**
- *
- * A factory class for creating ViewModels. Note: Dagger 2 allows multibindings and
+ * A factory class for creating ViewModels. Dagger 2 allows multibindings and
  * with it the possibility to create a "map" of objects with a specific key:
  *      the key: for example the class type of ViewModel MyViewModel::class
  *      the value: the instance of ViewModel MyViewModel(repository, …)
@@ -21,7 +20,6 @@ import javax.inject.Singleton;
  * See: https://github.com/googlesamples/android-architecture-components/tree/GithubBrowserSample
  * See: https://blog.kotlin-academy.com/understanding-dagger-2-multibindings-viewmodel-8418eb372848
  */
-
 @Singleton
 public class MoviesViewModelFactory implements ViewModelProvider.Factory {
 

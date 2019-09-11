@@ -83,7 +83,7 @@ public class MovieRepository {
                 Timber.d("Loading movie from database");
                 return localDataSource.getAllMovieDetails(movieId);
             }
-        }.getAsLiveData();
+        }.asLiveData();
     }
 
     public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {

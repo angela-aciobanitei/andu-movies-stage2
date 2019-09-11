@@ -31,6 +31,9 @@ import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
+/**
+ * The UI Controller for displaying the details of a movie loaded from The Movie DB.
+ */
 public class DetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE_ID = "extra_movie_id";

@@ -32,7 +32,7 @@ import com.google.android.material.chip.ChipGroup;
  */
 public class BindingAdapters {
 
-    // For movie poster or movie backdrop images
+    // Used for movie poster or movie backdrop images
     @BindingAdapter({"imageUrl", "isPoster"})
     public static void bindImage(ImageView imageView, String imagePath, boolean isPoster) {
         String baseUrl;

@@ -8,7 +8,7 @@ import timber.log.Timber;
 
 /**
  * Common class used by API responses.
- * @param <T> the type of the response object
+ * @param <T> The type of the response object.
  *
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
  */

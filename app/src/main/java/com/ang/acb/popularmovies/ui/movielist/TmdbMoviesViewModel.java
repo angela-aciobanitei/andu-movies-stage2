@@ -16,7 +16,7 @@ import com.ang.acb.popularmovies.data.vo.Resource;
 import javax.inject.Inject;
 
 /**
- * The ViewModel used in [TmdbMoviesFragment].
+ * The ViewModel used in {@link TmdbMoviesFragment}.
  * Stores and manages UI-related data in a lifecycle conscious way.
  *
  * See: https://medium.com/androiddevelopers/viewmodels-and-livedata-patterns-antipatterns-21efaef74a54
@@ -37,10 +37,6 @@ public class TmdbMoviesViewModel extends ViewModel {
         currentFilter.setValue(MoviesFilter.POPULAR);
         currentTitle.setValue(R.string.action_show_popular);
 
-        // Note: In order to pass data between components we need a way to map and combine.
-        // We can use MediatorLiveData and the helpers in the Transformations class:
-        // Transformations.map (One-to-one static transformation)
-        // Transformations.switchMap (One-to-one dynamic transformation)
         pagedResult = Transformations.map(currentFilter, movieRepository::loadMoviesFilteredBy);
         pagedData = Transformations.switchMap(pagedResult,PagedMoviesResult::getPagedData);
         networkState = Transformations.switchMap(pagedResult, PagedMoviesResult::getNetworkState);

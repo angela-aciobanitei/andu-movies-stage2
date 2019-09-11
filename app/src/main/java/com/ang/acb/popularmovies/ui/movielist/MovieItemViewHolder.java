@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.databinding.ItemMovieBinding;
 import com.ang.acb.popularmovies.ui.moviedetails.DetailsActivity;

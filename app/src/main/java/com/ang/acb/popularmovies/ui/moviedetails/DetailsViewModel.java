@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import timber.log.Timber;
 
 /**
- * The ViewModel used in [DetailsActivity].
+ * The ViewModel used in {@link DetailsActivity}.
  * Stores and manages UI-related data in a lifecycle conscious way.
  *
  * See: https://medium.com/androiddevelopers/viewmodels-and-livedata-patterns-antipatterns-21efaef74a54

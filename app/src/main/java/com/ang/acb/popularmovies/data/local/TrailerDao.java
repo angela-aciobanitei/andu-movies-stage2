@@ -9,7 +9,7 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
 import java.util.List;
 
 /**
- * Interface for database access on Trailers related operations.
+ * Interface for database access on {@link Trailer} related operations.
  *
  * See: https://medium.com/androiddevelopers/7-steps-to-room-27a5fe5f99b2
  * See: https://medium.com/androiddevelopers/7-pro-tips-for-room-fbadea4bfbd1

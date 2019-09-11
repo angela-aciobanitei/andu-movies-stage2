@@ -19,12 +19,11 @@ import retrofit2.http.Query;
  */
 public interface ApiService {
 
-    // The endpoints are defined using special retrofit annotations to
-    // encode details about the parameters and request method.
-    // Note: every method must have an HTTP annotation that provides the
-    // request method and relative URL. There are five built-in annotations:
-    // GET, POST, PUT, DELETE, and HEAD. The relative URL of the resource is
-    // specified in the annotation.
+    // Note: the endpoints are defined using special retrofit annotations to encode
+    // details about the parameters and request method. Every method must have an
+    // HTTP annotation that provides the request method and relative URL. There are
+    // five built-in annotations: GET, POST, PUT, DELETE, and HEAD. The relative
+    // URL of the resource is specified in the annotation.
     @GET("movie/popular")
     Call<MoviesResponse> getPopularMovies(@Query("page") int page);
 

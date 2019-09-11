@@ -11,7 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
- * The ViewModel used in [FavoriteMoviesFragment].
+ * The ViewModel used in {@link FavoriteMoviesFragment}.
  * Stores and manages UI-related data in a lifecycle conscious way.
  *
  * See: https://github.com/googlesamples/android-sunflower
