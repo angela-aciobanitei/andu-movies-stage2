@@ -42,9 +42,9 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     }
 
     @Inject
-    public PagedMovieDataSource(ApiService movieService,
-                                MoviesFilter sortBy,
-                                Executor networkExecutor) {
+    PagedMovieDataSource(ApiService movieService,
+                         MoviesFilter sortBy,
+                         Executor networkExecutor) {
         this.movieService = movieService;
         this.sortBy = sortBy;
         this.networkExecutor = networkExecutor;

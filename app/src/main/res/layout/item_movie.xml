@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Data binding layout files are slightly different and start
-with a root tag of <layout> followed by a <data> element and a
-view root element. This view element is what your root would
-be in a non-binding layout file.-->
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- The variables within <data> describe the properties that
-    will be used within this layout. Expressions within the layout
-    are written in the attribute properties using the "@{}"-->
+
     <data>
 
         <variable
@@ -17,8 +11,7 @@ be in a non-binding layout file.-->
             type="com.ang.acb.popularmovies.data.vo.Movie" />
     </data>
 
-    <!-- UI layout's root element -->
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/movie_item_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,16 +30,31 @@ be in a non-binding layout file.-->
                 android:layout_height="0dp"
                 android:contentDescription="@string/movie_poster_content_description"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{movie.posterPath}"
-                app:isPoster="@{true}"
-                app:layout_constraintDimensionRatio="w,3:2"
+                app:layout_constraintDimensionRatio="W,3:2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
+            <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="52dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="2"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="@{movie.title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_item_poster"
+                tools:text="@tools:sample/lorem"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

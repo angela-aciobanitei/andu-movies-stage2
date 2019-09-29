@@ -24,32 +24,26 @@ public class BottomNavigationController {
 
     public void navigateToPopularMovies() {
         fragmentManager.beginTransaction()
-                .replace(containerId,
-                        TmdbMoviesFragment.newInstance(R.id.action_show_popular))
+                .replace(containerId, TmdbMoviesFragment.newInstance(R.id.action_show_popular))
                 .commit();
 
     }
 
     public void navigateToTopRatedMovies() {
         fragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container,
-                        TmdbMoviesFragment.newInstance(R.id.action_show_top_rated))
+                .replace(containerId, TmdbMoviesFragment.newInstance(R.id.action_show_top_rated))
                 .commit();
     }
 
     public void navigateToNowPlayingMovies(){
         fragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container,
-                        TmdbMoviesFragment.newInstance(R.id.action_show_now_playing))
+                .replace(containerId, TmdbMoviesFragment.newInstance(R.id.action_show_now_playing))
                 .commit();
     }
 
     public void navigateToFavorites() {
         fragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container,
-                        FavoriteMoviesFragment.newInstance())
+                .replace(containerId, new FavoriteMoviesFragment())
                 .commit();
     }
-
-
 }

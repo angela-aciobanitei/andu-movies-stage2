@@ -11,11 +11,10 @@ import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.databinding.ItemCastBinding;
 import com.ang.acb.popularmovies.utils.Constants;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.ang.acb.popularmovies.utils.GlideApp;
 
 /**
- * A ViewHolder that works with a DataBinding.
+ * A ViewHolder that works with DataBinding.
  */
 public class CastItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -28,7 +27,7 @@ public class CastItemViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
     }
 
-    public static CastItemViewHolder create(ViewGroup parent) {
+    public static CastItemViewHolder createViewHolder(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemCastBinding binding = ItemCastBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
@@ -39,9 +38,10 @@ public class CastItemViewHolder extends RecyclerView.ViewHolder {
         String profileImage = Constants.IMAGE_BASE_URL +
                 Constants.PROFILE_SIZE_W185 +
                 cast.getProfileImagePath();
-        Glide.with(context)
+
+        GlideApp.with(context)
                 .load(profileImage)
-                .apply(new RequestOptions().placeholder(R.color.colorImagePlaceholder))
+                .placeholder(R.color.colorImagePlaceholder)
                 .into(binding.castItemProfileImage);
 
         binding.castItemName.setText(cast.getActorName());

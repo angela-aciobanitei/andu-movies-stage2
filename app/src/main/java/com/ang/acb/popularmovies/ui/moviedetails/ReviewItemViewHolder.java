@@ -10,7 +10,7 @@ import com.ang.acb.popularmovies.data.vo.Review;
 import com.ang.acb.popularmovies.databinding.ItemReviewBinding;
 
 /**
- * A ViewHolder that works with a DataBinding.
+ * A ViewHolder that works with DataBinding.
  */
 public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -21,7 +21,7 @@ public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
         this.binding = binding;
     }
 
-    public static ReviewItemViewHolder create(ViewGroup parent) {
+    public static ReviewItemViewHolder createViewHolder(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemReviewBinding binding = ItemReviewBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
@@ -34,10 +34,7 @@ public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
         binding.reviewAuthorName.setText(review.getAuthor());
         binding.reviewTextContent.setText(review.getContent());
 
-        // Note: when a variable or observable object changes, the binding is scheduled
-        // to change before the next frame. There are times, however, when binding must
-        // be executed immediately. To force execution, use executePendingBindings().
-        // https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding
+        // Binding must be executed immediately.
         binding.executePendingBindings();
     }
 

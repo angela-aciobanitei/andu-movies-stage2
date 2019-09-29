@@ -52,9 +52,9 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_movie:
-                return MovieItemViewHolder.create(parent);
+                return MovieItemViewHolder.createViewHolder(parent);
             case R.layout.item_network_state:
-                return NetworkStateItemViewHolder.create(parent, viewModel);
+                return NetworkStateItemViewHolder.createViewHolder(parent, viewModel);
             default:
                 throw new IllegalArgumentException("Unknown view type " + viewType);
         }

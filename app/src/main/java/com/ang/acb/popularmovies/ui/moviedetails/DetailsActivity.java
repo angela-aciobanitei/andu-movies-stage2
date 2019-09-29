@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
+import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
 import com.google.android.material.appbar.AppBarLayout;
@@ -30,6 +31,8 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+
+import static com.ang.acb.popularmovies.utils.UiUtils.tintMenuIcon;
 
 /**
  * The UI Controller for displaying the details of a movie loaded from The Movie DB.
@@ -78,17 +81,15 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = binding.toolbar;
-        setSupportActionBar(toolbar);
+    private void setupToolbar() { ;
+        setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             // Handle Up navigation
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setToolbarTitleIfCollapsed();
         }
     }
 
-    private void setToolbarTitleIfCollapsed() {
+    private void setToolbarTitleIfCollapsed(Movie movie) {
         // To set the title on the toolbar only when the toolbar is collapsed,
         // we need to add an OnOffsetChangedListener to AppBarLayout to determine
         // when CollapsingToolbarLayout is collapsed or expanded.
@@ -107,10 +108,7 @@ public class DetailsActivity extends AppCompatActivity {
                 if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
                 // If toolbar is completely collapsed, set the collapsing bar title.
                 if (totalScrollRange + verticalOffset == 0) {
-                    MovieDetails movieDetails = Objects.requireNonNull(
-                            viewModel.getMovieDetailsLiveData().getValue()).getData();
-                    binding.collapsingToolbar.setTitle(Objects.requireNonNull(movieDetails)
-                            .movie.getTitle());
+                    binding.collapsingToolbar.setTitle(movie.getTitle());
                     isShown = true;
                 } else if (isShown) {
                     // When toolbar is expanded, display an empty string.
@@ -157,12 +155,20 @@ public class DetailsActivity extends AppCompatActivity {
     private void observeResult() {
         viewModel.getMovieDetailsLiveData().observe(this, resource -> {
             if (resource.data != null && resource.data.movie != null) {
+                // Handle toolbar title when collapsed.
+                if (getSupportActionBar() != null) {
+                    setToolbarTitleIfCollapsed(resource.data.movie);
+                }
+
                 // Handle adding/removing movie from favorites.
                 viewModel.setFavorite(resource.data.movie.isFavorite());
                 invalidateOptionsMenu();
+
+                // Bind movie data
+                binding.setMovieDetails(resource.data);
             }
             binding.setResource(resource);
-            binding.setMovieDetails(resource.data);
+
         });
 
         // Handle retry event in case of network failure.
@@ -189,14 +195,6 @@ public class DetailsActivity extends AppCompatActivity {
         tintMenuIcon(this, favoriteItem, android.R.color.white);
 
         return true;
-    }
-
-    public void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
-        // Tints menu item icons
-        // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
-        Drawable iconWrapper = DrawableCompat.wrap(item.getIcon());
-        DrawableCompat.setTint(iconWrapper, context.getResources().getColor(color));
-        item.setIcon(iconWrapper);
     }
 
     @Override

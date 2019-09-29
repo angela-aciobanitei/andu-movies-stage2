@@ -23,7 +23,7 @@ public class FavoriteMoviesViewModel extends ViewModel {
     private LiveData<List<Movie>> favoriteListLiveData;
 
     @Inject
-    public FavoriteMoviesViewModel(MovieRepository repository) {
+    FavoriteMoviesViewModel(MovieRepository repository) {
         this.repository = repository;
     }
 

@@ -9,20 +9,19 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
 
 import java.util.List;
 
-public class TrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TrailersAdapter extends RecyclerView.Adapter<TrailerItemViewHolder> {
 
     private List<Trailer> trailerList;
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return TrailerItemViewHolder.create(parent);
+    public TrailerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return TrailerItemViewHolder.createViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Trailer trailer = trailerList.get(position);
-        ((TrailerItemViewHolder) holder).bindTo(trailer);
+    public void onBindViewHolder(@NonNull TrailerItemViewHolder holder, int position) {
+        holder.bindTo(trailerList.get(position));
     }
 
     @Override
@@ -32,6 +31,8 @@ public class TrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void submitList(List<Trailer> trailers) {
         trailerList = trailers;
+        // Notify any registered observers
+        // that the data set has changed.
         notifyDataSetChanged();
     }
 }

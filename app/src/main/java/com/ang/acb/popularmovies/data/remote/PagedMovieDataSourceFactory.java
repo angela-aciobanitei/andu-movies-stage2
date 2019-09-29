@@ -28,9 +28,9 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
     private final Executor networkExecutor;
 
     @Inject
-    public PagedMovieDataSourceFactory(ApiService movieService,
-                                       MoviesFilter sortBy,
-                                       Executor networkExecutor) {
+    PagedMovieDataSourceFactory(ApiService movieService,
+                                MoviesFilter sortBy,
+                                Executor networkExecutor) {
         this.movieService = movieService;
         this.sortBy = sortBy;
         this.networkExecutor = networkExecutor;

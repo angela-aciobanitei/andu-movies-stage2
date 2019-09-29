@@ -9,20 +9,19 @@ import com.ang.acb.popularmovies.data.vo.Cast;
 
 import java.util.List;
 
-public class CastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CastAdapter extends RecyclerView.Adapter<CastItemViewHolder> {
 
     private List<Cast> castList;
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return CastItemViewHolder.create(parent);
+    public CastItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return CastItemViewHolder.createViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Cast cast = castList.get(position);
-        ((CastItemViewHolder) holder).bindTo(cast);
+    public void onBindViewHolder(@NonNull CastItemViewHolder holder, int position) {
+        holder.bindTo(castList.get(position));
     }
 
     @Override
@@ -32,6 +31,8 @@ public class CastAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void submitList(List<Cast> casts) {
         castList = casts;
+        // Notify any registered observers
+        // that the data set has changed.
         notifyDataSetChanged();
     }
 }

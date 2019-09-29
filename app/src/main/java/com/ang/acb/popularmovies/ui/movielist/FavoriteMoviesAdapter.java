@@ -9,20 +9,19 @@ import com.ang.acb.popularmovies.data.vo.Movie;
 
 import java.util.List;
 
-public class FavoriteMoviesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FavoriteMoviesAdapter extends RecyclerView.Adapter<MovieItemViewHolder> {
 
     private List<Movie> movieList;
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return MovieItemViewHolder.create(parent);
+    public MovieItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return MovieItemViewHolder.createViewHolder(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Movie movie = movieList.get(position);
-        ((MovieItemViewHolder) holder).bindTo(movie);
+    public void onBindViewHolder(@NonNull MovieItemViewHolder holder, int position) {
+        holder.bindTo(movieList.get(position));
     }
 
     @Override
@@ -32,6 +31,8 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void submitList(List<Movie> movies) {
         movieList = movies;
+        // Notify any registered observers
+        // that the data set has changed.
         notifyDataSetChanged();
     }
 }

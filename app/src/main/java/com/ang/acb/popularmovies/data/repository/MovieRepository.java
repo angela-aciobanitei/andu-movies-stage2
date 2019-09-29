@@ -35,9 +35,9 @@ public class MovieRepository {
     private final AppExecutors appExecutors;
 
     @Inject
-    public MovieRepository(LocalMovieDataSource localDataSource,
-                            RemoteMovieDataSource remoteDataSource,
-                            AppExecutors appExecutors) {
+    MovieRepository(LocalMovieDataSource localDataSource,
+                    RemoteMovieDataSource remoteDataSource,
+                    AppExecutors appExecutors) {
         this.localDataSource = localDataSource;
         this.remoteDataSource = remoteDataSource;
         this.appExecutors = appExecutors;

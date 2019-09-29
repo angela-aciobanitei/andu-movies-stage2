@@ -28,7 +28,7 @@ public class NetworkStateItemViewHolder extends RecyclerView.ViewHolder {
         binding.retryButton.setOnClickListener(view -> viewModel.retry());
     }
 
-    public static NetworkStateItemViewHolder create(ViewGroup parent, TmdbMoviesViewModel viewModel) {
+    public static NetworkStateItemViewHolder createViewHolder(ViewGroup parent, TmdbMoviesViewModel viewModel) {
         // Inflate view and obtain an instance of the binding class.
         ItemNetworkStateBinding binding = ItemNetworkStateBinding.inflate(
                 LayoutInflater.from(parent.getContext()),

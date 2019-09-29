@@ -21,7 +21,7 @@ import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_TRAILER_THUMBNAI
 import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_WEB_BASE_URL;
 
 /**
- * A ViewHolder that works with a DataBinding.
+ * A ViewHolder that works with DataBinding.
  */
 public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -35,7 +35,7 @@ public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
     }
 
-    public static TrailerItemViewHolder create(ViewGroup parent) {
+    public static TrailerItemViewHolder createViewHolder(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemTrailerBinding binding = ItemTrailerBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
@@ -55,26 +55,20 @@ public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
 
         binding.trailerName.setText(trailer.getTitle());
 
-        binding.trailerCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // See: https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent
-                Intent appIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(YOUTUBE_APP_BASE_URL + trailer.getKey()));
-                Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(YOUTUBE_WEB_BASE_URL + trailer.getKey()));
-                if (appIntent.resolveActivity(context.getPackageManager()) != null) {
-                    context.startActivity(appIntent);
-                } else {
-                    context.startActivity(webIntent);
-                }
+        binding.trailerCardView.setOnClickListener(view -> {
+            // See: https://stackoverflow.com/questions/574195/android-youtube-app-play-video-intent
+            Intent appIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(YOUTUBE_APP_BASE_URL + trailer.getKey()));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(YOUTUBE_WEB_BASE_URL + trailer.getKey()));
+            if (appIntent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(appIntent);
+            } else {
+                context.startActivity(webIntent);
             }
         });
 
-        // Note: when a variable or observable object changes, the binding is scheduled
-        // to change before the next frame. There are times, however, when binding must
-        // be executed immediately. To force execution, use executePendingBindings().
-        // https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding
+        // Binding must be executed immediately.
         binding.executePendingBindings();
     }
 

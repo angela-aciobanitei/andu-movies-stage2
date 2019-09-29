@@ -16,9 +16,9 @@ public class PagedMoviesResult {
     private LiveData<Resource> networkState;
 
     @Inject
-    public PagedMoviesResult(MutableLiveData<PagedMovieDataSource> pagedDataSource,
-                             LiveData<PagedList<Movie>> pagedData,
-                             LiveData<Resource> networkState) {
+    PagedMoviesResult(MutableLiveData<PagedMovieDataSource> pagedDataSource,
+                      LiveData<PagedList<Movie>> pagedData,
+                      LiveData<Resource> networkState) {
         this.pagedDataSource = pagedDataSource;
         this.pagedData = pagedData;
         this.networkState = networkState;

@@ -64,19 +64,19 @@ public class TmdbMoviesViewModel extends ViewModel {
         switch (actionId) {
             case R.id.action_show_popular: {
                 // If already selected no need to request the API.
-                if (currentFilter.getValue() == MoviesFilter.POPULAR) return;
+                if (getCurrentFilter() == MoviesFilter.POPULAR) return;
                 filterType = MoviesFilter.POPULAR;
                 title = R.string.action_show_popular;
                 break;
             }
             case R.id.action_show_top_rated: {
-                if (currentFilter.getValue() == MoviesFilter.TOP_RATED) return;
+                if (getCurrentFilter() == MoviesFilter.TOP_RATED) return;
                 filterType = MoviesFilter.TOP_RATED;
                 title = R.string.action_show_top_rated;
                 break;
             }
             case R.id.action_show_now_playing: {
-                if (currentFilter.getValue() == MoviesFilter.NOW_PLAYING) return;
+                if (getCurrentFilter() == MoviesFilter.NOW_PLAYING) return;
                 filterType = MoviesFilter.NOW_PLAYING;
                 title = R.string.action_show_now_playing;
                 break;

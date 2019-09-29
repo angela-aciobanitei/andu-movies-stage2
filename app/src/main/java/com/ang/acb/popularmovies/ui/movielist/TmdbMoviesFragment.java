@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
-import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
+import com.ang.acb.popularmovies.utils.GridMarginDecoration;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -50,9 +50,10 @@ public class TmdbMoviesFragment extends Fragment {
 
     @Override
     public void onAttach(@NotNull Context context) {
-        // Note: when using Dagger for injecting Fragment objects, inject as early as possible.
-        // For this reason, call AndroidInjection.inject() in onAttach(). This also prevents
-        // inconsistencies if the Fragment is reattached.
+        // Note: when using Dagger for injecting Fragment objects,
+        // inject as early as possible. For this reason, call
+        // AndroidInjection.inject() in onAttach(). This also
+        // prevents inconsistencies if the Fragment is reattached.
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -82,23 +83,20 @@ public class TmdbMoviesFragment extends Fragment {
     }
 
     private void updateMoviesFilter() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            viewModel.updateCurrentFilter(bundle.getInt(EXTRA_ACTION_ID));
+        if (getArguments() != null) {
+            viewModel.updateCurrentFilter(getArguments().getInt(EXTRA_ACTION_ID));
         }
     }
 
     private void setupRecyclerView() {
         // Setup the grid layout manager.
         adapter =  new TmdbMoviesAdapter(viewModel);
+
+        // Create a custom GridLayoutManager that allows different span counts for different rows.
+        // This allows displaying the network status and errors messages on a whole row (3 spans).
+        // https://stackoverflow.com/questions/31112291/recyclerview-layoutmanager-different-span-counts-on-different-rows
         final GridLayoutManager layoutManager = new GridLayoutManager(
                 getHostActivity(), getResources().getInteger(R.integer.span_count));
-
-        // Create a custom GridLayoutManager that allows different span counts
-        // for different rows. This allows displaying the network status and
-        // errors messages on a whole row (3 spans).
-        // See: https://stackoverflow.com/questions/31112291/
-        // recyclerview-layoutmanager-different-span-counts-on-different-rows
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -111,11 +109,10 @@ public class TmdbMoviesFragment extends Fragment {
             }
         });
 
-        // Setup recycler view.
         RecyclerView recyclerView = getHostActivity().findViewById(R.id.rv_movie_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(
+        recyclerView.addItemDecoration(new GridMarginDecoration(
                 getHostActivity(), R.dimen.item_offset));
     }
 

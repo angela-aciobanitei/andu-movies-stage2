@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.databinding.FragmentFavoriteMoviesBinding;
-import com.ang.acb.popularmovies.utils.ItemOffsetDecoration;
+import com.ang.acb.popularmovies.utils.GridMarginDecoration;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,20 +34,17 @@ public class FavoriteMoviesFragment extends Fragment {
     private FavoriteMoviesAdapter adapter;
 
     @Inject
-    public ViewModelProvider.Factory viewModelFactory;
+    ViewModelProvider.Factory viewModelFactory;
 
     // Required empty public constructor
     public FavoriteMoviesFragment() {}
 
-    public static FavoriteMoviesFragment newInstance() {
-        return new FavoriteMoviesFragment();
-    }
-
     @Override
     public void onAttach(@NotNull Context context) {
-        // Note: when using Dagger for injecting Fragment objects, inject as early as possible.
-        // For this reason, call AndroidInjection.inject() in onAttach(). This also prevents
-        // inconsistencies if the Fragment is reattached.
+        // Note: when using Dagger for injecting Fragment objects,
+        // inject as early as possible. For this reason, call
+        // AndroidInjection.inject() in onAttach(). This also
+        // prevents inconsistencies if the Fragment is reattached.
         AndroidSupportInjection.inject(this);
         super.onAttach(context);
     }
@@ -90,7 +87,7 @@ public class FavoriteMoviesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(
                 getHostActivity(), getResources().getInteger(R.integer.span_count)));
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(
+        recyclerView.addItemDecoration(new GridMarginDecoration(
                 getHostActivity(), R.dimen.item_offset));
     }
 

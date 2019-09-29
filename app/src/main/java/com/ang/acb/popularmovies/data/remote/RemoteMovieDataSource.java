@@ -22,8 +22,8 @@ public class RemoteMovieDataSource {
     private static final int PAGE_SIZE = 20;
 
     @Inject
-    public RemoteMovieDataSource(ApiService apiService,
-                                  AppExecutors appExecutors) {
+    RemoteMovieDataSource(ApiService apiService,
+                          AppExecutors appExecutors) {
         this.apiService = apiService;
         this.appExecutors = appExecutors;
     }

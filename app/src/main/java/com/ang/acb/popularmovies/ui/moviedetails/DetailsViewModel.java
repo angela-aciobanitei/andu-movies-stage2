@@ -34,7 +34,7 @@ public class DetailsViewModel extends ViewModel {
     private boolean isFavorite;
 
     @Inject
-    public DetailsViewModel(final MovieRepository movieRepository) {
+    DetailsViewModel(final MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
 
