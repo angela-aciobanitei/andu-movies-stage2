@@ -1,17 +1,18 @@
 package com.ang.acb.popularmovies.ui.moviedetails;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -21,12 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Movie;
-import com.ang.acb.popularmovies.data.vo.MovieDetails;
 import com.ang.acb.popularmovies.databinding.ActivityDetailsBinding;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -82,7 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() { ;
-        setSupportActionBar(binding.toolbar);
+        setSupportActionBar(binding.detailsToolbar);
         if (getSupportActionBar() != null) {
             // Handle Up navigation
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -95,7 +93,7 @@ public class DetailsActivity extends AppCompatActivity {
         // when CollapsingToolbarLayout is collapsed or expanded.
         // See: https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed
         // See: https://medium.com/@nullthemall/the-power-of-appbarlayout-offset-ecbf8eaa6b5f
-        binding.appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        binding.detailsAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShown = true;
             int totalScrollRange = -1;
 
@@ -108,11 +106,11 @@ public class DetailsActivity extends AppCompatActivity {
                 if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
                 // If toolbar is completely collapsed, set the collapsing bar title.
                 if (totalScrollRange + verticalOffset == 0) {
-                    binding.collapsingToolbar.setTitle(movie.getTitle());
+                    binding.detailsCollapsingToolbar.setTitle(movie.getTitle());
                     isShown = true;
                 } else if (isShown) {
                     // When toolbar is expanded, display an empty string.
-                    binding.collapsingToolbar.setTitle(" ");
+                    binding.detailsCollapsingToolbar.setTitle(" ");
                     isShown = false;
                 }
             }
@@ -131,8 +129,6 @@ public class DetailsActivity extends AppCompatActivity {
         rvCast.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.HORIZONTAL, false));
         rvCast.setAdapter(new CastAdapter());
-        // Disable nested scrolling for this view.
-        ViewCompat.setNestedScrollingEnabled(rvCast, false);
     }
 
     private void setupTrailersAdapter() {
@@ -141,7 +137,6 @@ public class DetailsActivity extends AppCompatActivity {
                 this, RecyclerView.HORIZONTAL, false));
         rvTrailers.setHasFixedSize(true);
         rvTrailers.setAdapter(new TrailersAdapter());
-        ViewCompat.setNestedScrollingEnabled(rvTrailers, false);
     }
 
     private void setupReviewsAdapter() {
@@ -149,7 +144,6 @@ public class DetailsActivity extends AppCompatActivity {
         listReviews.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
         listReviews.setAdapter(new ReviewsAdapter());
-        ViewCompat.setNestedScrollingEnabled(listReviews, false);
     }
 
     private void observeResult() {

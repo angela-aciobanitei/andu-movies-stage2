@@ -19,9 +19,7 @@ import com.ang.acb.popularmovies.utils.GlideApp;
 import com.ang.acb.popularmovies.utils.UiUtils;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import timber.log.Timber;
