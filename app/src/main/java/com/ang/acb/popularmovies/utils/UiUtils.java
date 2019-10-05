@@ -12,12 +12,6 @@ import androidx.palette.graphics.Palette;
 
 public class UiUtils {
 
-    public static float dipToPixels(Context context, float dipValue) {
-        // See: https://stackoverflow.com/questions/8399184/convert-dip-to-px-in-android
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, metrics);
-    }
-
     public static void tintMenuIcon(Context context, MenuItem item, @ColorRes int color) {
         // See: https://stackoverflow.com/questions/26780046/menuitem-tinting-on-appcompat-toolbar
         Drawable iconWrapper = DrawableCompat.wrap(item.getIcon());

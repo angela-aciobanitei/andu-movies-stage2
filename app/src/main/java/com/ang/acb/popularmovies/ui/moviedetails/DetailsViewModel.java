@@ -15,8 +15,6 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
-
 /**
  * The ViewModel used in {@link DetailsActivity}.
  * Stores and manages UI-related data in a lifecycle conscious way.

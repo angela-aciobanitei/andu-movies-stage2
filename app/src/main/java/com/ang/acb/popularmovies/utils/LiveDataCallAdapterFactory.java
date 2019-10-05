@@ -7,7 +7,6 @@ import java.lang.reflect.Type;
 import androidx.lifecycle.LiveData;
 
 import com.ang.acb.popularmovies.data.remote.ApiResponse;
-import com.ang.acb.popularmovies.utils.LiveDataCallAdapter;
 
 import retrofit2.CallAdapter;
 import retrofit2.Retrofit;
