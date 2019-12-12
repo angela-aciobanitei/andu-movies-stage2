@@ -17,6 +17,6 @@ import java.util.List;
 @Dao
 public interface CastDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCastList(List<Cast> castList);
 }

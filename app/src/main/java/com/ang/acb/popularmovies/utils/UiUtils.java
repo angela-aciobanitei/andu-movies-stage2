@@ -2,8 +2,6 @@ package com.ang.acb.popularmovies.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.MenuItem;
 
 import androidx.annotation.ColorRes;

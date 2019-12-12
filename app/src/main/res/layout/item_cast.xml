@@ -6,12 +6,11 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cast_item_card"
-        android:layout_width="96dp"
+        android:layout_width="@dimen/cast_card_view_width"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="@dimen/margin_normal"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="4dp">
+        app:cardCornerRadius="@dimen/cast_card_view_corner_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -33,13 +32,13 @@
                 android:id="@+id/cast_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingStart="@dimen/padding_normal"
+                android:paddingEnd="@dimen/padding_normal"
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

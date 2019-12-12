@@ -5,7 +5,7 @@
         android:id="@+id/rv_movie_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/item_offset"
+        android:padding="@dimen/grid_item_spacing"
         android:clipToPadding="false"
         android:scrollbars="none" />
 </layout>

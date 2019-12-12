@@ -17,6 +17,6 @@ import java.util.List;
 @Dao
 public interface ReviewDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertReviews(List<Review> reviews);
 }

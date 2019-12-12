@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="movieDetails"
             type="com.ang.acb.popularmovies.data.vo.MovieDetails" />
@@ -13,7 +12,6 @@
         <variable
             name="resource"
             type="com.ang.acb.popularmovies.data.vo.Resource" />
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -49,8 +47,8 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
+                app:expandedTitleMarginEnd="@dimen/margin_xlarge"
+                app:expandedTitleMarginStart="@dimen/margin_xlarge"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -89,8 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="16dp"
-            app:behavior_overlapTop="48dp"
+            android:paddingBottom="@dimen/padding_xlarge"
+            app:behavior_overlapTop="@dimen/margin_xlarge"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:toggleVisibility="@{movieDetails.movie != null}">
 

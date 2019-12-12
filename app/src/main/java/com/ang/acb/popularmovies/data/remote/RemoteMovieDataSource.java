@@ -48,7 +48,7 @@ public class RemoteMovieDataSource {
         // Get the paged data.
         LiveData<PagedList<Movie>> pagedData = new LivePagedListBuilder<>(sourceFactory, config)
                 // Provide custom executor for network requests, otherwise it will default
-                // to Arch Components' IO pool which is also used for disk access.
+                // to Architecture Components' IO pool which is also used for disk access.
                 .setFetchExecutor(appExecutors.networkIO())
                 .build();
 
@@ -57,7 +57,6 @@ public class RemoteMovieDataSource {
                 sourceFactory.getPagedDataSource(),
                 PagedMovieDataSource::getNetworkState);
 
-        // Expose the paged data and network status to the view model.
         return new PagedMoviesResult(
                 sourceFactory.getPagedDataSource(),
                 pagedData,

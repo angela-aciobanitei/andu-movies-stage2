@@ -14,10 +14,6 @@ import com.ang.acb.popularmovies.data.remote.ApiService;
 import com.ang.acb.popularmovies.utils.Constants;
 import com.ang.acb.popularmovies.utils.LiveDataCallAdapterFactory;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -26,7 +22,6 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -82,40 +77,48 @@ class AppModule {
         // Because we are requesting an API which accepts an API key as a request parameter,
         // we can use an interceptor that could add the query parameter to every request method.
         // See: https://futurestud.io/tutorials/retrofit-2-how-to-add-query-parameters-to-every-request
-        return new Interceptor() {
-            @NotNull
-            @Override
-            public Response intercept(@NotNull Chain chain) throws IOException {
-                Request original = chain.request();
-                HttpUrl originalHttpUrl = original.url();
+        return chain -> {
+            Request original = chain.request();
+            HttpUrl originalHttpUrl = original.url();
 
-                HttpUrl url = originalHttpUrl.newBuilder()
-                        .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
-                        .build();
+            HttpUrl url = originalHttpUrl.newBuilder()
+                    .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
+                    .build();
 
-                Request request = original.newBuilder().url(url).build();
-                return chain.proceed(request);
-            }
+            Request request = original.newBuilder().url(url).build();
+            return chain.proceed(request);
         };
     }
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(Interceptor apiRequestInterceptor) {
+    HttpLoggingInterceptor provideHttpLoggingInterceptor() {
         // Retrofit 2 completely relies on OkHttp for any network operation.
         // Since logging isn’t integrated by default anymore in Retrofit 2,
         // we need to add a logging interceptor for OkHttp.
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
 
         // Set the desired log level. Warning: using the HEADERS or BODY levels
         // have the potential to leak sensitive information such as "Authorization"
         // or "Cookie" headers and the contents of request and response bodies.
-        logging.level(HttpLoggingInterceptor.Level.BASIC);
+        if (BuildConfig.DEBUG) {
+            loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+        }
+        else {
+            loggingInterceptor.level(HttpLoggingInterceptor.Level.NONE);
+        }
 
-        // Add the logging interceptor to our OkHttp client.
+        return loggingInterceptor;
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor loggingInterceptor,
+                                     Interceptor apiRequestInterceptor) {
+        // Add the logging and auth interceptors to our OkHttp client.
         return new OkHttpClient.Builder()
                 .addInterceptor(apiRequestInterceptor)
-                .addInterceptor(logging)
+                .addInterceptor(loggingInterceptor)
                 .build();
     }
 

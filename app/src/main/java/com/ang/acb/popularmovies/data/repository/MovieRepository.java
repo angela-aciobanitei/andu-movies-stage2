@@ -25,7 +25,7 @@ import timber.log.Timber;
  * Repository module for handling data operations.
  *
  * See: https://developer.android.com/jetpack/docs/guide#truth
- * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
+ * See: https://github.com/android/android-architecture-components/tree/master/GithubBrowserSample
  */
 @Singleton
 public class MovieRepository {

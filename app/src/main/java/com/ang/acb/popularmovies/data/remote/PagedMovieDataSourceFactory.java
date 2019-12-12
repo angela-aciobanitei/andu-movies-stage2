@@ -21,18 +21,18 @@ import javax.inject.Inject;
  */
 public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 
-    private MutableLiveData<PagedMovieDataSource> pagedDataSource = new MutableLiveData<>();
-
-    private final ApiService movieService;
-    private final MoviesFilter sortBy;
+    private final ApiService apiService;
+    private final MoviesFilter filter;
     private final Executor networkExecutor;
 
+    private MutableLiveData<PagedMovieDataSource> pagedDataSource = new MutableLiveData<>();
+
     @Inject
-    PagedMovieDataSourceFactory(ApiService movieService,
-                                MoviesFilter sortBy,
+    PagedMovieDataSourceFactory(ApiService apiService,
+                                MoviesFilter filter,
                                 Executor networkExecutor) {
-        this.movieService = movieService;
-        this.sortBy = sortBy;
+        this.apiService = apiService;
+        this.filter = filter;
         this.networkExecutor = networkExecutor;
     }
 
@@ -40,8 +40,8 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
     @Override
     public DataSource<Integer, Movie> create() {
         PagedMovieDataSource movieDataSource = new PagedMovieDataSource(
-                movieService,
-                sortBy,
+                apiService,
+                filter,
                 networkExecutor);
         pagedDataSource.postValue(movieDataSource);
         return movieDataSource;

@@ -17,6 +17,6 @@ import java.util.List;
 @Dao
 public interface TrailerDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTrailers(List<Trailer> trailers);
 }

@@ -19,6 +19,7 @@ import com.ang.acb.popularmovies.ui.moviedetails.CastAdapter;
 import com.ang.acb.popularmovies.ui.moviedetails.ReviewsAdapter;
 import com.ang.acb.popularmovies.ui.moviedetails.TrailersAdapter;
 import com.ang.acb.popularmovies.utils.Constants;
+import com.ang.acb.popularmovies.utils.GlideApp;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.chip.Chip;
@@ -28,7 +29,7 @@ import com.google.android.material.chip.ChipGroup;
  * Binding adapters are responsible for making the appropriate framework calls to set values.
  *
  * See: https://developer.android.com/topic/libraries/data-binding/binding-adapters
- * See: https://github.com/googlesamples/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/adapters
+ * See: https://github.com/android/android-sunflower/blob/master/app/src/main/java/com/google/samples/apps/sunflower/adapters
  */
 public class BindingAdapters {
 
@@ -39,9 +40,9 @@ public class BindingAdapters {
         if (isPoster) baseUrl = Constants.IMAGE_URL;
         else baseUrl = Constants.BACKDROP_URL;
 
-        Glide.with(imageView.getContext())
+        GlideApp.with(imageView.getContext())
                 .load(baseUrl + imagePath)
-                .apply(new RequestOptions().placeholder(R.color.colorImagePlaceholder))
+                .placeholder(R.color.colorImagePlaceholder)
                 .into(imageView);
     }
 

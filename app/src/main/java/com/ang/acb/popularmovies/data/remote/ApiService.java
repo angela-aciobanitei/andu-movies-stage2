@@ -14,7 +14,7 @@ import retrofit2.http.Query;
  * Defines the REST API access points for Retrofit.
  *
  * See: https://www.androidhive.info/2016/05/android-working-with-retrofit-http-library/
- * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
+ * See: https://github.com/android/android-architecture-components/tree/master/GithubBrowserSample
  *
  */
 public interface ApiService {

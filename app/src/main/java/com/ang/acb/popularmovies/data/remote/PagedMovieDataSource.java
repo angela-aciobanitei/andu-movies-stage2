@@ -9,6 +9,8 @@ import com.ang.acb.popularmovies.data.vo.MoviesResponse;
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -23,15 +25,16 @@ import retrofit2.Response;
 /**
  * A custom data source that uses the before/after keys returned in page requests.
  *
+ * See: https://www.youtube.com/watch?v=BE5bsyGGLf4
  * See: https://developer.android.com/topic/libraries/architecture/paging/data#custom-data-source
- * See: https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample
+ * See: https://github.com/android/android-architecture-components/tree/master/PagingWithNetworkSample
  */
 public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE_KEY = 1;
 
-    private final ApiService movieService;
-    private final MoviesFilter sortBy;
+    private final ApiService apiService;
+    private final MoviesFilter filter;
     private final Executor networkExecutor;
 
     private MutableLiveData<Resource> networkState = new MutableLiveData<>();
@@ -42,11 +45,11 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     }
 
     @Inject
-    PagedMovieDataSource(ApiService movieService,
-                         MoviesFilter sortBy,
+    PagedMovieDataSource(ApiService apiService,
+                         MoviesFilter filter,
                          Executor networkExecutor) {
-        this.movieService = movieService;
-        this.sortBy = sortBy;
+        this.apiService = apiService;
+        this.filter = filter;
         this.networkExecutor = networkExecutor;
     }
 
@@ -60,7 +63,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     /**
      * This method is responsible for initially loading the data when app is
-     * launched for the first time. We are fetching the first page data from
+     * launched for the first time. We are fetching the first page of data from
      * the API and passing it via the callback method to the UI.
      *
      * @param params Parameters for initial load, including requested load size.
@@ -73,14 +76,14 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         // Send loading state to the UI.
         networkState.postValue(Resource.loading(null));
 
-        // Fetch the first page data from the API.
+        // Fetch the first page of data from the TMDB API.
         Call<MoviesResponse> request;
-        if (sortBy == MoviesFilter.POPULAR) {
-            request = movieService.getPopularMovies(FIRST_PAGE_KEY);
-        } else if (sortBy == MoviesFilter.TOP_RATED){
-            request = movieService.getTopRatedMovies(FIRST_PAGE_KEY);
+        if (filter == MoviesFilter.POPULAR) {
+            request = apiService.getPopularMovies(FIRST_PAGE_KEY);
+        } else if (filter == MoviesFilter.TOP_RATED){
+            request = apiService.getTopRatedMovies(FIRST_PAGE_KEY);
         } else {
-            request = movieService.getNowPlayingMovies(FIRST_PAGE_KEY);
+            request = apiService.getNowPlayingMovies(FIRST_PAGE_KEY);
         }
 
         try {
@@ -88,16 +91,21 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             // Note: execute() invokes the request immediately and
             // blocks until the response can be processed or is in error.
             MoviesResponse response = request.execute().body();
-            List<Movie> movieList = response != null ? response.getResults() : Collections.emptyList();
+            List<Movie> movieList = response != null ?
+                    response.getResults() : Collections.emptyList();
+
             // No need to retry data loading.
             retryCallback = null;
+
             // Send loading state to the UI.
             networkState.postValue(Resource.success(null));
+
             // Pass loaded data from the data source.
             callback.onResult(movieList, FIRST_PAGE_KEY, FIRST_PAGE_KEY + 1);
         } catch (IOException e) {
             // Retry data loading.
             retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));
+
             // Publish error.
             networkState.postValue(Resource.error(e.getMessage(), null));
         }
@@ -114,7 +122,8 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
      * page wise and is executed in the background thread. We are fetching the
      * next page data from the API and passing it via the callback method to the UI.
      *
-     * @param params Parameters for the load, including the key for the new page, and requested load size.
+     * @param params Parameters for the load, including the key for the new page,
+     *               and requested load size.
      * @param callback Callback that receives loaded data.
      */
     @Override
@@ -123,33 +132,40 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
         // Send loading state to the UI.
         networkState.postValue(Resource.loading(null));
 
-        // Fetch the next page data from the API.
+        // Fetch the next page of data from the TMDB API.
         Call<MoviesResponse> request;
-        if (sortBy == MoviesFilter.POPULAR) {
-            request = movieService.getPopularMovies(params.key);
-        } else if (sortBy == MoviesFilter.TOP_RATED) {
-            request = movieService.getTopRatedMovies(params.key);
+        if (filter == MoviesFilter.POPULAR) {
+            request = apiService.getPopularMovies(params.key);
+        } else if (filter == MoviesFilter.TOP_RATED) {
+            request = apiService.getTopRatedMovies(params.key);
         } else {
-            request = movieService.getNowPlayingMovies(params.key);
+            request = apiService.getNowPlayingMovies(params.key);
         }
 
         // Note: unlike execute(), enqueue() schedules the request
         // to be executed at some point in the future.
         request.enqueue(new Callback<MoviesResponse>() {
             @Override
-            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+            public void onResponse(@NotNull Call<MoviesResponse> call,
+                                   @NotNull Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
+                    // Get the loaded page of data from the response.
                     MoviesResponse data = response.body();
-                    List<Movie> movieList = data != null ? data.getResults() : Collections.emptyList();
+                    List<Movie> movieList = data != null ?
+                            data.getResults() : Collections.emptyList();
+
                     // No need to retry data loading.
                     retryCallback = null;
+
                     // Pass the loading state to the UI.
                     networkState.postValue(Resource.success(null));
-                    // Pass the page data to the UI.
+
+                    // Pass the loaded page of data to the UI.
                     callback.onResult(movieList, params.key + 1);
                 } else {
                     // Retry data loading.
                     retryCallback = () -> loadAfter(params, callback);
+
                     // Publish error.
                     networkState.postValue(Resource.error(
                             "error code: " + response.code(), null));
@@ -157,12 +173,12 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             }
 
             @Override
-            public void onFailure(Call<MoviesResponse> call, Throwable throwable) {
+            public void onFailure(@NotNull Call<MoviesResponse> call,
+                                  @NotNull Throwable throwable) {
                 // Retry data loading.
                 retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 // Publish error.
-                networkState.postValue(Resource.error(
-                        throwable != null ? throwable.getMessage() : "Unknown error", null));
+                networkState.postValue(Resource.error(throwable.getMessage(), null));
             }
         });
     }

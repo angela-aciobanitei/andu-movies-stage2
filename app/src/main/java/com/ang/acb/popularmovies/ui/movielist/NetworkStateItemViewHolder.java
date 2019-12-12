@@ -19,8 +19,8 @@ public class NetworkStateItemViewHolder extends RecyclerView.ViewHolder {
 
     private ItemNetworkStateBinding binding;
 
-    public NetworkStateItemViewHolder(@NonNull ItemNetworkStateBinding binding,
-                                      final TmdbMoviesViewModel viewModel) {
+    private NetworkStateItemViewHolder(@NonNull ItemNetworkStateBinding binding,
+                                       final TmdbMoviesViewModel viewModel) {
         super(binding.getRoot());
         this.binding = binding;
 

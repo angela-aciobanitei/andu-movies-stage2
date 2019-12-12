@@ -13,15 +13,11 @@ import androidx.annotation.Nullable;
  */
 public class Resource<T> {
 
-    @NonNull
-    public final Status status;
-    @Nullable
-    public final T data;
-    @Nullable
-    public final String message;
+    @NonNull  public final Status status;
+    @Nullable public final T data;
+    @Nullable public final String message;
 
-    private Resource(@NonNull Status status, @Nullable T data,
-                     @Nullable String message) {
+    private Resource(@NonNull Status status, @Nullable T data, @Nullable String message) {
         this.status = status;
         this.data = data;
         this.message = message;

@@ -28,7 +28,7 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
 
     private final ItemMovieBinding binding;
 
-    public MovieItemViewHolder(@NonNull ItemMovieBinding binding) {
+    private MovieItemViewHolder(@NonNull ItemMovieBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }

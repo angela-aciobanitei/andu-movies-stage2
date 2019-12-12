@@ -11,12 +11,12 @@ import javax.inject.Inject;
 
 public class PagedMoviesResult {
 
-    private MutableLiveData<PagedMovieDataSource> pagedDataSource;
+    private LiveData<PagedMovieDataSource> pagedDataSource;
     private LiveData<PagedList<Movie>> pagedData;
     private LiveData<Resource> networkState;
 
     @Inject
-    PagedMoviesResult(MutableLiveData<PagedMovieDataSource> pagedDataSource,
+    PagedMoviesResult(LiveData<PagedMovieDataSource> pagedDataSource,
                       LiveData<PagedList<Movie>> pagedData,
                       LiveData<Resource> networkState) {
         this.pagedDataSource = pagedDataSource;
@@ -24,7 +24,7 @@ public class PagedMoviesResult {
         this.networkState = networkState;
     }
 
-    public MutableLiveData<PagedMovieDataSource> getPagedDataSource() {
+    public LiveData<PagedMovieDataSource> getPagedDataSource() {
         return pagedDataSource;
     }
 

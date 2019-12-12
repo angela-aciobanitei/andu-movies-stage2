@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ang.acb.popularmovies.ui.moviedetails.DetailsViewModel;
 import com.ang.acb.popularmovies.ui.movielist.FavoriteMoviesViewModel;
 import com.ang.acb.popularmovies.ui.movielist.TmdbMoviesViewModel;
-import com.ang.acb.popularmovies.ui.viewmodel.MoviesViewModelFactory;
 
 import dagger.Binds;
 import dagger.Module;
@@ -31,6 +30,6 @@ abstract class ViewModelModule {
     abstract ViewModel bindRecipeDetailsViewModel(DetailsViewModel detailsViewModel);
 
     @Binds
-    abstract ViewModelProvider.Factory bindViewModelFactory(MoviesViewModelFactory factory);
+    abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
 }
 
