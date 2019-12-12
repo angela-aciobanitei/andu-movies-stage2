@@ -86,25 +86,39 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
             request = apiService.getNowPlayingMovies(FIRST_PAGE_KEY);
         }
 
+        final RetryCallback retryInitialLoad =
+                () -> networkExecutor.execute(() -> loadInitial(params, callback));
+
         try {
             // Triggered by a refresh, we better execute sync.
             // Note: execute() invokes the request immediately and
             // blocks until the response can be processed or is in error.
-            MoviesResponse response = request.execute().body();
-            List<Movie> movieList = response != null ?
-                    response.getResults() : Collections.emptyList();
+            Response response = request.execute();
+            if (response.isSuccessful()) {
+                MoviesResponse moviesResponse = (MoviesResponse) response.body();
+                List<Movie> movieList = moviesResponse != null ?
+                        moviesResponse.getResults() : Collections.emptyList();
 
-            // No need to retry data loading.
-            retryCallback = null;
+                // No need to retry data loading.
+                retryCallback = null;
 
-            // Send loading state to the UI.
-            networkState.postValue(Resource.success(null));
+                // Send loading state to the UI.
+                networkState.postValue(Resource.success(null));
 
-            // Pass loaded data from the data source.
-            callback.onResult(movieList, FIRST_PAGE_KEY, FIRST_PAGE_KEY + 1);
+                // Pass loaded data from the data source.
+                callback.onResult(movieList, FIRST_PAGE_KEY, FIRST_PAGE_KEY + 1);
+            } else {
+                // Retry data loading.
+                retryCallback = retryInitialLoad;
+
+                // Publish error.
+                networkState.postValue(Resource.error(
+                        "Error code: " + response.code(), null));
+            }
+
         } catch (IOException e) {
             // Retry data loading.
-            retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));
+            retryCallback = retryInitialLoad;
 
             // Publish error.
             networkState.postValue(Resource.error(e.getMessage(), null));
@@ -168,7 +182,7 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
                     // Publish error.
                     networkState.postValue(Resource.error(
-                            "error code: " + response.code(), null));
+                            "Error code: " + response.code(), null));
                 }
             }
 
