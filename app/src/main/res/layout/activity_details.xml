@@ -37,8 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/tall_toolbar_height"
             android:fitsSystemWindows="true"
-            android:theme="@style/AppBarOverlay"
-            app:toggleVisibility="@{movieDetails.movie != null}">
+            android:theme="@style/AppBarOverlay">
 
             <!-- A toolbar with a collapsing image -->
             <com.google.android.material.appbar.CollapsingToolbarLayout

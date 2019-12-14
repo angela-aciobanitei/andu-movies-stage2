@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NavUtils;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -84,6 +85,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             // Handle Up navigation
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
@@ -193,11 +195,17 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_add_remove_favorite) {
-            viewModel.onFavoriteClicked();
-            invalidateOptionsMenu();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+
+            case R.id.action_add_remove_favorite:
+                viewModel.onFavoriteClicked();
+                invalidateOptionsMenu();
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
