@@ -20,7 +20,7 @@ import timber.log.Timber;
  * Note that only one observer is going to be notified of changes.
  *
  * See: https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
- * See: https://github.com/googlesamples/android-architecture/tree/dev-todo-mvvm-live/todoapp
+ * See: https://github.com/android/android-architecture/tree/dev-todo-mvvm-live/todoapp
  */
 public class SingleLiveEvent<T> extends MutableLiveData<T> {
 

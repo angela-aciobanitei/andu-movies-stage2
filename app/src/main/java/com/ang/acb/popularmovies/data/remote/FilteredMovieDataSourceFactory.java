@@ -17,7 +17,7 @@ import javax.inject.Inject;
  * data source. This allows us to channel its network request status etc back to the UI.
  *
  * See: https://developer.android.com/topic/libraries/architecture/paging/data#custom-data-source
- * See: https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample
+ * See: https://github.com/android/android-architecture-components/tree/master/PagingWithNetworkSample
  */
 public class FilteredMovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 

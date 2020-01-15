@@ -11,7 +11,13 @@ import javax.inject.Inject;
 public class FilteredMoviesResult {
 
     private LiveData<FilteredMovieDataSource> pagedDataSource;
+    // The LiveData of paged lists for the UI to observe.
+    // A PagedList loads chunks of data, or pages. As more data is needed,
+    // it's paged into the existing PagedList object. If any loaded data
+    // changes, a new instance of PagedList is emitted to the observable
+    // data holder from a LiveData or RxJava2-based object.
     private LiveData<PagedList<Movie>> pagedData;
+    // The network request status to show to the user.
     private LiveData<Resource> networkState;
 
     @Inject

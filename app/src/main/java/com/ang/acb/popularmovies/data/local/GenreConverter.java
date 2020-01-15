@@ -17,7 +17,7 @@ import java.util.List;
 public class GenreConverter {
 
     // Use Gson, a Java serialization/deserialization library, to convert Java Objects into JSON and back.
-    // See: https://stackoverflow.com/questions/44986626/android-room-database-how-to-handle-arraylist-in-an-entity
+    // https://stackoverflow.com/questions/44986626/android-room-database-how-to-handle-arraylist-in-an-entity
     private static Gson gson = new Gson();
 
     @TypeConverter
