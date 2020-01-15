@@ -14,7 +14,7 @@ import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.databinding.ItemMovieBinding;
 import com.ang.acb.popularmovies.ui.moviedetails.DetailsActivity;
-import com.ang.acb.popularmovies.utils.Constants;
+import com.ang.acb.popularmovies.utils.AppConstants;
 import com.ang.acb.popularmovies.utils.GlideApp;
 import com.ang.acb.popularmovies.utils.UiUtils;
 import com.bumptech.glide.load.DataSource;
@@ -51,7 +51,7 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
                 // you can change the requested type using as... methods.
                 // For example, asBitmap() returns a RequestListener<Bitmap>.
                 .asBitmap()
-                .load(Constants.IMAGE_URL + movie.getPosterPath())
+                .load(AppConstants.IMAGE_URL + movie.getPosterPath())
                 // Display a placeholder until the image is loaded and processed.
                 .placeholder(R.color.colorImagePlaceholder)
                 // Keep track of errors and successful image loading.
@@ -99,6 +99,5 @@ public class MovieItemViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-
 }
 

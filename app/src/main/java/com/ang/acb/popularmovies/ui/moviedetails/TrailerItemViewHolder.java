@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,10 +14,10 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
 import com.ang.acb.popularmovies.databinding.ItemTrailerBinding;
 import com.ang.acb.popularmovies.utils.GlideApp;
 
-import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_APP_BASE_URL;
-import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_TRAILER_THUMBNAIL_BASE_URL;
-import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_TRAILER_THUMBNAIL_HQ;
-import static com.ang.acb.popularmovies.utils.Constants.YOUTUBE_WEB_BASE_URL;
+import static com.ang.acb.popularmovies.utils.AppConstants.YOUTUBE_APP_BASE_URL;
+import static com.ang.acb.popularmovies.utils.AppConstants.YOUTUBE_TRAILER_THUMBNAIL_BASE_URL;
+import static com.ang.acb.popularmovies.utils.AppConstants.YOUTUBE_TRAILER_THUMBNAIL_HQ;
+import static com.ang.acb.popularmovies.utils.AppConstants.YOUTUBE_WEB_BASE_URL;
 
 /**
  * A ViewHolder that works with DataBinding.

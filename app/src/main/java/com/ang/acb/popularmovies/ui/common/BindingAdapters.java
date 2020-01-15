@@ -18,10 +18,8 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
 import com.ang.acb.popularmovies.ui.moviedetails.CastAdapter;
 import com.ang.acb.popularmovies.ui.moviedetails.ReviewsAdapter;
 import com.ang.acb.popularmovies.ui.moviedetails.TrailersAdapter;
-import com.ang.acb.popularmovies.utils.Constants;
+import com.ang.acb.popularmovies.utils.AppConstants;
 import com.ang.acb.popularmovies.utils.GlideApp;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -33,22 +31,39 @@ import com.google.android.material.chip.ChipGroup;
  */
 public class BindingAdapters {
 
-    // Used for movie poster or movie backdrop images
-    @BindingAdapter({"imageUrl", "isPoster"})
-    public static void bindImage(ImageView imageView, String imagePath, boolean isPoster) {
-        String baseUrl;
-        if (isPoster) baseUrl = Constants.IMAGE_URL;
-        else baseUrl = Constants.BACKDROP_URL;
-
+    /**
+     * Uses the Glide library to load an image by URL into an ImageView.
+     */
+    @BindingAdapter("posterPath")
+    public static void bindPosterImage(ImageView imageView, String posterPath) {
         GlideApp.with(imageView.getContext())
-                .load(baseUrl + imagePath)
-                .placeholder(R.color.colorImagePlaceholder)
+                .load(AppConstants.IMAGE_URL + posterPath)
+                // Display a placeholder until the image is loaded and processed.
+                .placeholder(R.drawable.loading_animation)
+                // Provide an error placeholder for non-existing-urls.
+                .error(R.color.colorImagePlaceholder)
+                // Provide a fallback placeholder for when the url is null.
+                .fallback(R.color.colorImagePlaceholder)
+                .into(imageView);
+    }
+
+
+    @BindingAdapter("backdropPath")
+    public static void bindBackdropImage(ImageView imageView, String backdropPath) {
+        GlideApp.with(imageView.getContext())
+                .load(AppConstants.BACKDROP_URL + backdropPath)
+                // Display a placeholder until the image is loaded and processed.
+                .placeholder(R.color.colorPrimary)
+                // Provide an error placeholder for non-existing-urls.
+                .error(R.color.colorPrimary)
+                // Provide a fallback placeholder for when the url is null.
+                .fallback(R.color.colorPrimary)
                 .into(imageView);
     }
 
     @BindingAdapter("toggleVisibility")
-    public static void toggleVisibility(View view, Boolean isVisible) {
-        if (isVisible) view.setVisibility(View.VISIBLE);
+    public static void toggleVisibility(View view, Boolean show) {
+        if (show) view.setVisibility(View.VISIBLE);
         else view.setVisibility(View.GONE);
     }
 
@@ -66,14 +81,13 @@ public class BindingAdapters {
             Chip chip = new Chip(context);
             // Set the chip text.
             chip.setText(genre.getName());
-            chip.setTextColor(context.getResources().getColor(android.R.color.white));
             // Set the chips's stroke width.
             float chipStrokeWidth = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 1,
                     context.getResources().getDisplayMetrics());
             chip.setChipStrokeWidth(chipStrokeWidth);
             // Set the chip's stroke color and background color.
-            chip.setChipStrokeColorResource(android.R.color.white);
+            chip.setChipStrokeColorResource(android.R.color.black);
             chip.setChipBackgroundColorResource(android.R.color.transparent);
             // Finally, add the chip to the chip group.
             view.addView(chip);

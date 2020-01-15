@@ -34,22 +34,17 @@
             android:clipToPadding="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <FrameLayout
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/main_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="bottom">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/main_bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:menu="@menu/bottom_navigation"
-                app:itemIconTint="@drawable/bottom_navigation_colors"
-                app:itemTextColor="@drawable/bottom_navigation_colors"
-                app:labelVisibilityMode="unlabeled"
-                app:itemHorizontalTranslationEnabled="false"/>
-        </FrameLayout>
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:menu="@menu/bottom_navigation"
+            app:itemIconTint="@drawable/bottom_navigation_colors"
+            app:itemTextColor="@drawable/bottom_navigation_colors"
+            app:labelVisibilityMode="unlabeled"
+            app:itemHorizontalTranslationEnabled="false"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -3,17 +3,10 @@ package com.ang.acb.popularmovies.ui.moviedetails;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NavUtils;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -57,7 +50,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         initBinding();
         setupToolbar();
-        getMovieId();
+        initMovieId();
         setupViewModel();
         setupTrailersAdapter();
         setupCastAdapter();
@@ -73,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
     }
 
-    private void getMovieId(){
+    private void initMovieId(){
         movieId = getIntent().getLongExtra(EXTRA_MOVIE_ID, INVALID_MOVIE_ID);
         if (movieId == INVALID_MOVIE_ID) {
             closeOnError();
@@ -127,22 +120,21 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void setupCastAdapter() {
-        RecyclerView rvCast = binding.contentPartialDetails.rvCast;
+        RecyclerView rvCast = binding.contentDetails.rvCast;
         rvCast.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.HORIZONTAL, false));
         rvCast.setAdapter(new CastAdapter());
     }
 
     private void setupTrailersAdapter() {
-        RecyclerView rvTrailers = binding.contentPartialDetails.rvTrailers;
+        RecyclerView rvTrailers = binding.contentDetails.rvTrailers;
         rvTrailers.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.HORIZONTAL, false));
-        rvTrailers.setHasFixedSize(true);
         rvTrailers.setAdapter(new TrailersAdapter());
     }
 
     private void setupReviewsAdapter() {
-        RecyclerView listReviews = binding.contentPartialDetails.rvReviews;
+        RecyclerView listReviews = binding.contentDetails.rvReviews;
         listReviews.setLayoutManager(new LinearLayoutManager(
                 this, RecyclerView.VERTICAL, false));
         listReviews.setAdapter(new ReviewsAdapter());
@@ -183,10 +175,10 @@ public class DetailsActivity extends AppCompatActivity {
         MenuItem favoriteItem = menu.findItem(R.id.action_add_remove_favorite);
         if (viewModel.isFavorite()) {
             favoriteItem.setIcon(R.drawable.ic_favorite_black_24dp)
-                        .setTitle(R.string.action_remove_from_favorites);
+                        .setTitle(R.string.movie_added_to_favorites);
         } else {
             favoriteItem.setIcon(R.drawable.ic_favorite_border_black_24dp)
-                        .setTitle(R.string.action_add_to_favorites);
+                        .setTitle(R.string.movie_removed_from_favorites);
         }
         tintMenuIcon(this, favoriteItem, android.R.color.white);
 

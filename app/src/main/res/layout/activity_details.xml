@@ -22,16 +22,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.moviedetails.DetailsActivity">
 
-        <!-- Note: To add a collapsing toolbar to your layout, place
-        the CollapsingToolbarLayout inside an AppBarLayout. Then, add
-        a Toolbar and any other views as a child to the collapsing
-        toolbar layout. You can add as many views as you like to the
-        CollapsingToolbarLayout, but make sure that the Toolbar is
-        the last child of the CollapsingToolbarLayout. This ensures
-        that the views are drawn in the correct order. Also make sure
-        that the entire view structure is inside a CoordinatorLayout
-        to take advantage of the CollapsingToolbarLayout’s features.
-        https://material.io/develop/android/components/collapsing-toolbar-layout/ -->
+        <!-- See: https://material.io/develop/android/components/collapsing-toolbar-layout/ -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/details_app_bar"
             android:layout_width="match_parent"
@@ -58,8 +49,7 @@
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax"
-                    app:imageUrl="@{movieDetails.movie.backdropPath}"
-                    app:isPoster="@{false}"
+                    app:backdropPath="@{movieDetails.movie.backdropPath}"
                     tools:src="@tools:sample/backgrounds/scenic" />
 
                 <androidx.appcompat.widget.Toolbar
@@ -72,15 +62,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Note: we need to define an association between the AppBarLayout
-        and the View that will be scrolled. Add an app:layout_behavior to a
-        RecyclerView or any other View capable of nested scrolling such as
-        NestedScrollView. The support library contains a special string
-        resource, @string/appbar_scrolling_view_behavior, that maps to
-        AppBarLayout.ScrollingViewBehavior, which is used to notify the
-        AppBarLayout when scroll events occur on this particular view. The
-        behavior must be established on the view that triggers the event. See:
-        https://guides.codepath.com/android/Handling-Scrolls-with-CoordinatorLayout -->
+        <!-- See: https://guides.codepath.com/android/Handling-Scrolls-with-CoordinatorLayout -->
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
@@ -92,8 +74,8 @@
             app:toggleVisibility="@{movieDetails.movie != null}">
 
             <include
-                android:id="@+id/content_partial_details"
-                layout="@layout/content_partial_details"
+                android:id="@+id/content_details"
+                layout="@layout/content_details"
                 app:movieDetails="@{movieDetails}" />
         </androidx.core.widget.NestedScrollView>
 

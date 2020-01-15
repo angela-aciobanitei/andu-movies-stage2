@@ -31,8 +31,7 @@ public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(final Review review) {
-        binding.reviewAuthorName.setText(review.getAuthor());
-        binding.reviewTextContent.setText(review.getContent());
+        binding.setReview(review);
 
         // Binding must be executed immediately.
         binding.executePendingBindings();

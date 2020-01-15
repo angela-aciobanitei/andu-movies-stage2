@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Cast;
 import com.ang.acb.popularmovies.databinding.ItemCastBinding;
-import com.ang.acb.popularmovies.utils.Constants;
+import com.ang.acb.popularmovies.utils.AppConstants;
 import com.ang.acb.popularmovies.utils.GlideApp;
 
 /**
@@ -35,8 +35,8 @@ public class CastItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(final Cast cast) {
-        String profileImage = Constants.IMAGE_BASE_URL +
-                Constants.PROFILE_SIZE_W185 +
+        String profileImage = AppConstants.IMAGE_BASE_URL +
+                AppConstants.PROFILE_SIZE_W185 +
                 cast.getProfileImagePath();
 
         GlideApp.with(context)

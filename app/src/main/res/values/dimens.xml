@@ -23,4 +23,8 @@
     <dimen name="movie_item_text_title_height">52dp</dimen>
     <dimen name="details_movie_poster_width">0dp</dimen>
     <dimen name="details_movie_poster_height">200dp</dimen>
+    <dimen name="movie_poster_card_elevation">8dp</dimen>
+    <dimen name="movie_poster_card_corner_radius">4dp</dimen>
+    <dimen name="details_view_divider_top">24dp</dimen>
+    <dimen name="review_ic_account_size">48dp</dimen>
 </resources>

@@ -11,7 +11,7 @@ import com.ang.acb.popularmovies.data.local.MovieDao;
 import com.ang.acb.popularmovies.data.local.ReviewDao;
 import com.ang.acb.popularmovies.data.local.TrailerDao;
 import com.ang.acb.popularmovies.data.remote.ApiService;
-import com.ang.acb.popularmovies.utils.Constants;
+import com.ang.acb.popularmovies.utils.AppConstants;
 import com.ang.acb.popularmovies.utils.LiveDataCallAdapterFactory;
 
 import javax.inject.Singleton;
@@ -126,7 +126,7 @@ class AppModule {
     @Singleton
     ApiService provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
-                .baseUrl(Constants.TMDB_BASE_URL)
+                .baseUrl(AppConstants.TMDB_BASE_URL)
                 // Configure which converter is used for the data serialization.
                 .addConverterFactory(GsonConverterFactory.create())
                 // Add a call adapter factory for supporting service method

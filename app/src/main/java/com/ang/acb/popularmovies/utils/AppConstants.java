@@ -1,11 +1,11 @@
 package com.ang.acb.popularmovies.utils;
 
 /**
- * Constants used throughout the app.
+ * AppConstants used throughout the app.
  *
  * See: https://github.com/googlesamples/android-sunflower
  */
-public class Constants {
+public class AppConstants {
 
     public static final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
     public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
