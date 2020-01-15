@@ -3,36 +3,41 @@ package com.ang.acb.popularmovies.ui.moviedetails;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
 import com.ang.acb.popularmovies.data.vo.Trailer;
 
-import java.util.List;
+public class TrailersAdapter extends ListAdapter<Trailer, TrailerViewHolder> {
 
-public class TrailersAdapter extends RecyclerView.Adapter<TrailerItemViewHolder> {
-
-    private List<Trailer> trailerList;
+    protected TrailersAdapter() {
+        super(TRAILER_COMPARATOR);
+    }
 
     @NonNull
     @Override
-    public TrailerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return TrailerItemViewHolder.createViewHolder(parent);
+    public TrailerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return TrailerViewHolder.create(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TrailerItemViewHolder holder, int position) {
-        holder.bindTo(trailerList.get(position));
+    public void onBindViewHolder(@NonNull TrailerViewHolder holder, int position) {
+        holder.bindTo(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return trailerList != null ? trailerList.size() : 0;
-    }
+    private static DiffUtil.ItemCallback<Trailer> TRAILER_COMPARATOR =
+            new DiffUtil.ItemCallback<Trailer>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Trailer oldItem, @NonNull Trailer newItem) {
+                    // The ID property identifies when items are the same.
+                    return oldItem.getId().equals(newItem.getId());
+                }
 
-    public void submitList(List<Trailer> trailers) {
-        trailerList = trailers;
-        // Notify any registered observers
-        // that the data set has changed.
-        notifyDataSetChanged();
-    }
+                @Override
+                public boolean areContentsTheSame(@NonNull Trailer oldItem, @NonNull Trailer newItem) {
+                    // Note: Don't use the "==" operator here. Either implement and
+                    // use .equals(), or write custom data comparison logic here.
+                    return oldItem.equals(newItem);
+                }
+            };
 }

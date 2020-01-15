@@ -15,20 +15,20 @@ import com.ang.acb.popularmovies.utils.GlideApp;
 /**
  * A ViewHolder that works with DataBinding.
  */
-public class CastItemViewHolder extends RecyclerView.ViewHolder {
+public class CastViewHolder extends RecyclerView.ViewHolder {
 
     private ItemCastBinding binding;
 
-    public CastItemViewHolder(@NonNull ItemCastBinding binding) {
+    public CastViewHolder(@NonNull ItemCastBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
-    public static CastItemViewHolder create(ViewGroup parent) {
+    public static CastViewHolder create(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemCastBinding binding = ItemCastBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
-        return new CastItemViewHolder(binding);
+        return new CastViewHolder(binding);
     }
 
     public void bindTo(final Cast cast) {

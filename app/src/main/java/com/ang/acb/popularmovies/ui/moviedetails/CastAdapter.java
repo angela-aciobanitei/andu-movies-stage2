@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import com.ang.acb.popularmovies.data.vo.Cast;
 
 
-public class CastAdapter extends ListAdapter<Cast, CastItemViewHolder> {
+public class CastAdapter extends ListAdapter<Cast, CastViewHolder> {
 
     protected CastAdapter() {
         super(CAST_COMPARATOR);
@@ -17,12 +17,12 @@ public class CastAdapter extends ListAdapter<Cast, CastItemViewHolder> {
 
     @NonNull
     @Override
-    public CastItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return CastItemViewHolder.create(parent);
+    public CastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return CastViewHolder.create(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CastItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
         holder.bindTo(getItem(position));
     }
 

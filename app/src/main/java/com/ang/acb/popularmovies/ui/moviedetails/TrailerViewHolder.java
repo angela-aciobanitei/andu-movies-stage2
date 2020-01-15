@@ -22,25 +22,25 @@ import static com.ang.acb.popularmovies.utils.AppConstants.YOUTUBE_WEB_BASE_URL;
 /**
  * A ViewHolder that works with DataBinding.
  */
-public class TrailerItemViewHolder extends RecyclerView.ViewHolder {
+public class TrailerViewHolder extends RecyclerView.ViewHolder {
 
     private ItemTrailerBinding binding;
     private Context context;
 
-    public TrailerItemViewHolder(@NonNull ItemTrailerBinding binding, Context context) {
+    public TrailerViewHolder(@NonNull ItemTrailerBinding binding, Context context) {
         super(binding.getRoot());
 
         this.binding = binding;
         this.context = context;
     }
 
-    public static TrailerItemViewHolder createViewHolder(ViewGroup parent) {
+    public static TrailerViewHolder create(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemTrailerBinding binding = ItemTrailerBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false);
-        return new TrailerItemViewHolder(binding, parent.getContext());
+        return new TrailerViewHolder(binding, parent.getContext());
     }
 
     public void bindTo(final Trailer trailer) {
