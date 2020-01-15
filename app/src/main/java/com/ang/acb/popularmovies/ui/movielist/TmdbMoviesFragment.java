@@ -84,13 +84,13 @@ public class TmdbMoviesFragment extends Fragment {
 
     private void updateMoviesFilter() {
         if (getArguments() != null) {
-            viewModel.updateCurrentFilter(getArguments().getInt(EXTRA_ACTION_ID));
+            viewModel.updateFilter(getArguments().getInt(EXTRA_ACTION_ID));
         }
     }
 
     private void setupRecyclerView() {
         // Setup the grid layout manager.
-        adapter =  new TmdbMoviesAdapter(viewModel);
+        adapter = new TmdbMoviesAdapter(viewModel::retry);
 
         // Create a custom GridLayoutManager that allows different span counts for different rows.
         // This allows displaying the network status and errors messages on a whole row (3 spans).

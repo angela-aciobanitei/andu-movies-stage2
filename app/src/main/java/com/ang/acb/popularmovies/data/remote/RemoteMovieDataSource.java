@@ -32,9 +32,9 @@ public class RemoteMovieDataSource {
         return apiService.getAllMovieDetails(movieId);
     }
 
-    public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
+    public FilteredMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
         // Create the paged data source factory.
-        PagedMovieDataSourceFactory sourceFactory =  new PagedMovieDataSourceFactory(
+        FilteredMovieDataSourceFactory sourceFactory =  new FilteredMovieDataSourceFactory(
                 apiService,
                 sortBy,
                 appExecutors.networkIO());
@@ -55,9 +55,9 @@ public class RemoteMovieDataSource {
         // Get the network state.
         LiveData<Resource> networkState = Transformations.switchMap(
                 sourceFactory.getPagedDataSource(),
-                PagedMovieDataSource::getNetworkState);
+                FilteredMovieDataSource::getNetworkState);
 
-        return new PagedMoviesResult(
+        return new FilteredMoviesResult(
                 sourceFactory.getPagedDataSource(),
                 pagedData,
                 networkState);

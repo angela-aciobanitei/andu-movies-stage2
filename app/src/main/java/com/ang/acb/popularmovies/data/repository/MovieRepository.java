@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.ang.acb.popularmovies.data.local.LocalMovieDataSource;
 import com.ang.acb.popularmovies.data.remote.ApiResponse;
-import com.ang.acb.popularmovies.data.remote.PagedMoviesResult;
+import com.ang.acb.popularmovies.data.remote.FilteredMoviesResult;
 import com.ang.acb.popularmovies.data.remote.RemoteMovieDataSource;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MovieDetails;
@@ -86,8 +86,8 @@ public class MovieRepository {
         }.asLiveData();
     }
 
-    public PagedMoviesResult loadMoviesFilteredBy(MoviesFilter sortBy) {
-        return remoteDataSource.loadMoviesFilteredBy(sortBy);
+    public FilteredMoviesResult loadMoviesFilteredBy(MoviesFilter filter) {
+        return remoteDataSource.loadMoviesFilteredBy(filter);
     }
 
     public LiveData<List<Movie>> getAllFavoriteMovies() {

@@ -3,37 +3,43 @@ package com.ang.acb.popularmovies.ui.movielist;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
 import com.ang.acb.popularmovies.data.vo.Movie;
 
-import java.util.List;
+public class FavoriteMoviesAdapter extends ListAdapter<Movie, MovieViewHolder> {
 
-public class FavoriteMoviesAdapter extends RecyclerView.Adapter<MovieItemViewHolder> {
-
-    private List<Movie> movieList;
+    // Required default constructor matching super.
+    protected FavoriteMoviesAdapter() {
+        super(MOVIE_COMPARATOR);
+    }
 
     @NonNull
     @Override
-    public MovieItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return MovieItemViewHolder.createViewHolder(parent);
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return MovieViewHolder.create(parent);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieItemViewHolder holder, int position) {
-        holder.bindTo(movieList.get(position));
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
+        holder.bindTo(getItem(position));
     }
 
-    @Override
-    public int getItemCount() {
-        return movieList != null ? movieList.size() : 0;
-    }
+    private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR =
+            new DiffUtil.ItemCallback<Movie>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+                    // The ID property identifies when items are the same.
+                    return oldItem.getId() == newItem.getId();
+                }
 
-    public void submitList(List<Movie> movies) {
-        movieList = movies;
-        // Notify any registered observers
-        // that the data set has changed.
-        notifyDataSetChanged();
-    }
+                @Override
+                public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+                    // Note: Don't use the "==" operator here. Either implement and
+                    // use .equals(), or write custom data comparison logic here.
+                    return oldItem.equals(newItem);
+                }
+            };
 }
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ang.acb.popularmovies.R;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.Resource;
+import com.ang.acb.popularmovies.ui.common.RetryCallback;
 
 /**
  * A custom PagedListAdapter for the movie list items. A PagedListAdapter is an implementation
@@ -23,28 +24,13 @@ import com.ang.acb.popularmovies.data.vo.Resource;
  */
 public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
-    private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR =
-        new DiffUtil.ItemCallback<Movie>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-                // The ID property identifies when items are the same.
-                return oldItem.getId() == newItem.getId();
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-                // Note: Don't use the "==" operator here. Either implement and
-                // use .equals(), or write custom data comparison logic here.
-                return oldItem.equals(newItem);
-            }
-    };
-
-    private TmdbMoviesViewModel viewModel;
+    private RetryCallback retryCallback;
     private Resource resource = null;
 
-    TmdbMoviesAdapter(TmdbMoviesViewModel viewModel) {
+    TmdbMoviesAdapter(RetryCallback retryCallback) {
         super(MOVIE_COMPARATOR);
-        this.viewModel = viewModel;
+
+        this.retryCallback = retryCallback;
     }
 
     @NonNull
@@ -52,11 +38,11 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_movie:
-                return MovieItemViewHolder.createViewHolder(parent);
+                return MovieViewHolder.create(parent);
             case R.layout.item_network_state:
-                return NetworkStateItemViewHolder.createViewHolder(parent, viewModel);
+                return NetworkStateViewHolder.create(parent, retryCallback);
             default:
-                throw new IllegalArgumentException("Unknown view type " + viewType);
+                throw new IllegalArgumentException("unknown view type " + viewType);
         }
     }
 
@@ -64,22 +50,14 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case R.layout.item_movie:
-                ((MovieItemViewHolder) holder).bindTo(getItem(position));
+                ((MovieViewHolder) holder).bindTo(getItem(position));
                 break;
             case R.layout.item_network_state:
-                ((NetworkStateItemViewHolder) holder).bindTo(resource);
+                ((NetworkStateViewHolder) holder).bindTo(resource);
                 break;
             default:
-                throw new IllegalArgumentException("Unknown view type " + getItemViewType(position));
+                throw new IllegalArgumentException("unknown view type");
         }
-    }
-    private boolean hasExtraRow() {
-        return resource != null && resource.status != Resource.Status.SUCCESS;
-    }
-
-    @Override
-    public int getItemCount() {
-        return super.getItemCount() + (hasExtraRow() ? 1 : 0);
     }
 
     @Override
@@ -91,10 +69,19 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
         }
     }
 
-    public void setNetworkState(Resource networkState) {
-        Resource previousState = resource;
+    @Override
+    public int getItemCount() {
+        return super.getItemCount() + (hasExtraRow() ? 1 : 0);
+    }
+
+    private boolean hasExtraRow() {
+        return resource != null && resource.status != Resource.Status.SUCCESS;
+    }
+
+    public void setNetworkState(Resource resource) {
+        Resource previousState = this.resource;
         boolean hadExtraRow = hasExtraRow();
-        resource = networkState;
+        this.resource = resource;
         boolean hasExtraRow = hasExtraRow();
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
@@ -102,9 +89,24 @@ public class TmdbMoviesAdapter extends PagedListAdapter<Movie, RecyclerView.View
             } else {
                 notifyItemInserted(super.getItemCount());
             }
-        } else if (hasExtraRow && !previousState.equals(networkState)) {
+        } else if (hasExtraRow && !previousState.equals(resource)) {
             notifyItemChanged(getItemCount() - 1);
         }
     }
+
+    private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR = new DiffUtil.ItemCallback<Movie>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            // The ID property identifies when items are the same.
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            // Note: Don't use the "==" operator here. Either implement and
+            // use .equals(), or write custom data comparison logic here.
+            return oldItem.equals(newItem);
+        }
+    };
 }
 

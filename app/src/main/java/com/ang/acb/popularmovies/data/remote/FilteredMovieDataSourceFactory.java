@@ -19,18 +19,18 @@ import javax.inject.Inject;
  * See: https://developer.android.com/topic/libraries/architecture/paging/data#custom-data-source
  * See: https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample
  */
-public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
+public class FilteredMovieDataSourceFactory extends DataSource.Factory<Integer, Movie> {
 
     private final ApiService apiService;
     private final MoviesFilter filter;
     private final Executor networkExecutor;
 
-    private MutableLiveData<PagedMovieDataSource> pagedDataSource = new MutableLiveData<>();
+    private MutableLiveData<FilteredMovieDataSource> pagedDataSource = new MutableLiveData<>();
 
     @Inject
-    PagedMovieDataSourceFactory(ApiService apiService,
-                                MoviesFilter filter,
-                                Executor networkExecutor) {
+    FilteredMovieDataSourceFactory(ApiService apiService,
+                                   MoviesFilter filter,
+                                   Executor networkExecutor) {
         this.apiService = apiService;
         this.filter = filter;
         this.networkExecutor = networkExecutor;
@@ -39,7 +39,7 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
     @NotNull
     @Override
     public DataSource<Integer, Movie> create() {
-        PagedMovieDataSource movieDataSource = new PagedMovieDataSource(
+        FilteredMovieDataSource movieDataSource = new FilteredMovieDataSource(
                 apiService,
                 filter,
                 networkExecutor);
@@ -47,7 +47,7 @@ public class PagedMovieDataSourceFactory extends DataSource.Factory<Integer, Mov
         return movieDataSource;
     }
 
-    public MutableLiveData<PagedMovieDataSource> getPagedDataSource() {
+    public MutableLiveData<FilteredMovieDataSource> getPagedDataSource() {
         return pagedDataSource;
     }
 }

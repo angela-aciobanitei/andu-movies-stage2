@@ -29,10 +29,12 @@ public class LocalMovieDataSource {
     }
 
     public void saveAllMovieDetails(Movie movie) {
-        database.movieDao().insertMovieDetails(movie);
-        saveCast(movie.getCreditsResponse().getCast(), movie.getId());
-        saveTrailers(movie.getTrailersResponse().getTrailers(), movie.getId());
-        saveReviews(movie.getReviewsResponse().getReviews(), movie.getId());
+        database.runInTransaction(() -> {
+            database.movieDao().insertMovieDetails(movie);
+            saveCast(movie.getCreditsResponse().getCast(), movie.getId());
+            saveTrailers(movie.getTrailersResponse().getTrailers(), movie.getId());
+            saveReviews(movie.getReviewsResponse().getReviews(), movie.getId());
+        });
     }
 
     private void saveCast(List<Cast> castList, long movieId) {

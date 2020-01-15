@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
 
 import com.ang.acb.popularmovies.R;
-import com.ang.acb.popularmovies.data.remote.PagedMoviesResult;
+import com.ang.acb.popularmovies.data.remote.FilteredMoviesResult;
 import com.ang.acb.popularmovies.data.repository.MovieRepository;
 import com.ang.acb.popularmovies.data.vo.Movie;
 import com.ang.acb.popularmovies.data.vo.MoviesFilter;
 import com.ang.acb.popularmovies.data.vo.Resource;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -25,7 +27,7 @@ import javax.inject.Inject;
  */
 public class TmdbMoviesViewModel extends ViewModel {
 
-    private LiveData<PagedMoviesResult> pagedResult;
+    private LiveData<FilteredMoviesResult> pagedResult;
     private LiveData<PagedList<Movie>> pagedData;
     private LiveData<Resource> networkState;
     private MutableLiveData<MoviesFilter> currentFilter = new MutableLiveData<>();
@@ -38,8 +40,8 @@ public class TmdbMoviesViewModel extends ViewModel {
         currentTitle.setValue(R.string.action_show_popular);
 
         pagedResult = Transformations.map(currentFilter, movieRepository::loadMoviesFilteredBy);
-        pagedData = Transformations.switchMap(pagedResult,PagedMoviesResult::getPagedData);
-        networkState = Transformations.switchMap(pagedResult, PagedMoviesResult::getNetworkState);
+        pagedData = Transformations.switchMap(pagedResult, FilteredMoviesResult::getPagedData);
+        networkState = Transformations.switchMap(pagedResult, FilteredMoviesResult::getNetworkState);
     }
 
     public LiveData<PagedList<Movie>> getPagedData() {
@@ -58,7 +60,7 @@ public class TmdbMoviesViewModel extends ViewModel {
         return currentFilter.getValue();
     }
 
-    public void updateCurrentFilter(int actionId) {
+    public void updateFilter(int actionId) {
         MoviesFilter filterType;
         int title;
         switch (actionId) {
@@ -81,7 +83,6 @@ public class TmdbMoviesViewModel extends ViewModel {
                 title = R.string.action_show_now_playing;
                 break;
             }
-
             default:
                 throw new IllegalArgumentException("Unknown action id");
         }
@@ -91,8 +92,8 @@ public class TmdbMoviesViewModel extends ViewModel {
 
     // Retry any failed requests.
     public void retry() {
-        pagedResult.getValue()
-                .getPagedDataSource().getValue()
+        Objects.requireNonNull(Objects.requireNonNull(pagedResult.getValue())
+                .getPagedDataSource().getValue())
                 .getRetryCallback().retry();
     }
 }

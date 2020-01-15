@@ -8,37 +8,44 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ang.acb.popularmovies.data.vo.Resource;
 import com.ang.acb.popularmovies.databinding.ItemNetworkStateBinding;
+import com.ang.acb.popularmovies.ui.common.RetryCallback;
 
 /**
  * A View Holder that can display a loading or have click action.
  * It is used to show the network state of paging.
  *
- * See: https://github.com/googlesamples/android-architecture-components/tree/PagingWithNetworkSample
+ * See: https://github.com/android/android-architecture-components/tree/PagingWithNetworkSample
  */
-public class NetworkStateItemViewHolder extends RecyclerView.ViewHolder {
+/**
+ * A View Holder that can display a loading or have click action.
+ * It is used to show the network state of paging.
+ *
+ * See: https://github.com/android/android-architecture-components/tree/PagingWithNetworkSample
+ */
+public class NetworkStateViewHolder extends RecyclerView.ViewHolder {
 
     private ItemNetworkStateBinding binding;
 
-    private NetworkStateItemViewHolder(@NonNull ItemNetworkStateBinding binding,
-                                       final TmdbMoviesViewModel viewModel) {
+    public NetworkStateViewHolder(@NonNull ItemNetworkStateBinding binding,
+                                  RetryCallback retryCallback) {
         super(binding.getRoot());
         this.binding = binding;
 
         // Trigger retry event on click.
-        binding.retryButton.setOnClickListener(view -> viewModel.retry());
+        binding.retryButton.setOnClickListener(view -> retryCallback.invoke());
     }
 
-    public static NetworkStateItemViewHolder createViewHolder(ViewGroup parent, TmdbMoviesViewModel viewModel) {
+    public static NetworkStateViewHolder create(ViewGroup parent, RetryCallback retryCallback) {
         // Inflate view and obtain an instance of the binding class.
         ItemNetworkStateBinding binding = ItemNetworkStateBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false);
-        return new NetworkStateItemViewHolder(binding, viewModel);
+        return new NetworkStateViewHolder(binding, retryCallback);
     }
 
-    public void bindTo(Resource networkState) {
-        binding.setResource(networkState);
+    public void bindTo(Resource resource) {
+        binding.setResource(resource);
 
         // Binding must be executed immediately.
         binding.executePendingBindings();

@@ -82,36 +82,6 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void setToolbarTitleIfCollapsed(Movie movie) {
-        // To set the title on the toolbar only when the toolbar is collapsed,
-        // we need to add an OnOffsetChangedListener to AppBarLayout to determine
-        // when CollapsingToolbarLayout is collapsed or expanded.
-        // See: https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed
-        // See: https://medium.com/@nullthemall/the-power-of-appbarlayout-offset-ecbf8eaa6b5f
-        binding.detailsAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShown = true;
-            int totalScrollRange = -1;
-
-            // This listener is triggered when vertical offset is changed,
-            // i.e bottom and top are offset. Parameter "verticalOffset" is
-            // always between 0 and appBarLayout.getTotalScrollRange(),
-            // which is the total height of all children that can scroll.
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
-                // If toolbar is completely collapsed, set the collapsing bar title.
-                if (totalScrollRange + verticalOffset == 0) {
-                    binding.detailsCollapsingToolbar.setTitle(movie.getTitle());
-                    isShown = true;
-                } else if (isShown) {
-                    // When toolbar is expanded, display an empty string.
-                    binding.detailsCollapsingToolbar.setTitle(" ");
-                    isShown = false;
-                }
-            }
-        });
-    }
-
     private void setupViewModel(){
         viewModel = ViewModelProviders
                 .of(this, viewModelFactory)
@@ -141,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void observeResult() {
-        viewModel.getMovieDetailsLiveData().observe(this, resource -> {
+        viewModel.getLiveMovieDetails().observe(this, resource -> {
             if (resource.data != null && resource.data.movie != null) {
                 // Handle toolbar title when collapsed.
                 if (getSupportActionBar() != null) {
@@ -150,6 +120,9 @@ public class DetailsActivity extends AppCompatActivity {
 
                 // Handle adding/removing movie from favorites.
                 viewModel.setFavorite(resource.data.movie.isFavorite());
+
+                // Note: when movie details change, contents of menu also change,
+                // so menu should be redrawn.
                 invalidateOptionsMenu();
 
                 // Bind movie data
@@ -165,6 +138,37 @@ public class DetailsActivity extends AppCompatActivity {
         // Observe the Snackbar messages showed when adding/removing movie from favorites.
         viewModel.getSnackbarMessage().observe(this, (Observer<Integer>) message ->
                 Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT).show());
+    }
+
+
+    private void setToolbarTitleIfCollapsed(Movie movie) {
+        // To set the title on the toolbar only when the toolbar is collapsed,
+        // we need to add an OnOffsetChangedListener to AppBarLayout to determine
+        // when CollapsingToolbarLayout is collapsed or expanded.
+        // https://stackoverflow.com/questions/31662416/show-collapsingtoolbarlayout-title-only-when-collapsed
+        // https://medium.com/@nullthemall/the-power-of-appbarlayout-offset-ecbf8eaa6b5f
+        binding.detailsAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShown = true;
+            int totalScrollRange = -1;
+
+            // This listener is triggered when vertical offset is changed,
+            // i.e bottom and top are offset. Parameter "verticalOffset" is
+            // always between 0 and appBarLayout.getTotalScrollRange(),
+            // which is the total height of all children that can scroll.
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (totalScrollRange == -1) totalScrollRange = appBarLayout.getTotalScrollRange();
+                // If toolbar is completely collapsed, set the collapsing bar title.
+                if (totalScrollRange + verticalOffset == 0) {
+                    binding.detailsCollapsingToolbar.setTitle(movie.getTitle());
+                    isShown = true;
+                } else if (isShown) {
+                    // When toolbar is expanded, display an empty string.
+                    binding.detailsCollapsingToolbar.setTitle(" ");
+                    isShown = false;
+                }
+            }
+        });
     }
 
 

@@ -5,5 +5,6 @@
     <color name="colorAccent">#00ACC1</color>
 
     <color name="colorImagePlaceholder">#66000000</color>
+    <color name="colorMovieTitle">#ddd</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

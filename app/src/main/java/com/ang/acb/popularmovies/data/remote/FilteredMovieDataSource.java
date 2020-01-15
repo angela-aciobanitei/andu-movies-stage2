@@ -29,7 +29,7 @@ import retrofit2.Response;
  * See: https://developer.android.com/topic/libraries/architecture/paging/data#custom-data-source
  * See: https://github.com/android/android-architecture-components/tree/master/PagingWithNetworkSample
  */
-public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
+public class FilteredMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE_KEY = 1;
 
@@ -45,9 +45,9 @@ public class PagedMovieDataSource extends PageKeyedDataSource<Integer, Movie> {
     }
 
     @Inject
-    PagedMovieDataSource(ApiService apiService,
-                         MoviesFilter filter,
-                         Executor networkExecutor) {
+    FilteredMovieDataSource(ApiService apiService,
+                            MoviesFilter filter,
+                            Executor networkExecutor) {
         this.apiService = apiService;
         this.filter = filter;
         this.networkExecutor = networkExecutor;

@@ -26,8 +26,8 @@ import javax.inject.Inject;
 public class DetailsViewModel extends ViewModel {
 
     private final MovieRepository movieRepository;
-    private LiveData<Resource<MovieDetails>> movieDetailsLiveData;
-    private MutableLiveData<Long> movieIdLiveData = new MutableLiveData<>();
+    private LiveData<Resource<MovieDetails>> liveMovieDetails;
+    private MutableLiveData<Long> liveMovieId = new MutableLiveData<>();
     private final SnackbarMessage snackbarMessage = new SnackbarMessage();
     private boolean isFavorite;
 
@@ -37,19 +37,19 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public void init(long movieId) {
-        movieIdLiveData.setValue(movieId);
+        liveMovieId.setValue(movieId);
     }
 
     public void retry(long movieId) {
-        movieIdLiveData.setValue(movieId);
+        liveMovieId.setValue(movieId);
     }
 
-    public LiveData<Resource<MovieDetails>> getMovieDetailsLiveData() {
-        if (movieDetailsLiveData == null) {
-            movieDetailsLiveData = Transformations.switchMap(
-                    movieIdLiveData, movieRepository::loadAllMovieDetails);
+    public LiveData<Resource<MovieDetails>> getLiveMovieDetails() {
+        if (liveMovieDetails == null) {
+            liveMovieDetails = Transformations.switchMap(
+                    liveMovieId, movieRepository::loadAllMovieDetails);
         }
-        return movieDetailsLiveData;
+        return liveMovieDetails;
     }
 
     public SnackbarMessage getSnackbarMessage() {
@@ -65,7 +65,7 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public void onFavoriteClicked() {
-        MovieDetails movieDetails = Objects.requireNonNull(movieDetailsLiveData.getValue()).data;
+        MovieDetails movieDetails = Objects.requireNonNull(liveMovieDetails.getValue()).data;
         if (!isFavorite) {
             movieRepository.markAsFavorite(Objects.requireNonNull(movieDetails).movie);
             snackbarMessage.setValue(R.string.movie_added_to_favorites);

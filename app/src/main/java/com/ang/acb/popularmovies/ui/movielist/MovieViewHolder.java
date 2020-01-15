@@ -24,22 +24,22 @@ import com.bumptech.glide.request.target.Target;
 
 import timber.log.Timber;
 
-public class MovieItemViewHolder extends RecyclerView.ViewHolder {
+public class MovieViewHolder extends RecyclerView.ViewHolder {
 
     private final ItemMovieBinding binding;
 
-    private MovieItemViewHolder(@NonNull ItemMovieBinding binding) {
+    private MovieViewHolder(@NonNull ItemMovieBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
-    public static MovieItemViewHolder createViewHolder(ViewGroup parent) {
+    public static MovieViewHolder create(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemMovieBinding binding = ItemMovieBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false);
-        return new MovieItemViewHolder(binding);
+        return new MovieViewHolder(binding);
     }
 
     public void bindTo(final Movie movie) {
