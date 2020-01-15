@@ -11,6 +11,8 @@ import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
@@ -89,6 +91,28 @@ public class Review {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Review review = (Review) object;
+        return Objects.equals(id, review.id) &&
+                movieId == review.movieId &&
+                Objects.equals(author, review.author) &&
+                Objects.equals(content, review.content) &&
+                Objects.equals(url, review.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                id,
+                movieId,
+                author,
+                content,
+                url);
     }
 }
 

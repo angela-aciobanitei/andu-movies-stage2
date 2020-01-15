@@ -12,22 +12,22 @@ import com.ang.acb.popularmovies.databinding.ItemReviewBinding;
 /**
  * A ViewHolder that works with DataBinding.
  */
-public class ReviewItemViewHolder extends RecyclerView.ViewHolder {
+public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
     private ItemReviewBinding binding;
 
-    public ReviewItemViewHolder(@NonNull ItemReviewBinding binding) {
+    public ReviewViewHolder(@NonNull ItemReviewBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }
 
-    public static ReviewItemViewHolder createViewHolder(ViewGroup parent) {
+    public static ReviewViewHolder create(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemReviewBinding binding = ItemReviewBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false);
-        return new ReviewItemViewHolder(binding);
+        return new ReviewViewHolder(binding);
     }
 
     public void bindTo(final Review review) {
