@@ -1,6 +1,5 @@
 package com.ang.acb.popularmovies.ui.moviedetails;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -19,37 +18,37 @@ import com.ang.acb.popularmovies.utils.GlideApp;
 public class CastItemViewHolder extends RecyclerView.ViewHolder {
 
     private ItemCastBinding binding;
-    private Context context;
 
-    public CastItemViewHolder(@NonNull ItemCastBinding binding, Context context) {
+    public CastItemViewHolder(@NonNull ItemCastBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
-        this.context = context;
     }
 
-    public static CastItemViewHolder createViewHolder(ViewGroup parent) {
+    public static CastItemViewHolder create(ViewGroup parent) {
         // Inflate view and obtain an instance of the binding class.
         ItemCastBinding binding = ItemCastBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false);
-        return new CastItemViewHolder(binding, parent.getContext());
+        return new CastItemViewHolder(binding);
     }
 
     public void bindTo(final Cast cast) {
-        String profileImage = AppConstants.IMAGE_BASE_URL +
+        binding.setCast(cast);
+
+        String profileImageUrl = AppConstants.IMAGE_BASE_URL +
                 AppConstants.PROFILE_SIZE_W185 +
                 cast.getProfileImagePath();
 
-        GlideApp.with(context)
-                .load(profileImage)
-                .placeholder(R.color.colorImagePlaceholder)
+        GlideApp.with(binding.getRoot().getContext())
+                .load(profileImageUrl)
+                // Display a placeholder until the image is loaded and processed.
+                .placeholder(R.drawable.loading_animation)
+                // Provide an error placeholder for non-existing-urls.
+                .error(R.color.colorImagePlaceholder)
+                // Provide a fallback placeholder for when the url is null.
+                .fallback(R.color.colorImagePlaceholder)
                 .into(binding.castItemProfileImage);
 
-        binding.castItemName.setText(cast.getActorName());
-
-        // Note: when a variable or observable object changes, the binding is scheduled
-        // to change before the next frame. There are times, however, when binding must
-        // be executed immediately. To force execution, use executePendingBindings().
-        // https://developer.android.com/topic/libraries/data-binding/generated-binding#immediate_binding
+        // Binding must be executed immediately.
         binding.executePendingBindings();
     }
 }

@@ -40,6 +40,10 @@ public class Movie {
     @SerializedName("original_language")
     private String originalLanguage;
 
+    @ColumnInfo(name = "release_date")
+    @SerializedName("release_date")
+    private String releaseDate;
+
     @SerializedName("popularity")
     private double popularity;
 
@@ -50,10 +54,6 @@ public class Movie {
     @ColumnInfo(name = "vote_count")
     @SerializedName("vote_count")
     private int voteCount;
-
-    @ColumnInfo(name = "release_date")
-    @SerializedName("release_date")
-    private String releaseDate;
 
     @ColumnInfo(name = "is_favorite")
     private boolean isFavorite;
@@ -196,21 +196,35 @@ public class Movie {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Movie movie = (Movie) object;
         return id == movie.id &&
-                Double.compare(movie.popularity, popularity) == 0 &&
-                Double.compare(movie.voteAverage, voteAverage) == 0 &&
                 Objects.equals(title, movie.title) &&
                 Objects.equals(posterPath, movie.posterPath) &&
+                Objects.equals(backdropPath, movie.backdropPath) &&
                 Objects.equals(overview, movie.overview) &&
-                Objects.equals(releaseDate, movie.releaseDate);
+                Objects.equals(releaseDate, movie.releaseDate)&&
+                Objects.equals(originalLanguage, movie.originalLanguage) &&
+                Double.compare(popularity, movie.popularity) == 0 &&
+                Double.compare(voteAverage, movie.voteAverage) == 0 &&
+                voteCount == movie.voteCount&&
+                Boolean.compare(isFavorite, movie.isFavorite) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, posterPath, overview, popularity, voteAverage, releaseDate);
+        return Objects.hash(id,
+                title,
+                posterPath,
+                backdropPath,
+                overview,
+                releaseDate,
+                originalLanguage,
+                popularity,
+                voteAverage,
+                voteCount,
+                isFavorite);
     }
 }

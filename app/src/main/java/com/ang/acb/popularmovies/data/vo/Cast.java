@@ -11,6 +11,8 @@ import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import static androidx.room.ForeignKey.CASCADE;
 
 /**
@@ -35,26 +37,45 @@ public class Cast {
 
     @NonNull
     @PrimaryKey
-    @SerializedName("credit_id")
-    private String id;
+    @SerializedName("id")
+    private long id;
 
     @ColumnInfo(name = "movie_id")
     private long movieId;
 
+    @SerializedName("cast_id")
+    @ColumnInfo(name = "cast_id")
+    private long castId;
+
+    @SerializedName("credit_id")
+    @ColumnInfo(name = "credit_id")
+    private String creditId;
+
     @SerializedName("character")
+    @ColumnInfo(name = "character_name")
     private String characterName;
 
     @SerializedName("gender")
     private int gender;
 
-    @SerializedName("name")
-    private String actorName;
-
     @SerializedName("order")
     private int order;
 
+    @SerializedName("name")
+    @ColumnInfo(name = "actor_name")
+    private String actorName;
+
     @SerializedName("profile_path")
+    @ColumnInfo(name = "profile_image_path")
     private String profileImagePath;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getMovieId() {
         return movieId;
@@ -62,6 +83,22 @@ public class Cast {
 
     public void setMovieId(long movieId) {
         this.movieId = movieId;
+    }
+
+    public long getCastId() {
+        return castId;
+    }
+
+    public void setCastId(long castId) {
+        this.castId = castId;
+    }
+
+    public String getCreditId() {
+        return creditId;
+    }
+
+    public void setCreditId(String creditId) {
+        this.creditId = creditId;
     }
 
     public String getCharacterName() {
@@ -78,15 +115,6 @@ public class Cast {
 
     public void setGender(int gender) {
         this.gender = gender;
-    }
-
-    @NotNull
-    public String getId() {
-        return id;
-    }
-
-    public void setId(@NotNull String id) {
-        this.id = id;
     }
 
     public String getActorName() {
@@ -111,5 +139,34 @@ public class Cast {
 
     public void setProfileImagePath(String profileImagePath) {
         this.profileImagePath = profileImagePath;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Cast cast = (Cast) object;
+        return id == cast.id &&
+                movieId == cast.movieId &&
+                castId == cast.castId &&
+                Objects.equals(creditId, cast.creditId) &&
+                Objects.equals(characterName, cast.characterName) &&
+                gender == cast.gender &&
+                order == cast.order &&
+                Objects.equals(actorName, cast.actorName) &&
+                Objects.equals(profileImagePath, cast.profileImagePath);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id,
+                movieId,
+                castId,
+                creditId,
+                characterName,
+                gender,
+                order,
+                actorName,
+                profileImagePath);
     }
 }

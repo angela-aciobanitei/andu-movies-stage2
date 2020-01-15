@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#06161d</color>
     <color name="colorAccent">#00ACC1</color>
 
-    <color name="colorImagePlaceholder">#2E2E2E</color>
+    <color name="colorImagePlaceholder">#66000000</color>
     <color name="colorWhite">#FFFFFF</color>
 </resources>

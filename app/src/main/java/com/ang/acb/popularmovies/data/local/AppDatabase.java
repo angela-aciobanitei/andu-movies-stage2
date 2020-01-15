@@ -16,7 +16,7 @@ import com.ang.acb.popularmovies.data.vo.Trailer;
  * See: https://medium.com/androiddevelopers/7-pro-tips-for-room-fbadea4bfbd1
  */
 @Database(entities = {Movie.class, Trailer.class, Cast.class, Review.class},
-          version = 1,
+          version = 2,
           exportSchema = false)
 @TypeConverters(GenreConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
