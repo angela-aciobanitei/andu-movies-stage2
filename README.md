@@ -1,5 +1,7 @@
 # Popular Movies Stage II
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/45b783833a524e9d8a88bd2c7bcf64dd)](https://app.codacy.com/manual/angela-aciobanitei/andu-movies-stage2?utm_source=github.com&utm_medium=referral&utm_content=angela-aciobanitei/andu-movies-stage2&utm_campaign=Badge_Grade_Settings)
+
 Expand on the movies app built in the previous project (Popular Movies Stage I) to create a fully-featured app that will allow users to view and play trailers, read reviews, and mark their favorite movies.
 
 ## Project Specs
