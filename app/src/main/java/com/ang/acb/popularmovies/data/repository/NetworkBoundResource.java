@@ -18,7 +18,7 @@ import com.ang.acb.popularmovies.utils.AppExecutors;
  * the API might not match the data type used locally.
  *
  * See: https://developer.android.com/jetpack/docs/guide#addendum.
- * See: https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample
+ * See: https://github.com/android/android-architecture-components/tree/master/GithubBrowserSample
  *
  * @param <ResultType> Type for the Resource data.
  * @param <RequestType> Type for the API response.

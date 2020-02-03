@@ -107,5 +107,4 @@ public class MovieRepository {
             localDataSource.markAsNotFavorite(movie);
         });
     }
-
 }

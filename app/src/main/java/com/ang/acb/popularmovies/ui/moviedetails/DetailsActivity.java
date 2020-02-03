@@ -73,7 +73,7 @@ public class DetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void setupToolbar() { ;
+    private void setupToolbar() {
         setSupportActionBar(binding.detailsToolbar);
         if (getSupportActionBar() != null) {
             // Handle Up navigation
@@ -200,14 +200,14 @@ public class DetailsActivity extends AppCompatActivity {
                 viewModel.onFavoriteClicked();
                 invalidateOptionsMenu();
                 return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
-
 }
